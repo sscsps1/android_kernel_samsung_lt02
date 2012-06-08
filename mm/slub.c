@@ -1886,8 +1886,7 @@ redo:
  */
 static void unfreeze_partials(struct kmem_cache *s)
 {
-	
-	struct kmem_cache_node *n = NULL, *n2 = NULL;	
+	struct kmem_cache_node *n = NULL, *n2 = NULL;
 	struct kmem_cache_cpu *c = this_cpu_ptr(s->cpu_slab);
 	struct page *page, *discard_page = NULL;
 
@@ -1917,12 +1916,12 @@ static void unfreeze_partials(struct kmem_cache *s)
 
 			new.frozen = 0;
 
-		} while (!__cmpxchg_double_slab(s, page,
+		} while (!cmpxchg_double_slab(s, page,
 				old.freelist, old.counters,
 				new.freelist, new.counters,
 				"unfreezing slab"));
 
-		if (unlikely(!new.inuse && n->nr_partial > s->min_partial)) {		
+		if (unlikely(!new.inuse && n->nr_partial > s->min_partial)) {
 			page->next = discard_page;
 			discard_page = page;
 		} else {
