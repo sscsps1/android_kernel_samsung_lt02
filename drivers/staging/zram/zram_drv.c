@@ -158,13 +158,34 @@ static int zram_decompress_page(struct zram *zram, char *mem, u32 index)
 		return 0;
 	}
 
-	cmem = zs_map_object(meta->mem_pool, handle, ZS_MM_RO);
-	if (meta->table[index].size == PAGE_SIZE)
-		memcpy(mem, cmem, PAGE_SIZE);
-	else
-		ret = lzo1x_decompress_safe(cmem, meta->table[index].size,
-						mem, &clen);
-	zs_unmap_object(meta->mem_pool, handle);
+	if (is_partial_io(bvec)) {
+		/* Use  a temporary buffer to decompress the page */
+		uncmem = kmalloc(PAGE_SIZE, GFP_NOIO);
+		if (!uncmem) {
+			pr_info("Error allocating temp memory!\n");
+			return -ENOMEM;
+		}
+	}
+
+	user_mem = kmap_atomic(page);
+	if (!is_partial_io(bvec))
+		uncmem = user_mem;
+	clen = PAGE_SIZE;
+
+	cmem = zs_map_object(zram->mem_pool, zram->table[index].handle);
+
+	ret = lzo1x_decompress_safe(cmem + sizeof(*zheader),
+				    zram->table[index].size,
+				    uncmem, &clen);
+
+	if (is_partial_io(bvec)) {
+		memcpy(user_mem + bvec->bv_offset, uncmem + offset,
+		       bvec->bv_len);
+		kfree(uncmem);
+	}
+
+	zs_unmap_object(zram->mem_pool, zram->table[index].handle);
+	kunmap_atomic(user_mem);
 
 	/* Should NEVER happen. Return bio error if it does. */
 	if (unlikely(ret != LZO_E_OK)) {
