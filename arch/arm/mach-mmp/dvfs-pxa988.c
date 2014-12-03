@@ -484,7 +484,7 @@ EXPORT_SYMBOL(dvc_set_voltage);
 struct dvfs_rail pxa988_dvfs_rail_vm = {
 	.reg_id = "vcc_main",
 	.max_millivolts = 1400,
-	.min_millivolts = 1000,
+	.min_millivolts = 800,
 	.nominal_millivolts = 1200,
 	.step = 500,
 };
