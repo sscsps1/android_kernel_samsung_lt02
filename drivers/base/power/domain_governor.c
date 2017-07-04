@@ -14,6 +14,7 @@
 
 #ifdef CONFIG_PM_RUNTIME
 
+<<<<<<< HEAD
 static int dev_update_qos_constraint(struct device *dev, void *data)
 {
 	s64 *constraint_ns_p = data;
@@ -39,6 +40,8 @@ static int dev_update_qos_constraint(struct device *dev, void *data)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * default_stop_ok - Default PM domain governor routine for stopping devices.
  * @dev: Device to check.
@@ -46,6 +49,7 @@ static int dev_update_qos_constraint(struct device *dev, void *data)
 bool default_stop_ok(struct device *dev)
 {
 	struct gpd_timing_data *td = &dev_gpd_data(dev)->td;
+<<<<<<< HEAD
 	unsigned long flags;
 	s64 constraint_ns;
 
@@ -92,6 +96,16 @@ bool default_stop_ok(struct device *dev)
 	 * their stop latencies into account here.
 	 */
 	return td->cached_stop_ok;
+=======
+
+	dev_dbg(dev, "%s()\n", __func__);
+
+	if (dev->power.max_time_suspended_ns < 0 || td->break_even_ns == 0)
+		return true;
+
+	return td->stop_latency_ns + td->start_latency_ns < td->break_even_ns
+		&& td->break_even_ns < dev->power.max_time_suspended_ns;
+>>>>>>> v3.4.6
 }
 
 /**
@@ -105,6 +119,7 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 	struct generic_pm_domain *genpd = pd_to_genpd(pd);
 	struct gpd_link *link;
 	struct pm_domain_data *pdd;
+<<<<<<< HEAD
 	s64 min_off_time_ns;
 	s64 off_on_time_ns;
 
@@ -126,6 +141,11 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 	} else {
 		return genpd->cached_power_down_ok;
 	}
+=======
+	s64 min_dev_off_time_ns;
+	s64 off_on_time_ns;
+	ktime_t time_now = ktime_get();
+>>>>>>> v3.4.6
 
 	off_on_time_ns = genpd->power_off_latency_ns +
 				genpd->power_on_latency_ns;
@@ -142,7 +162,10 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 				to_gpd_data(pdd)->td.save_state_latency_ns;
 	}
 
+<<<<<<< HEAD
 	min_off_time_ns = -1;
+=======
+>>>>>>> v3.4.6
 	/*
 	 * Check if subdomains can be off for enough time.
 	 *
@@ -155,6 +178,11 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 		if (sd_max_off_ns < 0)
 			continue;
 
+<<<<<<< HEAD
+=======
+		sd_max_off_ns -= ktime_to_ns(ktime_sub(time_now,
+						       sd->power_off_time));
+>>>>>>> v3.4.6
 		/*
 		 * Check if the subdomain is allowed to be off long enough for
 		 * the current domain to turn off and on (that's how much time
@@ -162,14 +190,18 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 		 */
 		if (sd_max_off_ns <= off_on_time_ns)
 			return false;
+<<<<<<< HEAD
 
 		if (min_off_time_ns > sd_max_off_ns || min_off_time_ns < 0)
 			min_off_time_ns = sd_max_off_ns;
+=======
+>>>>>>> v3.4.6
 	}
 
 	/*
 	 * Check if the devices in the domain can be off enough time.
 	 */
+<<<<<<< HEAD
 	list_for_each_entry(pdd, &genpd->dev_list, list_node) {
 		struct gpd_timing_data *td;
 		s64 constraint_ns;
@@ -220,6 +252,57 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 	 * theoretical time this domain can spend in the "off" state.
 	 */
 	genpd->max_off_time_ns = min_off_time_ns - genpd->power_on_latency_ns;
+=======
+	min_dev_off_time_ns = -1;
+	list_for_each_entry(pdd, &genpd->dev_list, list_node) {
+		struct gpd_timing_data *td;
+		struct device *dev = pdd->dev;
+		s64 dev_off_time_ns;
+
+		if (!dev->driver || dev->power.max_time_suspended_ns < 0)
+			continue;
+
+		td = &to_gpd_data(pdd)->td;
+		dev_off_time_ns = dev->power.max_time_suspended_ns -
+			(td->start_latency_ns + td->restore_state_latency_ns +
+				ktime_to_ns(ktime_sub(time_now,
+						dev->power.suspend_time)));
+		if (dev_off_time_ns <= off_on_time_ns)
+			return false;
+
+		if (min_dev_off_time_ns > dev_off_time_ns
+		    || min_dev_off_time_ns < 0)
+			min_dev_off_time_ns = dev_off_time_ns;
+	}
+
+	if (min_dev_off_time_ns < 0) {
+		/*
+		 * There are no latency constraints, so the domain can spend
+		 * arbitrary time in the "off" state.
+		 */
+		genpd->max_off_time_ns = -1;
+		return true;
+	}
+
+	/*
+	 * The difference between the computed minimum delta and the time needed
+	 * to turn the domain on is the maximum theoretical time this domain can
+	 * spend in the "off" state.
+	 */
+	min_dev_off_time_ns -= genpd->power_on_latency_ns;
+
+	/*
+	 * If the difference between the computed minimum delta and the time
+	 * needed to turn the domain off and back on on is smaller than the
+	 * domain's power break even time, removing power from the domain is not
+	 * worth it.
+	 */
+	if (genpd->break_even_ns >
+	    min_dev_off_time_ns - genpd->power_off_latency_ns)
+		return false;
+
+	genpd->max_off_time_ns = min_dev_off_time_ns;
+>>>>>>> v3.4.6
 	return true;
 }
 

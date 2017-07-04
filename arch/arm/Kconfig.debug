@@ -63,6 +63,7 @@ config DEBUG_USER
 	      8 - SIGSEGV faults
 	     16 - SIGBUS faults
 
+<<<<<<< HEAD
 config DEBUG_RODATA
 	bool "Write protect kernel text section"
 	default n
@@ -84,6 +85,8 @@ config DEBUG_RODATA_TEST
 	  feature.
 	  If in doubt, say "N"
 
+=======
+>>>>>>> v3.4.6
 # These options are only for real kernel hackers who want to get their hands dirty.
 config DEBUG_LL
 	bool "Kernel low-level debugging functions (read help!)"
@@ -353,6 +356,7 @@ config ARM_KPROBES_TEST
 	help
 	  Perform tests of kprobes API and instruction set simulation.
 
+<<<<<<< HEAD
 comment "Samsung Rooting Restriction Feature"
 config SEC_RESTRICT_ROOTING
 	bool "Samsung Rooting Restriction Feature"
@@ -386,4 +390,6 @@ config SEC_RESTRICT_ROOTING_LOG
 	   Say Y here if you want to see result of restricting SETUID or FORK. It will
 	   be displayed by kernel error log. Saying N will not be displayed anything.
 
+=======
+>>>>>>> v3.4.6
 endmenu

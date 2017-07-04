@@ -39,7 +39,10 @@
 #define W1_FAMILY_DS2760	0x30
 #define W1_FAMILY_DS2780	0x32
 #define W1_FAMILY_DS2781	0x3D
+<<<<<<< HEAD
 #define W1_FAMILY_DS2783	0x34
+=======
+>>>>>>> v3.4.6
 #define W1_THERM_DS28EA00	0x42
 
 #define MAXNAMELEN		32

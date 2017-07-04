@@ -204,10 +204,13 @@ rx_submit(struct eth_dev *dev, struct usb_request *req, gfp_t gfp_flags)
 	struct usb_ep	*out;
 	unsigned long	flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PXA910_1G_DDR_WORKAROUND
 	gfp_flags |= GFP_DMA;
 #endif
 
+=======
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&dev->lock, flags);
 	if (dev->port_usb)
 		out = dev->port_usb->out_ep;
@@ -762,6 +765,7 @@ static struct device_type gadget_type = {
  */
 int gether_setup(struct usb_gadget *g, u8 ethaddr[ETH_ALEN])
 {
+<<<<<<< HEAD
 	return gether_setup_name(g, ethaddr, "usb");
 }
 
@@ -782,6 +786,8 @@ int gether_setup(struct usb_gadget *g, u8 ethaddr[ETH_ALEN])
 int gether_setup_name(struct usb_gadget *g, u8 ethaddr[ETH_ALEN],
 		const char *netname)
 {
+=======
+>>>>>>> v3.4.6
 	struct eth_dev		*dev;
 	struct net_device	*net;
 	int			status;
@@ -804,7 +810,11 @@ int gether_setup_name(struct usb_gadget *g, u8 ethaddr[ETH_ALEN],
 
 	/* network device setup */
 	dev->net = net;
+<<<<<<< HEAD
 	snprintf(net->name, sizeof(net->name), "%s%%d", netname);
+=======
+	strcpy(net->name, "usb%d");
+>>>>>>> v3.4.6
 
 	if (get_ether_addr(dev_addr, net->dev_addr))
 		dev_warn(&g->dev,

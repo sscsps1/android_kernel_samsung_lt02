@@ -25,11 +25,15 @@
 #include <linux/poll.h>
 #include <linux/slab.h>
 #include <linux/time.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
+=======
+>>>>>>> v3.4.6
 #include "logger.h"
 
 #include <asm/ioctls.h>
 
+<<<<<<< HEAD
 
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 // GAF
@@ -586,6 +590,8 @@ EXPORT_SYMBOL(sec_getlog_supply_fbinfo);
 //}} pass platform log to kernel - 1/3
 #endif /* CONFIG_KERNEL_DEBUG_SEC */
 
+=======
+>>>>>>> v3.4.6
 /*
  * struct logger_log - represents a specific log, such as 'main' or 'radio'
  *
@@ -614,8 +620,11 @@ struct logger_reader {
 	struct logger_log	*log;	/* associated log */
 	struct list_head	list;	/* entry in logger_log's list */
 	size_t			r_off;	/* current read head offset */
+<<<<<<< HEAD
 	bool			r_all;	/* reader can read all entries */
 	int			r_ver;	/* reader ABI version */
+=======
+>>>>>>> v3.4.6
 };
 
 /* logger_offset - returns index 'n' into the log via (optimized) modulus */
@@ -649,6 +658,7 @@ static inline struct logger_log *file_get_log(struct file *file)
 }
 
 /*
+<<<<<<< HEAD
  * get_entry_header - returns a pointer to the logger_entry header within
  * 'log' starting at offset 'off'. A temporary logger_entry 'scratch' must
  * be provided. Typically the return value will be a pointer within
@@ -672,6 +682,10 @@ static struct logger_entry *get_entry_header(struct logger_log *log,
 /*
  * get_entry_msg_len - Grabs the length of the message of the entry
  * starting from from 'off'.
+=======
+ * get_entry_len - Grabs the length of the payload of the next entry starting
+ * from 'off'.
+>>>>>>> v3.4.6
  *
  * An entry length is 2 bytes (16 bits) in host endian order.
  * In the log, the length does not include the size of the log entry structure.
@@ -679,6 +693,7 @@ static struct logger_entry *get_entry_header(struct logger_log *log,
  *
  * Caller needs to hold log->mutex.
  */
+<<<<<<< HEAD
 static __u32 get_entry_msg_len(struct logger_log *log, size_t off)
 {
 	struct logger_entry scratch;
@@ -718,6 +733,22 @@ static ssize_t copy_header_to_user(int ver, struct logger_entry *entry,
 	}
 
 	return copy_to_user(buf, hdr, hdr_len);
+=======
+static __u32 get_entry_len(struct logger_log *log, size_t off)
+{
+	__u16 val;
+
+	/* copy 2 bytes from buffer, in memcpy order, */
+	/* handling possible wrap at end of buffer */
+
+	((__u8 *)&val)[0] = log->buffer[off];
+	if (likely(off+1 < log->size))
+		((__u8 *)&val)[1] = log->buffer[off+1];
+	else
+		((__u8 *)&val)[1] = log->buffer[0];
+
+	return sizeof(struct logger_entry) + val;
+>>>>>>> v3.4.6
 }
 
 /*
@@ -731,6 +762,7 @@ static ssize_t do_read_log_to_user(struct logger_log *log,
 				   char __user *buf,
 				   size_t count)
 {
+<<<<<<< HEAD
 	struct logger_entry scratch;
 	struct logger_entry *entry;
 	size_t len;
@@ -756,6 +788,17 @@ static ssize_t do_read_log_to_user(struct logger_log *log,
 	 */
 	len = min(count, log->size - msg_start);
 	if (copy_to_user(buf, log->buffer + msg_start, len))
+=======
+	size_t len;
+
+	/*
+	 * We read from the log in two disjoint operations. First, we read from
+	 * the current read head offset up to 'count' bytes or to the end of
+	 * the log, whichever comes first.
+	 */
+	len = min(count, log->size - reader->r_off);
+	if (copy_to_user(buf, log->buffer + reader->r_off, len))
+>>>>>>> v3.4.6
 		return -EFAULT;
 
 	/*
@@ -766,6 +809,7 @@ static ssize_t do_read_log_to_user(struct logger_log *log,
 		if (copy_to_user(buf + len, log->buffer, count - len))
 			return -EFAULT;
 
+<<<<<<< HEAD
 	reader->r_off = logger_offset(log, reader->r_off +
 		sizeof(struct logger_entry) + count);
 
@@ -794,6 +838,11 @@ static size_t get_next_entry_by_uid(struct logger_log *log,
 	}
 
 	return off;
+=======
+	reader->r_off = logger_offset(log, reader->r_off + count);
+
+	return count;
+>>>>>>> v3.4.6
 }
 
 /*
@@ -805,7 +854,11 @@ static size_t get_next_entry_by_uid(struct logger_log *log,
  *	- If there are no log entries to read, blocks until log is written to
  *	- Atomically reads exactly one log entry
  *
+<<<<<<< HEAD
  * Will set errno to EINVAL if read
+=======
+ * Optimal read size is LOGGER_ENTRY_MAX_LEN. Will set errno to EINVAL if read
+>>>>>>> v3.4.6
  * buffer is insufficient to hold next entry.
  */
 static ssize_t logger_read(struct file *file, char __user *buf,
@@ -846,10 +899,13 @@ start:
 
 	mutex_lock(&log->mutex);
 
+<<<<<<< HEAD
 	if (!reader->r_all)
 		reader->r_off = get_next_entry_by_uid(log,
 			reader->r_off, current_euid());
 
+=======
+>>>>>>> v3.4.6
 	/* is there still something to read or did we race? */
 	if (unlikely(log->w_off == reader->r_off)) {
 		mutex_unlock(&log->mutex);
@@ -857,8 +913,12 @@ start:
 	}
 
 	/* get the size of the next entry */
+<<<<<<< HEAD
 	ret = get_user_hdr_len(reader->r_ver) +
 		get_entry_msg_len(log, reader->r_off);
+=======
+	ret = get_entry_len(log, reader->r_off);
+>>>>>>> v3.4.6
 	if (count < ret) {
 		ret = -EINVAL;
 		goto out;
@@ -884,8 +944,12 @@ static size_t get_next_entry(struct logger_log *log, size_t off, size_t len)
 	size_t count = 0;
 
 	do {
+<<<<<<< HEAD
 		size_t nr = sizeof(struct logger_entry) +
 			get_entry_msg_len(log, off);
+=======
+		size_t nr = get_entry_len(log, off);
+>>>>>>> v3.4.6
 		off = logger_offset(log, off + nr);
 		count += nr;
 	} while (count < len);
@@ -990,6 +1054,7 @@ static ssize_t do_write_log_from_user(struct logger_log *log,
 			 */
 			return -EFAULT;
 
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 	//{{ pass platform log (!@hello) to kernel - 2/3
 	memset(klog_buf,0,255);
@@ -1002,6 +1067,8 @@ static ssize_t do_write_log_from_user(struct logger_log *log,
 	}
 	//}} pass platform log (!@hello) to kernel - 2/3
 #endif /* CONFIG_KERNEL_DEBUG_SEC */
+=======
+>>>>>>> v3.4.6
 	log->w_off = logger_offset(log, log->w_off + count);
 
 	return count;
@@ -1027,9 +1094,13 @@ ssize_t logger_aio_write(struct kiocb *iocb, const struct iovec *iov,
 	header.tid = current->pid;
 	header.sec = now.tv_sec;
 	header.nsec = now.tv_nsec;
+<<<<<<< HEAD
 	header.euid = current_euid();
 	header.len = min_t(size_t, iocb->ki_left, LOGGER_ENTRY_MAX_PAYLOAD);
 	header.hdr_size = sizeof(struct logger_entry);
+=======
+	header.len = min_t(size_t, iocb->ki_left, LOGGER_ENTRY_MAX_PAYLOAD);
+>>>>>>> v3.4.6
 
 	/* null writes succeed, return zero */
 	if (unlikely(!header.len))
@@ -1070,6 +1141,7 @@ ssize_t logger_aio_write(struct kiocb *iocb, const struct iovec *iov,
 
 	/* wake up any blocked readers */
 	wake_up_interruptible(&log->wq);
+<<<<<<< HEAD
 	
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 	//{{ pass platform log (!@hello) to kernel - 3/3
@@ -1079,6 +1151,8 @@ ssize_t logger_aio_write(struct kiocb *iocb, const struct iovec *iov,
 	}
 	//}} pass platform log (!@hello) to kernel - 3/3
 #endif /* CONFIG_KERNEL_DEBUG_SEC */
+=======
+>>>>>>> v3.4.6
 
 	return ret;
 }
@@ -1111,10 +1185,13 @@ static int logger_open(struct inode *inode, struct file *file)
 			return -ENOMEM;
 
 		reader->log = log;
+<<<<<<< HEAD
 		reader->r_ver = 1;
 		reader->r_all = in_egroup_p(inode->i_gid) ||
 			capable(CAP_SYSLOG);
 
+=======
+>>>>>>> v3.4.6
 		INIT_LIST_HEAD(&reader->list);
 
 		mutex_lock(&log->mutex);
@@ -1174,10 +1251,13 @@ static unsigned int logger_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &log->wq, wait);
 
 	mutex_lock(&log->mutex);
+<<<<<<< HEAD
 	if (!reader->r_all)
 		reader->r_off = get_next_entry_by_uid(log,
 			reader->r_off, current_euid());
 
+=======
+>>>>>>> v3.4.6
 	if (log->w_off != reader->r_off)
 		ret |= POLLIN | POLLRDNORM;
 	mutex_unlock(&log->mutex);
@@ -1185,6 +1265,7 @@ static unsigned int logger_poll(struct file *file, poll_table *wait)
 	return ret;
 }
 
+<<<<<<< HEAD
 static long logger_set_version(struct logger_reader *reader, void __user *arg)
 {
 	int version;
@@ -1198,12 +1279,18 @@ static long logger_set_version(struct logger_reader *reader, void __user *arg)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static long logger_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct logger_log *log = file_get_log(file);
 	struct logger_reader *reader;
+<<<<<<< HEAD
 	long ret = -EINVAL;
 	void __user *argp = (void __user *) arg;
+=======
+	long ret = -ENOTTY;
+>>>>>>> v3.4.6
 
 	mutex_lock(&log->mutex);
 
@@ -1228,6 +1315,7 @@ static long logger_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			break;
 		}
 		reader = file->private_data;
+<<<<<<< HEAD
 
 		if (!reader->r_all)
 			reader->r_off = get_next_entry_by_uid(log,
@@ -1236,6 +1324,10 @@ static long logger_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		if (log->w_off != reader->r_off)
 			ret = get_user_hdr_len(reader->r_ver) +
 				get_entry_msg_len(log, reader->r_off);
+=======
+		if (log->w_off != reader->r_off)
+			ret = get_entry_len(log, reader->r_off);
+>>>>>>> v3.4.6
 		else
 			ret = 0;
 		break;
@@ -1249,6 +1341,7 @@ static long logger_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		log->head = log->w_off;
 		ret = 0;
 		break;
+<<<<<<< HEAD
 	case LOGGER_GET_VERSION:
 		if (!(file->f_mode & FMODE_READ)) {
 			ret = -EBADF;
@@ -1265,6 +1358,8 @@ static long logger_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		reader = file->private_data;
 		ret = logger_set_version(reader, argp);
 		break;
+=======
+>>>>>>> v3.4.6
 	}
 
 	mutex_unlock(&log->mutex);
@@ -1285,8 +1380,13 @@ static const struct file_operations logger_fops = {
 
 /*
  * Defines a log structure with name 'NAME' and a size of 'SIZE' bytes, which
+<<<<<<< HEAD
  * must be a power of two, and greater than
  * (LOGGER_ENTRY_MAX_PAYLOAD + sizeof(struct logger_entry)).
+=======
+ * must be a power of two, greater than LOGGER_ENTRY_MAX_LEN, and less than
+ * LONG_MAX minus LOGGER_ENTRY_MAX_LEN.
+>>>>>>> v3.4.6
  */
 #define DEFINE_LOGGER_DEVICE(VAR, NAME, SIZE) \
 static unsigned char _buf_ ## VAR[SIZE]; \
@@ -1306,9 +1406,15 @@ static struct logger_log VAR = { \
 	.size = SIZE, \
 };
 
+<<<<<<< HEAD
 DEFINE_LOGGER_DEVICE(log_main, LOGGER_LOG_MAIN, 512*1024)
 DEFINE_LOGGER_DEVICE(log_events, LOGGER_LOG_EVENTS, 256*1024)
 DEFINE_LOGGER_DEVICE(log_radio, LOGGER_LOG_RADIO, 2048*1024)
+=======
+DEFINE_LOGGER_DEVICE(log_main, LOGGER_LOG_MAIN, 256*1024)
+DEFINE_LOGGER_DEVICE(log_events, LOGGER_LOG_EVENTS, 256*1024)
+DEFINE_LOGGER_DEVICE(log_radio, LOGGER_LOG_RADIO, 256*1024)
+>>>>>>> v3.4.6
 DEFINE_LOGGER_DEVICE(log_system, LOGGER_LOG_SYSTEM, 256*1024)
 
 static struct logger_log *get_log_from_minor(int minor)
@@ -1344,6 +1450,7 @@ static int __init init_log(struct logger_log *log)
 static int __init logger_init(void)
 {
 	int ret;
+<<<<<<< HEAD
 	unsigned int address_mask =0x0fffffff;
 
 #ifdef CONFIG_KERNEL_DEBUG_SEC
@@ -1361,6 +1468,8 @@ static int __init logger_init(void)
 	gaf_helper();
 #endif
 
+=======
+>>>>>>> v3.4.6
 
 	ret = init_log(&log_main);
 	if (unlikely(ret))

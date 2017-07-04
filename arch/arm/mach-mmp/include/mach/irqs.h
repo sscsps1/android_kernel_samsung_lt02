@@ -80,7 +80,11 @@
 #define IRQ_PXA910_IPC_CP1		22
 #define IRQ_PXA910_IPC_CP2		23
 #define IRQ_PXA910_IPC_CP3		24
+<<<<<<< HEAD
 #define IRQ_PXA910_CNM			25
+=======
+#define IRQ_PXA910_IPC_CP4		25
+>>>>>>> v3.4.6
 #define IRQ_PXA910_L2_DDR		26
 #define IRQ_PXA910_UART2		27
 #define IRQ_PXA910_UART3		28
@@ -114,6 +118,7 @@
 #define IRQ_PXA910_SM_INT		63	/* from PinMux */
 
 /*
+<<<<<<< HEAD
  * Interrupt numbers for PXA988
  */
 #define IRQ_PXA988_START		32
@@ -185,6 +190,8 @@
 #define IRQ_PXA988_END			(IRQ_PXA988_SM_INT + 1)
 
 /*
+=======
+>>>>>>> v3.4.6
  * Interrupt numbers for MMP2
  */
 #define IRQ_MMP2_NONE			(-1)
@@ -196,7 +203,11 @@
 #define IRQ_MMP2_RTC_MUX		5
 #define IRQ_MMP2_TWSI1			7
 #define IRQ_MMP2_GPU			8
+<<<<<<< HEAD
 #define IRQ_MMP2_KEYPAD_MUX		9
+=======
+#define IRQ_MMP2_KEYPAD			9
+>>>>>>> v3.4.6
 #define IRQ_MMP2_ROTARY			10
 #define IRQ_MMP2_TRACKBALL		11
 #define IRQ_MMP2_ONEWIRE		12
@@ -234,11 +245,19 @@
 #define IRQ_MMP2_DMA_FIQ		47
 #define IRQ_MMP2_DMA_RIQ		48
 #define IRQ_MMP2_GPIO			49
+<<<<<<< HEAD
 #define IRQ_MMP2_MIPI_HSI1_MUX		51
 #define IRQ_MMP2_MMC2			52
 #define IRQ_MMP2_MMC3			53
 #define IRQ_MMP2_MMC4			54
 #define IRQ_MMP2_MIPI_HSI0_MUX		55
+=======
+#define IRQ_MMP2_SSP_MUX		51
+#define IRQ_MMP2_MMC2			52
+#define IRQ_MMP2_MMC3			53
+#define IRQ_MMP2_MMC4			54
+#define IRQ_MMP2_MIPI_HSI		55
+>>>>>>> v3.4.6
 #define IRQ_MMP2_MSP			58
 #define IRQ_MMP2_MIPI_SLIM_DMA		59
 #define IRQ_MMP2_PJ4_FREQ_CHG		60
@@ -257,6 +276,7 @@
 #define IRQ_MMP2_RTC_ALARM		(IRQ_MMP2_RTC_BASE + 0)
 #define IRQ_MMP2_RTC			(IRQ_MMP2_RTC_BASE + 1)
 
+<<<<<<< HEAD
 /* secondary interrupt of INT #9 */
 #define IRQ_MMP2_KEYPAD_BASE		(IRQ_MMP2_RTC_BASE + 2)
 #define IRQ_MMP2_KPC			(IRQ_MMP2_KEYPAD_BASE + 0)
@@ -265,6 +285,10 @@
 
 /* secondary interrupt of INT #17 */
 #define IRQ_MMP2_TWSI_BASE		(IRQ_MMP2_KEYPAD_BASE + 3)
+=======
+/* secondary interrupt of INT #17 */
+#define IRQ_MMP2_TWSI_BASE		(IRQ_MMP2_RTC_BASE + 2)
+>>>>>>> v3.4.6
 #define IRQ_MMP2_TWSI2			(IRQ_MMP2_TWSI_BASE + 0)
 #define IRQ_MMP2_TWSI3			(IRQ_MMP2_TWSI_BASE + 1)
 #define IRQ_MMP2_TWSI4			(IRQ_MMP2_TWSI_BASE + 2)
@@ -289,6 +313,7 @@
 #define IRQ_MMP2_COMMRX			(IRQ_MMP2_MISC_BASE + 14)
 
 /* secondary interrupt of INT #51 */
+<<<<<<< HEAD
 #define IRQ_MMP2_MIPI_HSI1_BASE		(IRQ_MMP2_MISC_BASE + 15)
 #define IRQ_MMP2_HSI1_CAWAKE		(IRQ_MMP2_MIPI_HSI1_BASE + 0)
 #define IRQ_MMP2_MIPI_HSI_INT1		(IRQ_MMP2_MIPI_HSI1_BASE + 1)
@@ -545,6 +570,17 @@
 #endif
 
 #define MMP_TRQ_TO_GPIO(gpio)		((gpio) - IRQ_GPIO_START)
+=======
+#define IRQ_MMP2_SSP_BASE		(IRQ_MMP2_MISC_BASE + 15)
+#define IRQ_MMP2_SSP1_SRDY		(IRQ_MMP2_SSP_BASE + 0)
+#define IRQ_MMP2_SSP3_SRDY		(IRQ_MMP2_SSP_BASE + 1)
+
+#define IRQ_MMP2_MUX_END		(IRQ_MMP2_SSP_BASE + 2)
+
+#define IRQ_GPIO_START			128
+#define MMP_NR_BUILTIN_GPIO		192
+#define MMP_GPIO_TO_IRQ(gpio)		(IRQ_GPIO_START + (gpio))
+>>>>>>> v3.4.6
 
 #define IRQ_BOARD_START			(IRQ_GPIO_START + MMP_NR_BUILTIN_GPIO)
 #define MMP_NR_IRQS			IRQ_BOARD_START

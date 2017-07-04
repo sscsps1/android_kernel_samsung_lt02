@@ -280,8 +280,11 @@ struct v4l2_ioctl_ops {
 	/* For other private ioctls */
 	long (*vidioc_default)	       (struct file *file, void *fh,
 					bool valid_prio, int cmd, void *arg);
+<<<<<<< HEAD
 	int (*vidioc_mode_transfer) (struct file *file, void *fh,
 				    struct v4l2_mode_transfer *mode);//Vincent Wan add it.
+=======
+>>>>>>> v3.4.6
 };
 
 

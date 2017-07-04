@@ -9,6 +9,7 @@
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 
 #include <asm/irq.h>
@@ -18,6 +19,11 @@
 #include <mach/regs-usb.h>
 #include <mach/soc_coda7542.h>
 #include <mach/addr-map.h>
+=======
+
+#include <asm/irq.h>
+#include <mach/devices.h>
+>>>>>>> v3.4.6
 
 int __init pxa_register_device(struct pxa_device_desc *desc,
 				void *data, size_t size)
@@ -73,6 +79,7 @@ int __init pxa_register_device(struct pxa_device_desc *desc,
 
 	return platform_device_add(pdev);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_PXA9XX_ACIPC
 #if defined(CONFIG_CPU_PXA988)
@@ -564,3 +571,5 @@ void __init pxa_register_coda7542(void)
 			"unable to register coda7542 device: %d\n", ret);
 }
 #endif
+=======
+>>>>>>> v3.4.6

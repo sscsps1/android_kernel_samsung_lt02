@@ -18,6 +18,7 @@
 #include <linux/init.h>
 #include <linux/io.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_MMP
 #include <mach/cputype.h>
 #elif defined(CONFIG_ARCH_PXA)
@@ -36,19 +37,30 @@
 #define MFPR_SIZE	(PAGE_SIZE)
 #define APB_VIRT_BASE       IOMEM(0xfe000000)
 #define MFPR_VIRT_BASE  (APB_VIRT_BASE + 0x1e000)
+=======
+#include <plat/mfp.h>
+
+#define MFPR_SIZE	(PAGE_SIZE)
+
+>>>>>>> v3.4.6
 /* MFPR register bit definitions */
 #define MFPR_PULL_SEL		(0x1 << 15)
 #define MFPR_PULLUP_EN		(0x1 << 14)
 #define MFPR_PULLDOWN_EN	(0x1 << 13)
+<<<<<<< HEAD
 #ifndef CONFIG_CPU_PXA988
 #define MFPR_SLEEP_SEL		(0x1 << 9)
 #else
 #define MFPR_SLEEP_SEL		((0x1 << 9) | (0x1 << 3))
 #endif
+=======
+#define MFPR_SLEEP_SEL		(0x1 << 9)
+>>>>>>> v3.4.6
 #define MFPR_SLEEP_OE_N		(0x1 << 7)
 #define MFPR_EDGE_CLEAR		(0x1 << 6)
 #define MFPR_EDGE_FALL_EN	(0x1 << 5)
 #define MFPR_EDGE_RISE_EN	(0x1 << 4)
+<<<<<<< HEAD
 #define MFPR_EDGE_MASK		(0x7 << 4)
 
 #define MFPR_SLEEP_DATA(x)	(((x) & 0x1) << 8)
@@ -56,10 +68,19 @@
 #define MFPR_AF_SEL(x)		(((x) & 0x7) << 0)
 
 #define MFPR_EDGE_NONE		(MFPR_EDGE_CLEAR)
+=======
+
+#define MFPR_SLEEP_DATA(x)	((x) << 8)
+#define MFPR_DRIVE(x)		(((x) & 0x7) << 10)
+#define MFPR_AF_SEL(x)		(((x) & 0x7) << 0)
+
+#define MFPR_EDGE_NONE		(0)
+>>>>>>> v3.4.6
 #define MFPR_EDGE_RISE		(MFPR_EDGE_RISE_EN)
 #define MFPR_EDGE_FALL		(MFPR_EDGE_FALL_EN)
 #define MFPR_EDGE_BOTH		(MFPR_EDGE_RISE | MFPR_EDGE_FALL)
 
+<<<<<<< HEAD
 static struct mfp_addr_map pxa988_addr_map[] __initdata = {
 
 	MFP_ADDR_X(GPIO0, GPIO54, 0xdc),
@@ -119,6 +140,8 @@ static struct mfp_addr_map pxa988_addr_map[] __initdata = {
 	MFP_ADDR_END,
 };
 
+=======
+>>>>>>> v3.4.6
 /*
  * Table that determines the low power modes outputs, with actual settings
  * used in parentheses for don't-care values. Except for the float output,
@@ -135,15 +158,20 @@ static struct mfp_addr_map pxa988_addr_map[] __initdata = {
  * Pull lo (0)      1          X(0)        0           1	  0
  * Z (float)        1          X(0)        0           0	  0
  */
+<<<<<<< HEAD
 #ifndef CONFIG_CPU_PXA988
 #define MFPR_LPM_INPUT		(0)
 #define MFPR_LPM_NONE		MFPR_LPM_INPUT
+=======
+#define MFPR_LPM_INPUT		(0)
+>>>>>>> v3.4.6
 #define MFPR_LPM_DRIVE_LOW	(MFPR_SLEEP_DATA(0) | MFPR_PULLDOWN_EN)
 #define MFPR_LPM_DRIVE_HIGH    	(MFPR_SLEEP_DATA(1) | MFPR_PULLUP_EN)
 #define MFPR_LPM_PULL_LOW      	(MFPR_LPM_DRIVE_LOW  | MFPR_SLEEP_OE_N)
 #define MFPR_LPM_PULL_HIGH     	(MFPR_LPM_DRIVE_HIGH | MFPR_SLEEP_OE_N)
 #define MFPR_LPM_FLOAT         	(MFPR_SLEEP_OE_N)
 #define MFPR_LPM_MASK		(0xe080)
+<<<<<<< HEAD
 #else /* CONFIG_CPU_PXA988 */
 /*
  * Output value sleep_oe_n sleep_data sleep_sel
@@ -162,6 +190,8 @@ static struct mfp_addr_map pxa988_addr_map[] __initdata = {
 #define MFPR_LPM_INPUT		MFPR_LPM_FLOAT
 #define MFPR_LPM_MASK		(0x0388)
 #endif /* CONFIG_CPU_PXA988 */
+=======
+>>>>>>> v3.4.6
 
 /*
  * The pullup and pulldown state of the MFP pin at run mode is by default
@@ -201,7 +231,11 @@ static struct mfp_pin mfp_table[MFP_PIN_MAX];
 
 /* mapping of MFP_LPM_* definitions to MFPR_LPM_* register bits */
 static const unsigned long mfpr_lpm[] = {
+<<<<<<< HEAD
 	MFPR_LPM_NONE,
+=======
+	MFPR_LPM_INPUT,
+>>>>>>> v3.4.6
 	MFPR_LPM_DRIVE_LOW,
 	MFPR_LPM_DRIVE_HIGH,
 	MFPR_LPM_PULL_LOW,
@@ -262,6 +296,7 @@ static inline void __mfp_config_lpm(struct mfp_pin *p)
 void mfp_config(unsigned long *mfp_cfgs, int num)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	int i, drv_b11 = 0, no_lpm = 0;
 
 #ifdef CONFIG_ARCH_MMP
@@ -274,6 +309,10 @@ void mfp_config(unsigned long *mfp_cfgs, int num)
 	if (cpu_is_pxa95x())
 		drv_b11 = 1;
 #endif
+=======
+	int i;
+
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&mfp_spin_lock, flags);
 
 	for (i = 0; i < num; i++, mfp_cfgs++) {
@@ -290,6 +329,7 @@ void mfp_config(unsigned long *mfp_cfgs, int num)
 		lpm = MFP_LPM_STATE(c);
 		edge = MFP_LPM_EDGE(c);
 		pull = MFP_PULL(c);
+<<<<<<< HEAD
 		if (drv_b11)
 			drv = drv << 1;
 		if (no_lpm)
@@ -299,6 +339,22 @@ void mfp_config(unsigned long *mfp_cfgs, int num)
 		tmp |= mfpr_pull[pull] | mfpr_lpm[lpm] | mfpr_edge[edge];
 		p->mfpr_run = tmp;
 		p->mfpr_lpm = p->mfpr_run;
+=======
+
+		/* run-mode pull settings will conflict with MFPR bits of
+		 * low power mode state,  calculate mfpr_run and mfpr_lpm
+		 * individually if pull != MFP_PULL_NONE
+		 */
+		tmp = MFPR_AF_SEL(af) | MFPR_DRIVE(drv);
+
+		if (likely(pull == MFP_PULL_NONE)) {
+			p->mfpr_run = tmp | mfpr_lpm[lpm] | mfpr_edge[edge];
+			p->mfpr_lpm = p->mfpr_run;
+		} else {
+			p->mfpr_lpm = tmp | mfpr_lpm[lpm] | mfpr_edge[edge];
+			p->mfpr_run = tmp | mfpr_pull[pull];
+		}
+>>>>>>> v3.4.6
 
 		p->config = c; __mfp_config_run(p);
 	}
@@ -343,6 +399,7 @@ void __init mfp_init_base(void __iomem *mfpr_base)
 	mfpr_mmio_base = mfpr_base;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_GPIO_DVS
 struct dvs_mfpr_offset {
 	unsigned long offset;
@@ -591,6 +648,8 @@ static struct gpio_dvs pxa_gpio_dvs = {
 /****************************************************************/
 #endif
 
+=======
+>>>>>>> v3.4.6
 void __init mfp_init_addr(struct mfp_addr_map *map)
 {
 	struct mfp_addr_map *p;
@@ -599,10 +658,13 @@ void __init mfp_init_addr(struct mfp_addr_map *map)
 
 	spin_lock_irqsave(&mfp_spin_lock, flags);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_GPIO_DVS
 	pxa_gpio_dvs.count = ARRAY_SIZE(dvs_offset);
 #endif
 
+=======
+>>>>>>> v3.4.6
 	/* mfp offset for readback */
 	mfpr_off_readback = map[0].offset;
 
@@ -626,10 +688,13 @@ void mfp_config_lpm(void)
 	struct mfp_pin *p = &mfp_table[0];
 	int pin;
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_MMP
 	if (cpu_is_pxa168() || cpu_is_pxa910())
 		return;
 #endif
+=======
+>>>>>>> v3.4.6
 	for (pin = 0; pin < ARRAY_SIZE(mfp_table); pin++, p++)
 		__mfp_config_lpm(p);
 }
@@ -642,6 +707,7 @@ void mfp_config_run(void)
 	for (pin = 0; pin < ARRAY_SIZE(mfp_table); pin++, p++)
 		__mfp_config_run(p);
 }
+<<<<<<< HEAD
 
 void mfp_config_edge(int mfp, unsigned long val)
 {
@@ -676,3 +742,5 @@ static int __init secgpio_dvs_device_init(void)
 }
 arch_initcall(secgpio_dvs_device_init);
 #endif
+=======
+>>>>>>> v3.4.6

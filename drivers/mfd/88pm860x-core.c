@@ -65,6 +65,7 @@ static struct resource onkey_resources[] __devinitdata = {
 	{PM8607_IRQ_ONKEY, PM8607_IRQ_ONKEY, "onkey", IORESOURCE_IRQ,},
 };
 
+<<<<<<< HEAD
 static struct resource headset_resources[] __devinitdata = {
 	/* Headset insertion or removal */
 	{PM8607_IRQ_HEADSET, PM8607_IRQ_HEADSET, "headset", IORESOURCE_IRQ,},
@@ -73,6 +74,15 @@ static struct resource headset_resources[] __devinitdata = {
 };
 
 static struct resource codec_resources[] __devinitdata = {
+=======
+static struct resource codec_resources[] __devinitdata = {
+	/* Headset microphone insertion or removal */
+	{PM8607_IRQ_MICIN,   PM8607_IRQ_MICIN,   "micin",   IORESOURCE_IRQ,},
+	/* Hook-switch press or release */
+	{PM8607_IRQ_HOOK,    PM8607_IRQ_HOOK,    "hook",    IORESOURCE_IRQ,},
+	/* Headset insertion or removal */
+	{PM8607_IRQ_HEADSET, PM8607_IRQ_HEADSET, "headset", IORESOURCE_IRQ,},
+>>>>>>> v3.4.6
 	/* Audio short */
 	{PM8607_IRQ_AUDIO_SHORT, PM8607_IRQ_AUDIO_SHORT, "audio-short", IORESOURCE_IRQ,},
 };
@@ -152,9 +162,12 @@ static struct mfd_cell rtc_devs[] = {
 	{"88pm860x-rtc", -1,},
 };
 
+<<<<<<< HEAD
 static struct mfd_cell headset_devs[] = {
 	{"88pm860x-headset", -1,},
 };
+=======
+>>>>>>> v3.4.6
 
 struct pm860x_irq_data {
 	int	reg;
@@ -801,6 +814,7 @@ static void __devinit device_codec_init(struct pm860x_chip *chip,
 		dev_err(chip->dev, "Failed to add codec subdev\n");
 }
 
+<<<<<<< HEAD
 static void __devinit device_headset_init(struct pm860x_chip *chip,
 					struct pm860x_platform_data *pdata)
 {
@@ -817,6 +831,8 @@ static void __devinit device_headset_init(struct pm860x_chip *chip,
 		dev_err(chip->dev, "Failed to add headset subdev\n");
 }
 
+=======
+>>>>>>> v3.4.6
 static void __devinit device_8607_init(struct pm860x_chip *chip,
 				       struct i2c_client *i2c,
 				       struct pm860x_platform_data *pdata)
@@ -878,7 +894,10 @@ static void __devinit device_8607_init(struct pm860x_chip *chip,
 	device_touch_init(chip, pdata);
 	device_power_init(chip, pdata);
 	device_codec_init(chip, pdata);
+<<<<<<< HEAD
 	device_headset_init(chip, pdata);
+=======
+>>>>>>> v3.4.6
 out:
 	return;
 }

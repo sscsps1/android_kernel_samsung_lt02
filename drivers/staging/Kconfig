@@ -80,10 +80,19 @@ source "drivers/staging/sep/Kconfig"
 
 source "drivers/staging/iio/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/staging/zsmalloc/Kconfig"
 source "drivers/staging/zram/Kconfig"
 
 source "drivers/staging/zcache/Kconfig"
+=======
+source "drivers/staging/zram/Kconfig"
+
+source "drivers/staging/zcache/Kconfig"
+
+source "drivers/staging/zsmalloc/Kconfig"
+
+>>>>>>> v3.4.6
 source "drivers/staging/wlags49_h2/Kconfig"
 
 source "drivers/staging/wlags49_h25/Kconfig"
@@ -130,6 +139,9 @@ source "drivers/staging/ramster/Kconfig"
 
 source "drivers/staging/ozwpan/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/staging/sec_irled/Kconfig"
 
+=======
+>>>>>>> v3.4.6
 endif # STAGING

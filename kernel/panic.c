@@ -23,6 +23,7 @@
 #include <linux/init.h>
 #include <linux/nmi.h>
 #include <linux/dmi.h>
+<<<<<<< HEAD
 #include <asm/cacheflush.h>
 #include <linux/smp.h>
 #include <linux/percpu.h>
@@ -30,32 +31,42 @@
 /* L1 & L2 cache management */
 #include <asm/cacheflush.h>
 #include <linux/io.h>
+=======
+>>>>>>> v3.4.6
 
 #define PANIC_TIMER_STEP 100
 #define PANIC_BLINK_SPD 18
 
+<<<<<<< HEAD
 char *panic_reason = NULL;
 extern void print_board_revision(void);
 
 /* Machine specific panic information string */
 char *mach_panic_string;
 
+=======
+>>>>>>> v3.4.6
 int panic_on_oops;
 static unsigned long tainted_mask;
 static int pause_on_oops;
 static int pause_on_oops_flag;
 static DEFINE_SPINLOCK(pause_on_oops_lock);
 
+<<<<<<< HEAD
 #ifndef CONFIG_PANIC_TIMEOUT
 #define CONFIG_PANIC_TIMEOUT 0
 #endif
 int panic_timeout = CONFIG_PANIC_TIMEOUT;
+=======
+int panic_timeout;
+>>>>>>> v3.4.6
 EXPORT_SYMBOL_GPL(panic_timeout);
 
 ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
 
 EXPORT_SYMBOL(panic_notifier_list);
 
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 struct sec_debug_mmu_reg_t {
 	int SCTLR;
@@ -295,6 +306,8 @@ void sec_debug_save_context(void)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 static long no_blink(int state)
 {
 	return 0;
@@ -321,6 +334,7 @@ void __weak panic_smp_self_stop(void)
  *
  *	This function never returns.
  */
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 extern void dump_all_task_info();
 extern void dump_cpu_stat();
@@ -333,6 +347,8 @@ extern void dump_cpu_stat();
 #define SCU_VIRT_BASE           PERI_VIRT_BASE
 extern char *coherent_buf;
 
+=======
+>>>>>>> v3.4.6
 void panic(const char *fmt, ...)
 {
 	static DEFINE_SPINLOCK(panic_lock);
@@ -340,7 +356,10 @@ void panic(const char *fmt, ...)
 	va_list args;
 	long i, i_next = 0;
 	int state = 0;
+<<<<<<< HEAD
 	int count = 0;
+=======
+>>>>>>> v3.4.6
 
 	/*
 	 * It's possible to come here directly from a panic-assertion and
@@ -360,6 +379,7 @@ void panic(const char *fmt, ...)
 	va_start(args, fmt);
 	vsnprintf(buf, sizeof(buf), fmt, args);
 	va_end(args);
+<<<<<<< HEAD
 
 	/* For Better Debugging */
 	printk(KERN_EMERG "%s\n", linux_banner);
@@ -406,12 +426,16 @@ void panic(const char *fmt, ...)
 			__raw_readl(coherent_buf),
 			__raw_readl(coherent_buf + 0x4));
 
+=======
+	printk(KERN_EMERG "Kernel panic - not syncing: %s\n",buf);
+>>>>>>> v3.4.6
 #ifdef CONFIG_DEBUG_BUGVERBOSE
 	/*
 	 * Avoid nested stack-dumping if a panic occurs during oops processing
 	 */
 	if (!test_taint(TAINT_DIE) && oops_in_progress <= 1)
 		dump_stack();
+<<<<<<< HEAD
 	mdelay(500);
 #endif
 
@@ -420,6 +444,10 @@ void panic(const char *fmt, ...)
 //	mdelay(500);
 //	dump_cpu_stat();
 #endif
+=======
+#endif
+
+>>>>>>> v3.4.6
 	/*
 	 * If we have crashed and we have a crash kernel loaded let it handle
 	 * everything else.
@@ -438,12 +466,15 @@ void panic(const char *fmt, ...)
 
 	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
 
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 	sec_debug_save_context();
 #endif
 	/* flush L1 from each core. L2 will be flushed later before reset. */
 	flush_cache_all();
 
+=======
+>>>>>>> v3.4.6
 	bust_spinlocks(0);
 
 	if (!panic_blink)
@@ -466,18 +497,24 @@ void panic(const char *fmt, ...)
 		}
 	}
 	if (panic_timeout != 0) {
+<<<<<<< HEAD
 
 		panic_reason = buf; // assign right before calling restart since cascaded call of panic may lost panic reason.
 
+=======
+>>>>>>> v3.4.6
 		/*
 		 * This will not be a clean reboot, with everything
 		 * shutting down.  But if there is a chance of
 		 * rebooting the system it will be rebooted.
 		 */
+<<<<<<< HEAD
 
 	 	/* L1 & L2 Cache Flush */
 		flush_cache_all();
 		outer_flush_all();
+=======
+>>>>>>> v3.4.6
 		emergency_restart();
 	}
 #ifdef __sparc__
@@ -707,11 +744,14 @@ late_initcall(init_oops_id);
 void print_oops_end_marker(void)
 {
 	init_oops_id();
+<<<<<<< HEAD
 
 	if (mach_panic_string)
 		printk(KERN_WARNING "Board Information: %s\n",
 		       mach_panic_string);
 
+=======
+>>>>>>> v3.4.6
 	printk(KERN_WARNING "---[ end trace %016llx ]---\n",
 		(unsigned long long)oops_id);
 }

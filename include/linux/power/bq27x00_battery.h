@@ -14,7 +14,10 @@
 struct bq27000_platform_data {
 	const char *name;
 	int (*read)(struct device *dev, unsigned int);
+<<<<<<< HEAD
 	int irq;
+=======
+>>>>>>> v3.4.6
 };
 
 #endif

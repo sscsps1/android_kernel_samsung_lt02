@@ -33,7 +33,10 @@ obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
 obj-$(CONFIG_EP93XX_PWM)	+= ep93xx_pwm.o
 obj-$(CONFIG_DS1682)		+= ds1682.o
 obj-$(CONFIG_TI_DAC7512)	+= ti_dac7512.o
+<<<<<<< HEAD
 obj-$(CONFIG_UID_STAT)		+= uid_stat.o
+=======
+>>>>>>> v3.4.6
 obj-$(CONFIG_C2PORT)		+= c2port/
 obj-$(CONFIG_IWMC3200TOP)      += iwmc3200top/
 obj-$(CONFIG_HMC6352)		+= hmc6352.o
@@ -50,6 +53,7 @@ obj-y				+= carma/
 obj-$(CONFIG_USB_SWITCH_FSA9480) += fsa9480.o
 obj-$(CONFIG_ALTERA_STAPL)	+=altera-stapl/
 obj-$(CONFIG_MAX8997_MUIC)	+= max8997-muic.o
+<<<<<<< HEAD
 obj-$(CONFIG_WL127X_RFKILL)	+= wl127x-rfkill.o
 obj-$(CONFIG_SD8XXX_RFKILL)    += sd8x_rfkill.o
 obj-$(CONFIG_SENSORS_AK8975)	+= akm8975.o
@@ -60,3 +64,5 @@ obj-$(CONFIG_NFC_PN547)	+= pn544.o
 obj-$(CONFIG_SENSORS_K3DH)      += k3dh.o
 obj-$(CONFIG_SENSORS_GP2AP002)  += gp2ap002.o
 obj-$(CONFIG_SENSORS_PAS221)    += pas221.o
+=======
+>>>>>>> v3.4.6

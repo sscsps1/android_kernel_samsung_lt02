@@ -56,7 +56,10 @@ enum ipi_msg_type {
 	IPI_CALL_FUNC,
 	IPI_CALL_FUNC_SINGLE,
 	IPI_CPU_STOP,
+<<<<<<< HEAD
 	IPI_CPU_BACKTRACE,
+=======
+>>>>>>> v3.4.6
 };
 
 static DECLARE_COMPLETION(cpu_running);
@@ -157,11 +160,16 @@ int __cpu_disable(void)
 	/*
 	 * Flush user cache and TLB mappings, and then remove this CPU
 	 * from the vm mask set of all processes.
+<<<<<<< HEAD
 	 *
 	 * Caches are flushed to the Level of Unification Inner Shareable
 	 * to write-back dirty lines to unified caches shared by all CPUs.
 	 */
 	flush_cache_louis();
+=======
+	 */
+	flush_cache_all();
+>>>>>>> v3.4.6
 	local_flush_tlb_all();
 
 	read_lock(&tasklist_lock);
@@ -387,7 +395,10 @@ static const char *ipi_types[NR_IPI] = {
 	S(IPI_CALL_FUNC, "Function call interrupts"),
 	S(IPI_CALL_FUNC_SINGLE, "Single function call interrupts"),
 	S(IPI_CPU_STOP, "CPU stop interrupts"),
+<<<<<<< HEAD
 	S(IPI_CPU_BACKTRACE, "CPU backtrace"),
+=======
+>>>>>>> v3.4.6
 };
 
 void show_ipi_list(struct seq_file *p, int prec)
@@ -519,6 +530,7 @@ static void ipi_cpu_stop(unsigned int cpu)
 		cpu_relax();
 }
 
+<<<<<<< HEAD
 static cpumask_t backtrace_mask;
 static DEFINE_RAW_SPINLOCK(backtrace_lock);
 
@@ -571,6 +583,8 @@ static void ipi_cpu_backtrace(unsigned int cpu, struct pt_regs *regs)
 	}
 }
 
+=======
+>>>>>>> v3.4.6
 /*
  * Main handler for inter-processor interrupts
  */
@@ -616,10 +630,13 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
 		irq_exit();
 		break;
 
+<<<<<<< HEAD
 	case IPI_CPU_BACKTRACE:
 		ipi_cpu_backtrace(cpu, regs);
 		break;
 
+=======
+>>>>>>> v3.4.6
 	default:
 		printk(KERN_CRIT "CPU%u: Unknown IPI message 0x%x\n",
 		       cpu, ipinr);

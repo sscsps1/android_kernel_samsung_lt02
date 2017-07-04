@@ -5,6 +5,7 @@ config PXA_SSP
 	help
 	  Enable support for PXA2xx SSP ports
 
+<<<<<<< HEAD
 config PXA_PANIC_FLUSH
 	bool "PXA cache flush when panic"
 	depends on KEXEC
@@ -24,4 +25,6 @@ config DUMP_REGS
 	depends on (ARCH_PXA || ARCH_MMP)
 	help
 	  Dump soc registers, stack, and possible functions in the stack
+=======
+>>>>>>> v3.4.6
 endif

@@ -26,7 +26,10 @@ obj-$(CONFIG_SSFDC)		+= ssfdc.o
 obj-$(CONFIG_SM_FTL)		+= sm_ftl.o
 obj-$(CONFIG_MTD_OOPS)		+= mtdoops.o
 obj-$(CONFIG_MTD_SWAP)		+= mtdswap.o
+<<<<<<< HEAD
 obj-$(CONFIG_PXA3XX_BBM)        += pxa3xx_bbm.o
+=======
+>>>>>>> v3.4.6
 
 nftl-objs		:= nftlcore.o nftlmount.o
 inftl-objs		:= inftlcore.o inftlmount.o

@@ -52,6 +52,7 @@ struct devfreq_dev_status {
  */
 #define DEVFREQ_FLAG_LEAST_UPPER_BOUND		0x1
 
+<<<<<<< HEAD
 #define DEVFREQ_ENTRY_INVALID (~0)
 #define DEVFREQ_TABLE_END     (~1)
 
@@ -76,16 +77,21 @@ struct devfreq_pm_qos_table {
 };
 
 
+=======
+>>>>>>> v3.4.6
 /**
  * struct devfreq_dev_profile - Devfreq's user device profile
  * @initial_freq	The operating frequency when devfreq_add_device() is
  *			called.
  * @polling_ms		The polling interval in ms. 0 disables polling.
+<<<<<<< HEAD
  * @qos_type		 QoS Type (defined in pm_qos_params.h)
  *			 0 (PM_QOS_RESERVED) if not used.
  * @qos_list		 Array of QoS requirements ending with .freq = 0
  *			 NULL if not used. It should be either NULL or
  *			 have a length > 1 with a first element effective.
+=======
+>>>>>>> v3.4.6
  * @target		The device should set its operating frequency at
  *			freq or lowest-upper-than-freq value. If freq is
  *			higher than any operable frequency, set maximum.
@@ -100,17 +106,23 @@ struct devfreq_pm_qos_table {
  *			from devfreq_remove_device() call. If the user
  *			has registered devfreq->nb at a notifier-head,
  *			this is the time to unregister it.
+<<<<<<< HEAD
  *
  * Note that the array of qos_list should be sorted by freq
  * in the ascending order.
+=======
+>>>>>>> v3.4.6
  */
 struct devfreq_dev_profile {
 	unsigned long initial_freq;
 	unsigned int polling_ms;
 
+<<<<<<< HEAD
 	int qos_type;
 	struct devfreq_pm_qos_table *qos_list;
 
+=======
+>>>>>>> v3.4.6
 	int (*target)(struct device *dev, unsigned long *freq, u32 flags);
 	int (*get_dev_status)(struct device *dev,
 			      struct devfreq_dev_status *stat);
@@ -171,10 +183,13 @@ struct devfreq_governor {
  *			order to prevent trying to remove the object multiple times.
  * @min_freq	Limit minimum frequency requested by user (0: none)
  * @max_freq	Limit maximum frequency requested by user (0: none)
+<<<<<<< HEAD
  * @qos_nb	 notifier block used to notify pm qos requests
  * @qos_min_freq	 Limit minimum frequency requested by QoS
  * @qos_use_max		 true: throughput (larger is faster)
  *			 false: latency (smaller is faster)
+=======
+>>>>>>> v3.4.6
  *
  * This structure stores the devfreq information for a give device.
  *
@@ -196,7 +211,10 @@ struct devfreq {
 	unsigned long polling_jiffies;
 	unsigned long previous_freq;
 	unsigned int next_polling;
+<<<<<<< HEAD
 	struct devfreq_frequency_table *freq_table;
+=======
+>>>>>>> v3.4.6
 
 	void *data; /* private data for governors */
 
@@ -204,9 +222,12 @@ struct devfreq {
 
 	unsigned long min_freq;
 	unsigned long max_freq;
+<<<<<<< HEAD
 	struct notifier_block qos_nb;
 	unsigned long qos_min_freq;
 	bool qos_use_max;
+=======
+>>>>>>> v3.4.6
 };
 
 #if defined(CONFIG_PM_DEVFREQ)
@@ -223,8 +244,11 @@ extern int devfreq_register_opp_notifier(struct device *dev,
 					 struct devfreq *devfreq);
 extern int devfreq_unregister_opp_notifier(struct device *dev,
 					   struct devfreq *devfreq);
+<<<<<<< HEAD
 extern void devfreq_set_freq_table(struct devfreq *devfreq,
 				   struct devfreq_frequency_table *table);
+=======
+>>>>>>> v3.4.6
 
 #ifdef CONFIG_DEVFREQ_GOV_POWERSAVE
 extern const struct devfreq_governor devfreq_powersave;
@@ -288,6 +312,7 @@ static int devfreq_unregister_opp_notifier(struct device *dev,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static void devfreq_set_freq_table(struct devfreq *devfreq,
 				   struct devfreq_frequency_table *table)
 {
@@ -295,6 +320,8 @@ static void devfreq_set_freq_table(struct devfreq *devfreq,
 }
 
 
+=======
+>>>>>>> v3.4.6
 #define devfreq_powersave	NULL
 #define devfreq_performance	NULL
 #define devfreq_userspace	NULL

@@ -1,5 +1,8 @@
 snd-soc-88pm860x-objs := 88pm860x-codec.o
+<<<<<<< HEAD
 snd-soc-88pm805-objs := 88pm805-codec.o
+=======
+>>>>>>> v3.4.6
 snd-soc-ac97-objs := ac97.o
 snd-soc-ad1836-objs := ad1836.o
 snd-soc-ad193x-objs := ad193x.o
@@ -104,7 +107,10 @@ snd-soc-max9877-objs := max9877.o
 snd-soc-tpa6130a2-objs := tpa6130a2.o
 
 obj-$(CONFIG_SND_SOC_88PM860X)	+= snd-soc-88pm860x.o
+<<<<<<< HEAD
 obj-$(CONFIG_SND_SOC_88PM805)	+= snd-soc-88pm805.o
+=======
+>>>>>>> v3.4.6
 obj-$(CONFIG_SND_SOC_AC97_CODEC)	+= snd-soc-ac97.o
 obj-$(CONFIG_SND_SOC_AD1836)	+= snd-soc-ad1836.o
 obj-$(CONFIG_SND_SOC_AD193X)	+= snd-soc-ad193x.o

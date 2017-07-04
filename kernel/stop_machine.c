@@ -332,6 +332,7 @@ static int __cpuinit cpu_stop_cpu_callback(struct notifier_block *nfb,
 		break;
 
 #ifdef CONFIG_HOTPLUG_CPU
+<<<<<<< HEAD
 	case CPU_DYING:
 	{
 		struct cpu_stop_work *work;
@@ -345,6 +346,8 @@ static int __cpuinit cpu_stop_cpu_callback(struct notifier_block *nfb,
 		break;
 	}
 
+=======
+>>>>>>> v3.4.6
 	case CPU_UP_CANCELED:
 	case CPU_POST_DEAD:
 	{

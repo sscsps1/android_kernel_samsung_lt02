@@ -154,9 +154,12 @@ struct input_keymap_entry {
 
 #define EVIOCGRAB		_IOW('E', 0x90, int)			/* Grab/Release device */
 
+<<<<<<< HEAD
 #define EVIOCGSUSPENDBLOCK	_IOR('E', 0x91, int)			/* get suspend block enable */
 #define EVIOCSSUSPENDBLOCK	_IOW('E', 0x91, int)			/* set suspend block enable */
 
+=======
+>>>>>>> v3.4.6
 #define EVIOCSCLOCKID		_IOW('E', 0xa0, int)			/* Set clockid to be used for timestamps */
 
 /*
@@ -469,6 +472,7 @@ struct input_keymap_entry {
 #define KEY_RFKILL		247	/* Key that controls all radios */
 
 #define KEY_MICMUTE		248	/* Mute / unmute the microphone */
+<<<<<<< HEAD
 #define KEY_RECENT		254
 
 /* Dummy touchkey code */
@@ -477,6 +481,8 @@ struct input_keymap_entry {
 #define KEY_DUMMY_MENU	251
 #define KEY_DUMMY_HOME	252
 #define KEY_DUMMY_BACK	253
+=======
+>>>>>>> v3.4.6
 
 /* Code 255 is reserved for special needs of AT keyboard driver */
 
@@ -533,7 +539,10 @@ struct input_keymap_entry {
 #define BTN_MODE		0x13c
 #define BTN_THUMBL		0x13d
 #define BTN_THUMBR		0x13e
+<<<<<<< HEAD
 #define BTN_GAME		0x13f	/* Add game button for samsung bluetooth keypad */
+=======
+>>>>>>> v3.4.6
 
 #define BTN_DIGI		0x140
 #define BTN_TOOL_PEN		0x140
@@ -825,10 +834,13 @@ struct input_keymap_entry {
 #define ABS_MT_TRACKING_ID	0x39	/* Unique ID of initiated contact */
 #define ABS_MT_PRESSURE		0x3a	/* Pressure on contact area */
 #define ABS_MT_DISTANCE		0x3b	/* Contact hover distance */
+<<<<<<< HEAD
 #define ABS_MT_ANGLE		0x3c	/* touch angle */
 #define ABS_MT_COMPONENT	0x3c	/* touch component */
 #define ABS_MT_PALM		0x3d	/* palm touch */
 #define ABS_MT_SUMSIZE		0x3d	/* touch sumsize */
+=======
+>>>>>>> v3.4.6
 
 #ifdef __KERNEL__
 /* Implementation details, userspace should not care about these */

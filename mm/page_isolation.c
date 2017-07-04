@@ -102,7 +102,11 @@ __test_page_isolated_in_pageblock(unsigned long pfn, unsigned long end_pfn)
 		if (PageBuddy(page))
 			pfn += 1 << page_order(page);
 		else if (page_count(page) == 0 &&
+<<<<<<< HEAD
 			get_freepage_migratetype(page) == MIGRATE_ISOLATE)
+=======
+				page_private(page) == MIGRATE_ISOLATE)
+>>>>>>> v3.4.6
 			pfn += 1;
 		else
 			break;

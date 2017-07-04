@@ -78,6 +78,7 @@ config ARM_EXYNOS4_BUS_DEVFREQ
 	  To operate with optimal voltages, ASV support is required
 	  (CONFIG_EXYNOS_ASV).
 
+<<<<<<< HEAD
 config VPU_DEVFREQ
 	bool "Marvell Soc's VPU devfreq driver"
 	select DEVFREQ_GOV_USERSPACE
@@ -92,4 +93,6 @@ config DDR_DEVFREQ
 	help
 	  This adds the mck4 devfreq driver support for pxa988, mmp3.
 
+=======
+>>>>>>> v3.4.6
 endif # PM_DEVFREQ

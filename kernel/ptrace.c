@@ -117,11 +117,16 @@ void __ptrace_unlink(struct task_struct *child)
 	 * TASK_KILLABLE sleeps.
 	 */
 	if (child->jobctl & JOBCTL_STOP_PENDING || task_is_traced(child))
+<<<<<<< HEAD
 		ptrace_signal_wake_up(child, true);
+=======
+		signal_wake_up(child, task_is_traced(child));
+>>>>>>> v3.4.6
 
 	spin_unlock(&child->sighand->siglock);
 }
 
+<<<<<<< HEAD
 /* Ensure that nothing can wake it up, even SIGKILL */
 static bool ptrace_freeze_traced(struct task_struct *task)
 {
@@ -156,6 +161,8 @@ static void ptrace_unfreeze_traced(struct task_struct *task)
 	spin_unlock_irq(&task->sighand->siglock);
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * ptrace_check_attach - check whether ptracee is ready for ptrace operation
  * @child: ptracee to check for
@@ -185,12 +192,17 @@ int ptrace_check_attach(struct task_struct *child, bool ignore_state)
 	 * be changed by us so it's not changing right after this.
 	 */
 	read_lock(&tasklist_lock);
+<<<<<<< HEAD
 	if (child->ptrace && child->parent == current) {
 		WARN_ON(child->state == __TASK_TRACED);
+=======
+	if ((child->ptrace & PT_PTRACED) && child->parent == current) {
+>>>>>>> v3.4.6
 		/*
 		 * child->sighand can't be NULL, release_task()
 		 * does ptrace_unlink() before __exit_signal().
 		 */
+<<<<<<< HEAD
 		if (ignore_state || ptrace_freeze_traced(child))
 			ret = 0;
 	}
@@ -208,6 +220,21 @@ int ptrace_check_attach(struct task_struct *child, bool ignore_state)
 		}
 	}
 
+=======
+		spin_lock_irq(&child->sighand->siglock);
+		WARN_ON_ONCE(task_is_stopped(child));
+		if (ignore_state || (task_is_traced(child) &&
+				     !(child->jobctl & JOBCTL_LISTENING)))
+			ret = 0;
+		spin_unlock_irq(&child->sighand->siglock);
+	}
+	read_unlock(&tasklist_lock);
+
+	if (!ret && !ignore_state)
+		ret = wait_task_inactive(child, TASK_TRACED) ? 0 : -ESRCH;
+
+	/* All systems go.. */
+>>>>>>> v3.4.6
 	return ret;
 }
 
@@ -350,7 +377,11 @@ static int ptrace_attach(struct task_struct *task, long request,
 	 */
 	if (task_is_stopped(task) &&
 	    task_set_jobctl_pending(task, JOBCTL_TRAP_STOP | JOBCTL_TRAPPING))
+<<<<<<< HEAD
 		signal_wake_up_state(task, __TASK_STOPPED);
+=======
+		signal_wake_up(task, 1);
+>>>>>>> v3.4.6
 
 	spin_unlock(&task->sighand->siglock);
 
@@ -767,7 +798,11 @@ int ptrace_request(struct task_struct *child, long request,
 		 * tracee into STOP.
 		 */
 		if (likely(task_set_jobctl_pending(child, JOBCTL_TRAP_STOP)))
+<<<<<<< HEAD
 			ptrace_signal_wake_up(child, child->jobctl & JOBCTL_LISTENING);
+=======
+			signal_wake_up(child, child->jobctl & JOBCTL_LISTENING);
+>>>>>>> v3.4.6
 
 		unlock_task_sighand(child, &flags);
 		ret = 0;
@@ -793,7 +828,11 @@ int ptrace_request(struct task_struct *child, long request,
 			 * start of this trap and now.  Trigger re-trap.
 			 */
 			if (child->jobctl & JOBCTL_TRAP_NOTIFY)
+<<<<<<< HEAD
 				ptrace_signal_wake_up(child, true);
+=======
+				signal_wake_up(child, true);
+>>>>>>> v3.4.6
 			ret = 0;
 		}
 		unlock_task_sighand(child, &flags);
@@ -930,8 +969,11 @@ SYSCALL_DEFINE4(ptrace, long, request, long, pid, unsigned long, addr,
 		goto out_put_task_struct;
 
 	ret = arch_ptrace(child, request, addr, data);
+<<<<<<< HEAD
 	if (ret || request != PTRACE_DETACH)
 		ptrace_unfreeze_traced(child);
+=======
+>>>>>>> v3.4.6
 
  out_put_task_struct:
 	put_task_struct(child);
@@ -1071,11 +1113,16 @@ asmlinkage long compat_sys_ptrace(compat_long_t request, compat_long_t pid,
 
 	ret = ptrace_check_attach(child, request == PTRACE_KILL ||
 				  request == PTRACE_INTERRUPT);
+<<<<<<< HEAD
 	if (!ret) {
 		ret = compat_arch_ptrace(child, request, addr, data);
 		if (ret || request != PTRACE_DETACH)
 			ptrace_unfreeze_traced(child);
 	}
+=======
+	if (!ret)
+		ret = compat_arch_ptrace(child, request, addr, data);
+>>>>>>> v3.4.6
 
  out_put_task_struct:
 	put_task_struct(child);

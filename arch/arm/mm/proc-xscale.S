@@ -410,9 +410,12 @@ ENTRY(xscale_dma_unmap_area)
 	mov	pc, lr
 ENDPROC(xscale_dma_unmap_area)
 
+<<<<<<< HEAD
 	.globl	xscale_flush_kern_cache_louis
 	.equ	xscale_flush_kern_cache_louis, xscale_flush_kern_cache_all
 
+=======
+>>>>>>> v3.4.6
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)
 	define_cache_functions xscale
 
@@ -442,7 +445,10 @@ ENDPROC(xscale_dma_unmap_area)
 	a0_alias flush_icache_all
 	a0_alias flush_user_cache_all
 	a0_alias flush_kern_cache_all
+<<<<<<< HEAD
 	a0_alias flush_kern_cache_louis
+=======
+>>>>>>> v3.4.6
 	a0_alias flush_user_cache_range
 	a0_alias coherent_kern_range
 	a0_alias coherent_user_range

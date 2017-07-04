@@ -24,10 +24,13 @@
 #include "sdio_cis.h"
 #include "sdio_bus.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 #include <linux/mmc/host.h>
 #endif
 
+=======
+>>>>>>> v3.4.6
 /* show configuration fields */
 #define sdio_config_attr(field, format_string)				\
 static ssize_t								\
@@ -267,6 +270,7 @@ static void sdio_release_func(struct device *dev)
 {
 	struct sdio_func *func = dev_to_sdio_func(dev);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_EMBEDDED_SDIO
 	/*
 	 * If this device is embedded then we never allocated
@@ -275,6 +279,9 @@ static void sdio_release_func(struct device *dev)
 	if (!func->card->host->embedded_sdio_data.funcs)
 #endif
 		sdio_free_func_cis(func);
+=======
+	sdio_free_func_cis(func);
+>>>>>>> v3.4.6
 
 	if (func->info)
 		kfree(func->info);

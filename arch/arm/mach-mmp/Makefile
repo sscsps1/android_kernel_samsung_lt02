@@ -2,6 +2,7 @@
 # Makefile for Marvell's PXA168 processors line
 #
 
+<<<<<<< HEAD
 obj-y				+= common.o mmp_device.o devices.o time.o pmu.o reset.o onboard/
 
 # SoC support
@@ -38,6 +39,14 @@ endif
 
 # fake system off feature base on suspend
 obj-$(CONFIG_FAKE_SYSTEMOFF)	+= fake-sysoff.o
+=======
+obj-y				+= common.o clock.o devices.o time.o
+
+# SoC support
+obj-$(CONFIG_CPU_PXA168)	+= pxa168.o irq-pxa168.o
+obj-$(CONFIG_CPU_PXA910)	+= pxa910.o irq-pxa168.o
+obj-$(CONFIG_CPU_MMP2)		+= mmp2.o irq-mmp2.o sram.o
+>>>>>>> v3.4.6
 
 # board support
 obj-$(CONFIG_MACH_ASPENITE)	+= aspenite.o
@@ -49,6 +58,7 @@ obj-$(CONFIG_MACH_BROWNSTONE)	+= brownstone.o
 obj-$(CONFIG_MACH_FLINT)	+= flint.o
 obj-$(CONFIG_MACH_MARVELL_JASPER) += jasper.o
 obj-$(CONFIG_MACH_MMP_DT)	+= mmp-dt.o
+<<<<<<< HEAD
 obj-$(CONFIG_MACH_MMP2_DT)	+= mmp2-dt.o
 obj-$(CONFIG_MACH_TETON_BGA)	+= teton_bga.o
 obj-$(CONFIG_MACH_GPLUGD)	+= gplugd.o
@@ -72,3 +82,7 @@ endif
 obj-$(CONFIG_CORESIGHT_SUPPORT)	+= coresight-v7.o
 
 obj-$(CONFIG_SEC_THERMISTOR) += sec_thermistor.o
+=======
+obj-$(CONFIG_MACH_TETON_BGA)	+= teton_bga.o
+obj-$(CONFIG_MACH_GPLUGD)	+= gplugd.o
+>>>>>>> v3.4.6

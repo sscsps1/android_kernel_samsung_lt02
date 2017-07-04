@@ -8,6 +8,7 @@ extern void __init pxa910_init_irq(void);
 
 #include <linux/i2c.h>
 #include <linux/i2c/pxa-i2c.h>
+<<<<<<< HEAD
 #include <linux/spi/pxa2xx_spi.h>
 #include <mach/devices.h>
 #include <plat/pxa3xx_nand.h>
@@ -15,6 +16,10 @@ extern void __init pxa910_init_irq(void);
 #include <mach/pxa168fb.h>
 #include <mach/camera.h>
 #include <linux/platform_data/pxa_sdhci.h>
+=======
+#include <mach/devices.h>
+#include <plat/pxa3xx_nand.h>
+>>>>>>> v3.4.6
 
 extern struct pxa_device_desc pxa910_device_uart1;
 extern struct pxa_device_desc pxa910_device_uart2;
@@ -25,6 +30,7 @@ extern struct pxa_device_desc pxa910_device_pwm2;
 extern struct pxa_device_desc pxa910_device_pwm3;
 extern struct pxa_device_desc pxa910_device_pwm4;
 extern struct pxa_device_desc pxa910_device_nand;
+<<<<<<< HEAD
 extern struct pxa_device_desc pxa910_device_cnm;
 extern struct pxa_device_desc pxa910_device_asram;
 extern struct pxa_device_desc pxa910_device_ssp0;
@@ -46,6 +52,11 @@ extern struct platform_device pxa910_device_rtc;
 extern struct platform_device pxa910_device_1wire;
 extern struct platform_device pxa910_device_squ;
 extern struct platform_device pxa910_device_asoc_platform;
+=======
+
+extern struct platform_device pxa910_device_gpio;
+extern struct platform_device pxa910_device_rtc;
+>>>>>>> v3.4.6
 
 static inline int pxa910_add_uart(int id)
 {
@@ -98,16 +109,20 @@ static inline int pxa910_add_pwm(int id)
 	return pxa_register_device(d, NULL, 0);
 }
 
+<<<<<<< HEAD
 
 static inline int pxa910_add_cam(struct mmp_cam_pdata *cam)
 {
 	return pxa_register_device(&pxa910_device_camera, cam, sizeof(*cam));
 }
 
+=======
+>>>>>>> v3.4.6
 static inline int pxa910_add_nand(struct pxa3xx_nand_platform_data *info)
 {
 	return pxa_register_device(&pxa910_device_nand, info, sizeof(*info));
 }
+<<<<<<< HEAD
 
 static inline int pxa910_add_cnm(void)
 {
@@ -192,4 +207,6 @@ static inline int pxa910_add_sdh(int id, struct sdhci_pxa_platdata *data)
 	return pxa_register_device(d, data, sizeof(*data));
 }
 
+=======
+>>>>>>> v3.4.6
 #endif /* __ASM_MACH_PXA910_H */

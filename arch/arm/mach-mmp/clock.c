@@ -12,13 +12,17 @@
 #include <linux/spinlock.h>
 #include <linux/clk.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> v3.4.6
 
 #include <mach/regs-apbc.h>
 #include "clock.h"
 
 static void apbc_clk_enable(struct clk *clk)
 {
+<<<<<<< HEAD
 	unsigned long data;
 
 	data = __raw_readl(clk->clk_rst) & ~(APBC_FNCLKSEL(7));
@@ -36,10 +40,17 @@ static void apbc_clk_enable(struct clk *clk)
 
 	data &= ~APBC_RST;
 	__raw_writel(data, clk->clk_rst);
+=======
+	uint32_t clk_rst;
+
+	clk_rst = APBC_APBCLK | APBC_FNCLK | APBC_FNCLKSEL(clk->fnclksel);
+	__raw_writel(clk_rst, clk->clk_rst);
+>>>>>>> v3.4.6
 }
 
 static void apbc_clk_disable(struct clk *clk)
 {
+<<<<<<< HEAD
 	unsigned long data;
 
 	data = __raw_readl(clk->clk_rst) & ~(APBC_FNCLK | APBC_FNCLKSEL(7));
@@ -48,6 +59,9 @@ static void apbc_clk_disable(struct clk *clk)
 
 	data &= ~APBC_APBCLK;
 	__raw_writel(data, clk->clk_rst);
+=======
+	__raw_writel(0, clk->clk_rst);
+>>>>>>> v3.4.6
 }
 
 struct clkops apbc_clk_ops = {
@@ -65,6 +79,7 @@ static void apmu_clk_disable(struct clk *clk)
 	__raw_writel(0, clk->clk_rst);
 }
 
+<<<<<<< HEAD
 static int apmu_clk_setrate(struct clk *clk, unsigned long rate)
 {
 	__raw_writel(rate, clk->clk_rst);
@@ -75,6 +90,11 @@ struct clkops apmu_clk_ops = {
 	.enable		= apmu_clk_enable,
 	.disable	= apmu_clk_disable,
 	.setrate	= apmu_clk_setrate,
+=======
+struct clkops apmu_clk_ops = {
+	.enable		= apmu_clk_enable,
+	.disable	= apmu_clk_disable,
+>>>>>>> v3.4.6
 };
 
 static DEFINE_SPINLOCK(clocks_lock);

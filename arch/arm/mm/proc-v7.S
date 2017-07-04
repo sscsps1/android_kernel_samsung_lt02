@@ -69,9 +69,13 @@ ENDPROC(cpu_v7_reset)
  *	IRQs are already disabled.
  */
 ENTRY(cpu_v7_do_idle)
+<<<<<<< HEAD
 #ifndef CONFIG_CPU_PJ4B
 	dsb					@ WFI may enter a low-power mode
 #endif
+=======
+	dsb					@ WFI may enter a low-power mode
+>>>>>>> v3.4.6
 	wfi
 	mov	pc, lr
 ENDPROC(cpu_v7_do_idle)
@@ -172,6 +176,7 @@ __v7_ca15mp_setup:
 	mcreq	p15, 0, r0, c1, c0, 1
 #endif
 __v7_setup:
+<<<<<<< HEAD
 #if defined(CONFIG_CPU_PJ4B) && defined(CONFIG_NEON)
 	mrc	p15, 1, r0, c15, c1, 1
 	orr	r0, r0, #(1 << 11)		@ PJ4B NEON enable bit
@@ -224,6 +229,8 @@ __v7_setup:
 	orr	r0, r0, #(1 << 27)
 	mcr	p15, 1, r0, c15, c1, 2
 #endif
+=======
+>>>>>>> v3.4.6
 	adr	r12, __v7_setup_stack		@ the local stack
 	stmia	r12, {r0-r5, r7, r9, r11, lr}
 	bl	v7_flush_dcache_all
@@ -396,6 +403,7 @@ __v7_ca9mp_proc_info:
 	.long	0xff0ffff0
 	__v7_proc __v7_ca9mp_setup
 	.size	__v7_ca9mp_proc_info, . - __v7_ca9mp_proc_info
+<<<<<<< HEAD
 
 	/*
 	 * Marvell. PJ4B processor.
@@ -407,6 +415,8 @@ __v7_pj4b_proc_info:
 	/* It can used same set up function as ca9mp */
 	__v7_proc __v7_ca9mp_setup
 	.size	__v7_pj4b_proc_info, . - __v7_pj4b_proc_info
+=======
+>>>>>>> v3.4.6
 #endif	/* CONFIG_ARM_LPAE */
 
 	/*

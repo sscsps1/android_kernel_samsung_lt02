@@ -35,9 +35,12 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
 	unsigned char pending;
 	struct sdio_func *func;
 
+<<<<<<< HEAD
 	if ((!host->sdio_irq_pending) && (host->caps & MMC_CAP_SDIO_IRQ))
 		return 0;
 
+=======
+>>>>>>> v3.4.6
 	/*
 	 * Optimization, if there is only 1 function interrupt registered
 	 * and we know an IRQ was signaled then call irq handler directly.
@@ -46,9 +49,12 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
 	func = card->sdio_single_irq;
 	if (func && host->sdio_irq_pending) {
 		func->irq_handler(func);
+<<<<<<< HEAD
 		if (func->func_status == func_suspended)
 			host->break_suspend = 1;
 
+=======
+>>>>>>> v3.4.6
 		return 1;
 	}
 
@@ -59,12 +65,15 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!host->sdio_irq_pending) {
 		if (pending)
 			pr_warning("pending irq:0x%x without CardInt\n", pending);
 		return 0;
 	}
 
+=======
+>>>>>>> v3.4.6
 	count = 0;
 	for (i = 1; i <= 7; i++) {
 		if (pending & (1 << i)) {
@@ -75,9 +84,12 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
 					mmc_card_id(card));
 				ret = -EINVAL;
 			} else if (func->irq_handler) {
+<<<<<<< HEAD
 				if (func->func_status == func_suspended)
 					host->break_suspend = 1;
 
+=======
+>>>>>>> v3.4.6
 				func->irq_handler(func);
 				count++;
 			} else {

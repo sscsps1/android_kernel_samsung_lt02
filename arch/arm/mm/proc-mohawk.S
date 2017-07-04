@@ -302,9 +302,12 @@ ENTRY(mohawk_dma_unmap_area)
 	mov	pc, lr
 ENDPROC(mohawk_dma_unmap_area)
 
+<<<<<<< HEAD
 	.globl	mohawk_flush_kern_cache_louis
 	.equ	mohawk_flush_kern_cache_louis, mohawk_flush_kern_cache_all
 
+=======
+>>>>>>> v3.4.6
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)
 	define_cache_functions mohawk
 
@@ -347,6 +350,7 @@ ENTRY(cpu_mohawk_set_pte_ext)
 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
 	mov	pc, lr
 
+<<<<<<< HEAD
 .globl	cpu_mohawk_suspend_size
 .equ	cpu_mohawk_suspend_size, 4 * 6
 #ifdef CONFIG_PM_SLEEP
@@ -382,6 +386,8 @@ ENTRY(cpu_mohawk_do_resume)
 ENDPROC(cpu_mohawk_do_resume)
 #endif
 
+=======
+>>>>>>> v3.4.6
 	__CPUINIT
 
 	.type	__mohawk_setup, #function

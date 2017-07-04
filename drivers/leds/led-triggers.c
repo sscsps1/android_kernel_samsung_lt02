@@ -102,12 +102,15 @@ EXPORT_SYMBOL_GPL(led_trigger_show);
 void led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trigger)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	char *event = NULL;
 	char *envp[2];
 	const char *name;
 
 	name = trigger ? trigger->name : "none";
 	event = kasprintf(GFP_KERNEL, "TRIGGER=%s", name);
+=======
+>>>>>>> v3.4.6
 
 	/* Remove any existing trigger */
 	if (led_cdev->trigger) {
@@ -128,6 +131,7 @@ void led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trigger)
 		if (trigger->activate)
 			trigger->activate(led_cdev);
 	}
+<<<<<<< HEAD
 
 	if (event) {
 		envp[0] = event;
@@ -135,6 +139,8 @@ void led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trigger)
 		kobject_uevent_env(&led_cdev->dev->kobj, KOBJ_CHANGE, envp);
 		kfree(event);
 	}
+=======
+>>>>>>> v3.4.6
 }
 EXPORT_SYMBOL_GPL(led_trigger_set);
 

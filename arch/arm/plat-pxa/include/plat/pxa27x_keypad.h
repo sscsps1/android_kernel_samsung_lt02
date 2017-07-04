@@ -44,11 +44,14 @@ struct pxa27x_keypad_platform_data {
 	/* direct keys */
 	int		direct_key_num;
 	unsigned int	direct_key_map[MAX_DIRECT_KEY_NUM];
+<<<<<<< HEAD
 	int		direct_wakeup_pad[MAX_DIRECT_KEY_NUM];
 	/* the key output may be low active */
 	int		direct_key_low_active;
 	/* give board a chance to choose the start direct key */
 	unsigned int	direct_key_mask;
+=======
+>>>>>>> v3.4.6
 
 	/* rotary encoders 0 */
 	int		enable_rotary0;

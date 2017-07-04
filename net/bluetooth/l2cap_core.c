@@ -292,8 +292,12 @@ struct l2cap_chan *l2cap_chan_create(struct sock *sk)
 void l2cap_chan_destroy(struct l2cap_chan *chan)
 {
 	write_lock(&chan_list_lock);
+<<<<<<< HEAD
 	if ((&(chan->global_l))->prev != LIST_POISON2)
 		list_del(&chan->global_l);
+=======
+	list_del(&chan->global_l);
+>>>>>>> v3.4.6
 	write_unlock(&chan_list_lock);
 
 	l2cap_chan_put(chan);
@@ -1219,10 +1223,17 @@ int l2cap_chan_connect(struct l2cap_chan *chan, __le16 psm, u16 cid, bdaddr_t *d
 	auth_type = l2cap_get_auth_type(chan);
 
 	if (chan->dcid == L2CAP_CID_LE_DATA)
+<<<<<<< HEAD
 		hcon = hci_connect(hdev, LE_LINK, 0, dst,
 					chan->sec_level, auth_type);
 	else
 		hcon = hci_connect(hdev, ACL_LINK, 0, dst,
+=======
+		hcon = hci_connect(hdev, LE_LINK, dst,
+					chan->sec_level, auth_type);
+	else
+		hcon = hci_connect(hdev, ACL_LINK, dst,
+>>>>>>> v3.4.6
 					chan->sec_level, auth_type);
 
 	if (IS_ERR(hcon)) {

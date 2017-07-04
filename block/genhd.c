@@ -1109,6 +1109,7 @@ static void disk_release(struct device *dev)
 		blk_put_queue(disk->queue);
 	kfree(disk);
 }
+<<<<<<< HEAD
 
 static int disk_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
@@ -1125,6 +1126,8 @@ static int disk_uevent(struct device *dev, struct kobj_uevent_env *env)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 struct class block_class = {
 	.name		= "block",
 };
@@ -1143,7 +1146,10 @@ static struct device_type disk_type = {
 	.groups		= disk_attr_groups,
 	.release	= disk_release,
 	.devnode	= block_devnode,
+<<<<<<< HEAD
 	.uevent		= disk_uevent,
+=======
+>>>>>>> v3.4.6
 };
 
 #ifdef CONFIG_PROC_FS

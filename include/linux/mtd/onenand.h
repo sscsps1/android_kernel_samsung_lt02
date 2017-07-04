@@ -120,7 +120,10 @@ struct onenand_chip {
 	int (*scan_bbt)(struct mtd_info *mtd);
 	int (*enable)(struct mtd_info *mtd);
 	int (*disable)(struct mtd_info *mtd);
+<<<<<<< HEAD
 	int (*block_bad)(struct mtd_info *mtd, loff_t ofs, int allowbbt);
+=======
+>>>>>>> v3.4.6
 
 	struct completion	complete;
 	int			irq;
@@ -204,7 +207,10 @@ struct onenand_chip {
 #define ONENAND_PAGEBUF_ALLOC		(0x1000)
 #define ONENAND_OOBBUF_ALLOC		(0x2000)
 #define ONENAND_SKIP_INITIAL_UNLOCKING	(0x4000)
+<<<<<<< HEAD
 #define ONENAND_RELOC_IFBAD             (0x8000)
+=======
+>>>>>>> v3.4.6
 
 #define ONENAND_IS_4KB_PAGE(this)					\
 	(this->options & ONENAND_HAS_4KB_PAGE)

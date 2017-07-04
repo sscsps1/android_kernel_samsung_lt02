@@ -1954,11 +1954,17 @@ static long __video_do_ioctl(struct file *file,
 		struct v4l2_dbg_register *p = arg;
 
 		if (ops->vidioc_g_register) {
+<<<<<<< HEAD
 #ifndef CONFIG_ARCH_MMP
 			if (!capable(CAP_SYS_ADMIN))
 				ret = -EPERM;
 			else
 #endif
+=======
+			if (!capable(CAP_SYS_ADMIN))
+				ret = -EPERM;
+			else
+>>>>>>> v3.4.6
 				ret = ops->vidioc_g_register(file, fh, p);
 		}
 		break;
@@ -1968,11 +1974,17 @@ static long __video_do_ioctl(struct file *file,
 		struct v4l2_dbg_register *p = arg;
 
 		if (ops->vidioc_s_register) {
+<<<<<<< HEAD
 #ifndef CONFIG_ARCH_MMP
 			if (!capable(CAP_SYS_ADMIN))
 				ret = -EPERM;
 			else
 #endif
+=======
+			if (!capable(CAP_SYS_ADMIN))
+				ret = -EPERM;
+			else
+>>>>>>> v3.4.6
 				ret = ops->vidioc_s_register(file, fh, p);
 		}
 		break;
@@ -2290,6 +2302,7 @@ static long __video_do_ioctl(struct file *file,
 		dbgarg(cmd, "index=%d", b->index);
 		break;
 	}
+<<<<<<< HEAD
 	case VIDIOC_MODE_TRANSFER://Vincent Wan add it.
 	{
 		struct v4l2_mode_transfer *b = arg;
@@ -2300,6 +2313,8 @@ static long __video_do_ioctl(struct file *file,
 		ret = ops->vidioc_mode_transfer(file, fh, b);
 		break;
 	}
+=======
+>>>>>>> v3.4.6
 	default:
 		if (!ops->vidioc_default)
 			break;

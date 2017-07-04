@@ -705,9 +705,12 @@ static inline void ftrace_dump(enum ftrace_dump_mode oops_dump_mode) { }
 
 extern int do_sysinfo(struct sysinfo *info);
 
+<<<<<<< HEAD
 /* To identify board information in panic logs, set this */
 extern char *mach_panic_string;
 
+=======
+>>>>>>> v3.4.6
 #endif /* __KERNEL__ */
 
 #endif

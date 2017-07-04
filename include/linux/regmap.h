@@ -203,7 +203,10 @@ struct regmap_irq_chip {
 	unsigned int status_base;
 	unsigned int mask_base;
 	unsigned int ack_base;
+<<<<<<< HEAD
 	unsigned int mask_invert;
+=======
+>>>>>>> v3.4.6
 
 	int num_regs;
 

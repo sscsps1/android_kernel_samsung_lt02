@@ -3,6 +3,7 @@
 Required properties:
 - compatible : Should be "mrvl,pxa-gpio" or "mrvl,mmp-gpio"
 - reg : Address and length of the register set for the device
+<<<<<<< HEAD
 - interrupts : Should be the port interrupt shared by all gpio pins.
   There're three gpio interrupts in arch-pxa, and they're gpio0,
   gpio1 and gpio_mux. There're only one gpio interrupt in arch-mmp,
@@ -12,16 +13,28 @@ Required properties:
 - interrupt-controller : Identifies the node as an interrupt controller.
 - #interrupt-cells: Specifies the number of cells needed to encode an
   interrupt source.
+=======
+- interrupts : Should be the port interrupt shared by all gpio pins, if
+- interrupt-name : Should be the name of irq resource.
+  one number.
+>>>>>>> v3.4.6
 - gpio-controller : Marks the device node as a gpio controller.
 - #gpio-cells : Should be one.  It is the pin number.
 
 Example:
 
 	gpio: gpio@d4019000 {
+<<<<<<< HEAD
 		compatible = "mrvl,mmp-gpio";
 		reg = <0xd4019000 0x1000>;
 		interrupts = <49>;
 		interrupt-name = "gpio_mux";
+=======
+		compatible = "mrvl,mmp-gpio", "mrvl,pxa-gpio";
+		reg = <0xd4019000 0x1000>;
+		interrupts = <49>, <17>, <18>;
+		interrupt-name = "gpio_mux", "gpio0", "gpio1";
+>>>>>>> v3.4.6
 		gpio-controller;
 		#gpio-cells = <1>;
 		interrupt-controller;

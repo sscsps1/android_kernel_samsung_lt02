@@ -119,7 +119,10 @@ struct kimage {
 
 
 /* kexec interface functions */
+<<<<<<< HEAD
 extern void machine_crash_update(struct pt_regs *regs);
+=======
+>>>>>>> v3.4.6
 extern void machine_kexec(struct kimage *image);
 extern int machine_kexec_prepare(struct kimage *image);
 extern void machine_kexec_cleanup(struct kimage *image);
@@ -137,7 +140,10 @@ extern asmlinkage long compat_sys_kexec_load(unsigned long entry,
 extern struct page *kimage_alloc_control_pages(struct kimage *image,
 						unsigned int order);
 extern void crash_kexec(struct pt_regs *);
+<<<<<<< HEAD
 extern void crash_update(struct pt_regs *);
+=======
+>>>>>>> v3.4.6
 int kexec_should_crash(struct task_struct *);
 void crash_save_cpu(struct pt_regs *regs, int cpu);
 void crash_save_vmcoreinfo(void);
@@ -227,7 +233,10 @@ void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
 #else /* !CONFIG_KEXEC */
 struct pt_regs;
 struct task_struct;
+<<<<<<< HEAD
 static inline void crash_update(struct pt_regs *regs) { }
+=======
+>>>>>>> v3.4.6
 static inline void crash_kexec(struct pt_regs *regs) { }
 static inline int kexec_should_crash(struct task_struct *p) { return 0; }
 #endif /* CONFIG_KEXEC */

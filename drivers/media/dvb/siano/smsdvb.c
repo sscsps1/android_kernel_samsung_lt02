@@ -22,7 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <asm/byteorder.h>
+=======
+>>>>>>> v3.4.6
 
 #include "dmxdev.h"
 #include "dvbdev.h"
@@ -41,6 +44,7 @@ struct smsdvb_client_t {
 	struct smscore_device_t *coredev;
 	struct smscore_client_t *smsclient;
 
+<<<<<<< HEAD
 	struct dvb_adapter adapter;
 	struct dvb_demux demux;
 	struct dmxdev dmxdev;
@@ -52,6 +56,17 @@ struct smsdvb_client_t {
 	struct completion get_stats_done;
 
 	unsigned long last_sample_time;
+=======
+	struct dvb_adapter      adapter;
+	struct dvb_demux        demux;
+	struct dmxdev           dmxdev;
+	struct dvb_frontend     frontend;
+
+	fe_status_t             fe_status;
+
+	struct completion       tune_done;
+
+>>>>>>> v3.4.6
 	struct SMSHOSTLIB_STATISTICS_DVB_S sms_stat_dvb;
 	int event_fe_state;
 	int event_unc_state;
@@ -66,8 +81,12 @@ MODULE_PARM_DESC(debug, "set debug level (info=1, adv=2 (or-able))");
 
 /* Events that may come from DVB v3 adapter */
 static void sms_board_dvb3_event(struct smsdvb_client_t *client,
+<<<<<<< HEAD
 				 enum SMS_DVB3_EVENTS event)
 {
+=======
+		enum SMS_DVB3_EVENTS event) {
+>>>>>>> v3.4.6
 
 	struct smscore_device_t *coredev = client->coredev;
 	switch (event) {
@@ -118,8 +137,14 @@ static void sms_board_dvb3_event(struct smsdvb_client_t *client,
 	}
 }
 
+<<<<<<< HEAD
 static void smsdvb_update_dvb_stats(struct RECEPTION_STATISTICS_S *pReceptionData,
 				   struct SMSHOSTLIB_STATISTICS_S *p)
+=======
+
+static void smsdvb_update_dvb_stats(struct RECEPTION_STATISTICS_S *pReceptionData,
+				   struct SMSHOSTLIB_STATISTICS_ST *p)
+>>>>>>> v3.4.6
 {
 	if (sms_dbg & 2) {
 		printk(KERN_DEBUG "Reserved = %d", p->Reserved);
@@ -174,9 +199,15 @@ static void smsdvb_update_dvb_stats(struct RECEPTION_STATISTICS_S *pReceptionDat
 	pReceptionData->ErrorTSPackets = p->ErrorTSPackets;
 };
 
+<<<<<<< HEAD
 static void smsdvb_update_isdbt_stats(struct RECEPTION_STATISTICS_S
 				      *pReceptionData,
 				      struct SMSHOSTLIB_STATISTICS_ISDBT_S *p)
+=======
+
+static void smsdvb_update_isdbt_stats(struct RECEPTION_STATISTICS_S *pReceptionData,
+				    struct SMSHOSTLIB_STATISTICS_ISDBT_ST *p)
+>>>>>>> v3.4.6
 {
 	int i;
 
@@ -196,6 +227,7 @@ static void smsdvb_update_isdbt_stats(struct RECEPTION_STATISTICS_S
 		printk(KERN_DEBUG "SystemType = %d", p->SystemType);
 		printk(KERN_DEBUG "PartialReception = %d", p->PartialReception);
 		printk(KERN_DEBUG "NumOfLayers = %d", p->NumOfLayers);
+<<<<<<< HEAD
 		printk(KERN_DEBUG "SmsToHostTxErrors = %d",
 		       p->SmsToHostTxErrors);
 
@@ -224,6 +256,23 @@ static void smsdvb_update_isdbt_stats(struct RECEPTION_STATISTICS_S
 			       p->LayerInfo[i].NumberOfSegments);
 			printk(KERN_DEBUG "%d: TMCCErrors = %d", i,
 			       p->LayerInfo[i].TMCCErrors);
+=======
+		printk(KERN_DEBUG "SmsToHostTxErrors = %d", p->SmsToHostTxErrors);
+
+		for (i = 0; i < 3; i++) {
+			printk(KERN_DEBUG "%d: CodeRate = %d", i, p->LayerInfo[i].CodeRate);
+			printk(KERN_DEBUG "%d: Constellation = %d", i, p->LayerInfo[i].Constellation);
+			printk(KERN_DEBUG "%d: BER = %d", i, p->LayerInfo[i].BER);
+			printk(KERN_DEBUG "%d: BERErrorCount = %d", i, p->LayerInfo[i].BERErrorCount);
+			printk(KERN_DEBUG "%d: BERBitCount = %d", i, p->LayerInfo[i].BERBitCount);
+			printk(KERN_DEBUG "%d: PreBER = %d", i, p->LayerInfo[i].PreBER);
+			printk(KERN_DEBUG "%d: TS_PER = %d", i, p->LayerInfo[i].TS_PER);
+			printk(KERN_DEBUG "%d: ErrorTSPackets = %d", i, p->LayerInfo[i].ErrorTSPackets);
+			printk(KERN_DEBUG "%d: TotalTSPackets = %d", i, p->LayerInfo[i].TotalTSPackets);
+			printk(KERN_DEBUG "%d: TILdepthI = %d", i, p->LayerInfo[i].TILdepthI);
+			printk(KERN_DEBUG "%d: NumberOfSegments = %d", i, p->LayerInfo[i].NumberOfSegments);
+			printk(KERN_DEBUG "%d: TMCCErrors = %d", i, p->LayerInfo[i].TMCCErrors);
+>>>>>>> v3.4.6
 		}
 	}
 
@@ -238,13 +287,18 @@ static void smsdvb_update_isdbt_stats(struct RECEPTION_STATISTICS_S
 	for (i = 0; i < 3; i++) {
 		pReceptionData->BER += p->LayerInfo[i].BER;
 		pReceptionData->BERErrorCount += p->LayerInfo[i].BERErrorCount;
+<<<<<<< HEAD
 		pReceptionData->ErrorTSPackets +=
 		    p->LayerInfo[i].ErrorTSPackets;
+=======
+		pReceptionData->ErrorTSPackets += p->LayerInfo[i].ErrorTSPackets;
+>>>>>>> v3.4.6
 	}
 }
 
 static int smsdvb_onresponse(void *context, struct smscore_buffer_t *cb)
 {
+<<<<<<< HEAD
 	struct smsdvb_client_t *client = (struct smsdvb_client_t *)context;
 	struct SmsMsgHdr_ST *phdr = (struct SmsMsgHdr_ST *)(((u8 *) cb->p)
 							    + cb->offset);
@@ -263,17 +317,41 @@ static int smsdvb_onresponse(void *context, struct smscore_buffer_t *cb)
 	case MSG_SMS_ISDBT_TUNE_RES:
 		sms_info("MSG_SMS_ISDBT_TUNE_RES");
 	case MSG_SMS_RF_TUNE_RES:
+=======
+	struct smsdvb_client_t *client = (struct smsdvb_client_t *) context;
+	struct SmsMsgHdr_ST *phdr = (struct SmsMsgHdr_ST *) (((u8 *) cb->p)
+			+ cb->offset);
+	u32 *pMsgData = (u32 *) phdr + 1;
+	/*u32 MsgDataLen = phdr->msgLength - sizeof(struct SmsMsgHdr_ST);*/
+	bool is_status_update = false;
+
+	smsendian_handle_rx_message((struct SmsMsgData_ST *) phdr);
+
+	switch (phdr->msgType) {
+	case MSG_SMS_DVBT_BDA_DATA:
+		dvb_dmx_swfilter(&client->demux, (u8 *)(phdr + 1),
+				 cb->size - sizeof(struct SmsMsgHdr_ST));
+		break;
+
+	case MSG_SMS_RF_TUNE_RES:
+	case MSG_SMS_ISDBT_TUNE_RES:
+>>>>>>> v3.4.6
 		complete(&client->tune_done);
 		break;
 
 	case MSG_SMS_SIGNAL_DETECTED_IND:
 		sms_info("MSG_SMS_SIGNAL_DETECTED_IND");
+<<<<<<< HEAD
 		client->sms_stat_dvb.ReceptionData.IsDemodLocked = true;
+=======
+		client->sms_stat_dvb.TransmissionData.IsDemodLocked = true;
+>>>>>>> v3.4.6
 		is_status_update = true;
 		break;
 
 	case MSG_SMS_NO_SIGNAL_IND:
 		sms_info("MSG_SMS_NO_SIGNAL_IND");
+<<<<<<< HEAD
 		client->sms_stat_dvb.ReceptionData.IsDemodLocked = false;
 		is_status_update = true;
 		break;
@@ -354,6 +432,84 @@ static int smsdvb_onresponse(void *context, struct smscore_buffer_t *cb)
 		union {
 			struct SMSHOSTLIB_STATISTICS_ISDBT_S  isdbt;
 			struct SmsMsgStatisticsInfo_S         dvb;
+=======
+		client->sms_stat_dvb.TransmissionData.IsDemodLocked = false;
+		is_status_update = true;
+		break;
+
+	case MSG_SMS_TRANSMISSION_IND: {
+		sms_info("MSG_SMS_TRANSMISSION_IND");
+
+		pMsgData++;
+		memcpy(&client->sms_stat_dvb.TransmissionData, pMsgData,
+				sizeof(struct TRANSMISSION_STATISTICS_S));
+
+		/* Mo need to correct guard interval
+		 * (as opposed to old statistics message).
+		 */
+		CORRECT_STAT_BANDWIDTH(client->sms_stat_dvb.TransmissionData);
+		CORRECT_STAT_TRANSMISSON_MODE(
+				client->sms_stat_dvb.TransmissionData);
+		is_status_update = true;
+		break;
+	}
+	case MSG_SMS_HO_PER_SLICES_IND: {
+		struct RECEPTION_STATISTICS_S *pReceptionData =
+				&client->sms_stat_dvb.ReceptionData;
+		struct SRVM_SIGNAL_STATUS_S SignalStatusData;
+
+		/*sms_info("MSG_SMS_HO_PER_SLICES_IND");*/
+		pMsgData++;
+		SignalStatusData.result = pMsgData[0];
+		SignalStatusData.snr = pMsgData[1];
+		SignalStatusData.inBandPower = (s32) pMsgData[2];
+		SignalStatusData.tsPackets = pMsgData[3];
+		SignalStatusData.etsPackets = pMsgData[4];
+		SignalStatusData.constellation = pMsgData[5];
+		SignalStatusData.hpCode = pMsgData[6];
+		SignalStatusData.tpsSrvIndLP = pMsgData[7] & 0x03;
+		SignalStatusData.tpsSrvIndHP = pMsgData[8] & 0x03;
+		SignalStatusData.cellId = pMsgData[9] & 0xFFFF;
+		SignalStatusData.reason = pMsgData[10];
+		SignalStatusData.requestId = pMsgData[11];
+		pReceptionData->IsRfLocked = pMsgData[16];
+		pReceptionData->IsDemodLocked = pMsgData[17];
+		pReceptionData->ModemState = pMsgData[12];
+		pReceptionData->SNR = pMsgData[1];
+		pReceptionData->BER = pMsgData[13];
+		pReceptionData->RSSI = pMsgData[14];
+		CORRECT_STAT_RSSI(client->sms_stat_dvb.ReceptionData);
+
+		pReceptionData->InBandPwr = (s32) pMsgData[2];
+		pReceptionData->CarrierOffset = (s32) pMsgData[15];
+		pReceptionData->TotalTSPackets = pMsgData[3];
+		pReceptionData->ErrorTSPackets = pMsgData[4];
+
+		/* TS PER */
+		if ((SignalStatusData.tsPackets + SignalStatusData.etsPackets)
+				> 0) {
+			pReceptionData->TS_PER = (SignalStatusData.etsPackets
+					* 100) / (SignalStatusData.tsPackets
+					+ SignalStatusData.etsPackets);
+		} else {
+			pReceptionData->TS_PER = 0;
+		}
+
+		pReceptionData->BERBitCount = pMsgData[18];
+		pReceptionData->BERErrorCount = pMsgData[19];
+
+		pReceptionData->MRC_SNR = pMsgData[20];
+		pReceptionData->MRC_InBandPwr = pMsgData[21];
+		pReceptionData->MRC_RSSI = pMsgData[22];
+
+		is_status_update = true;
+		break;
+	}
+	case MSG_SMS_GET_STATISTICS_RES: {
+		union {
+			struct SMSHOSTLIB_STATISTICS_ISDBT_ST  isdbt;
+			struct SmsMsgStatisticsInfo_ST         dvb;
+>>>>>>> v3.4.6
 		} *p = (void *) (phdr + 1);
 		struct RECEPTION_STATISTICS_S *pReceptionData =
 				&client->sms_stat_dvb.ReceptionData;
@@ -390,6 +546,7 @@ static int smsdvb_onresponse(void *context, struct smscore_buffer_t *cb)
 	if (is_status_update) {
 		if (client->sms_stat_dvb.ReceptionData.IsDemodLocked) {
 			client->fe_status = FE_HAS_SIGNAL | FE_HAS_CARRIER
+<<<<<<< HEAD
 			    | FE_HAS_VITERBI | FE_HAS_SYNC | FE_HAS_LOCK;
 			sms_board_dvb3_event(client, DVB3_EVENT_FE_LOCK);
 			if (client->sms_stat_dvb.ReceptionData.ErrorTSPackets
@@ -404,6 +561,22 @@ static int smsdvb_onresponse(void *context, struct smscore_buffer_t *cb)
 			   (phdr->msgType == MSG_SMS_NO_SIGNAL_IND) ?
 			   0 : FE_HAS_SIGNAL; */
 			client->fe_status = 0;
+=======
+				| FE_HAS_VITERBI | FE_HAS_SYNC | FE_HAS_LOCK;
+			sms_board_dvb3_event(client, DVB3_EVENT_FE_LOCK);
+			if (client->sms_stat_dvb.ReceptionData.ErrorTSPackets
+					== 0)
+				sms_board_dvb3_event(client, DVB3_EVENT_UNC_OK);
+			else
+				sms_board_dvb3_event(client,
+						DVB3_EVENT_UNC_ERR);
+
+		} else {
+			if (client->sms_stat_dvb.ReceptionData.IsRfLocked)
+				client->fe_status = FE_HAS_SIGNAL | FE_HAS_CARRIER;
+			else
+				client->fe_status = 0;
+>>>>>>> v3.4.6
 			sms_board_dvb3_event(client, DVB3_EVENT_FE_UNLOCK);
 		}
 	}
@@ -429,7 +602,11 @@ static void smsdvb_onremove(void *context)
 {
 	kmutex_lock(&g_smsdvb_clientslock);
 
+<<<<<<< HEAD
 	smsdvb_unregister_client((struct smsdvb_client_t *)context);
+=======
+	smsdvb_unregister_client((struct smsdvb_client_t *) context);
+>>>>>>> v3.4.6
 
 	kmutex_unlock(&g_smsdvb_clientslock);
 }
@@ -437,15 +614,27 @@ static void smsdvb_onremove(void *context)
 static int smsdvb_start_feed(struct dvb_demux_feed *feed)
 {
 	struct smsdvb_client_t *client =
+<<<<<<< HEAD
 	    container_of(feed->demux, struct smsdvb_client_t, demux);
 	struct SmsMsgData_ST PidMsg;
 
 	sms_debug("add pid %d(%x)", feed->pid, feed->pid);
+=======
+		container_of(feed->demux, struct smsdvb_client_t, demux);
+	struct SmsMsgData_ST PidMsg;
+
+	sms_debug("add pid %d(%x)",
+		  feed->pid, feed->pid);
+>>>>>>> v3.4.6
 
 	PidMsg.xMsgHeader.msgSrcId = DVBT_BDA_CONTROL_MSG_ID;
 	PidMsg.xMsgHeader.msgDstId = HIF_TASK;
 	PidMsg.xMsgHeader.msgFlags = 0;
+<<<<<<< HEAD
 	PidMsg.xMsgHeader.msgType = MSG_SMS_ADD_PID_FILTER_REQ;
+=======
+	PidMsg.xMsgHeader.msgType  = MSG_SMS_ADD_PID_FILTER_REQ;
+>>>>>>> v3.4.6
 	PidMsg.xMsgHeader.msgLength = sizeof(PidMsg);
 	PidMsg.msgData[0] = feed->pid;
 
@@ -457,15 +646,27 @@ static int smsdvb_start_feed(struct dvb_demux_feed *feed)
 static int smsdvb_stop_feed(struct dvb_demux_feed *feed)
 {
 	struct smsdvb_client_t *client =
+<<<<<<< HEAD
 	    container_of(feed->demux, struct smsdvb_client_t, demux);
 	struct SmsMsgData_ST PidMsg;
 
 	sms_debug("remove pid %d(%x)", feed->pid, feed->pid);
+=======
+		container_of(feed->demux, struct smsdvb_client_t, demux);
+	struct SmsMsgData_ST PidMsg;
+
+	sms_debug("remove pid %d(%x)",
+		  feed->pid, feed->pid);
+>>>>>>> v3.4.6
 
 	PidMsg.xMsgHeader.msgSrcId = DVBT_BDA_CONTROL_MSG_ID;
 	PidMsg.xMsgHeader.msgDstId = HIF_TASK;
 	PidMsg.xMsgHeader.msgFlags = 0;
+<<<<<<< HEAD
 	PidMsg.xMsgHeader.msgType = MSG_SMS_REMOVE_PID_FILTER_REQ;
+=======
+	PidMsg.xMsgHeader.msgType  = MSG_SMS_REMOVE_PID_FILTER_REQ;
+>>>>>>> v3.4.6
 	PidMsg.xMsgHeader.msgLength = sizeof(PidMsg);
 	PidMsg.msgData[0] = feed->pid;
 
@@ -475,8 +676,13 @@ static int smsdvb_stop_feed(struct dvb_demux_feed *feed)
 }
 
 static int smsdvb_sendrequest_and_wait(struct smsdvb_client_t *client,
+<<<<<<< HEAD
 				       void *buffer, size_t size,
 				       struct completion *completion)
+=======
+					void *buffer, size_t size,
+					struct completion *completion)
+>>>>>>> v3.4.6
 {
 	int rc;
 
@@ -485,6 +691,7 @@ static int smsdvb_sendrequest_and_wait(struct smsdvb_client_t *client,
 	if (rc < 0)
 		return rc;
 
+<<<<<<< HEAD
 	return wait_for_completion_timeout(completion, msecs_to_jiffies(2000))
 	    ? 0 : -ETIME;
 }
@@ -612,6 +819,128 @@ static int smsdvb_read_ucblocks(struct dvb_frontend *fe, u32 * ucblocks)
 
 	*ucblocks = client->sms_stat_dvb.ReceptionData.ErrorTSPackets;
 
+=======
+	return wait_for_completion_timeout(completion,
+					   msecs_to_jiffies(2000)) ?
+						0 : -ETIME;
+}
+
+static int smsdvb_send_statistics_request(struct smsdvb_client_t *client)
+{
+	int rc;
+	struct SmsMsgHdr_ST Msg = { MSG_SMS_GET_STATISTICS_REQ,
+				    DVBT_BDA_CONTROL_MSG_ID,
+				    HIF_TASK,
+				    sizeof(struct SmsMsgHdr_ST), 0 };
+
+	rc = smsdvb_sendrequest_and_wait(client, &Msg, sizeof(Msg),
+					  &client->tune_done);
+
+	return rc;
+}
+
+static inline int led_feedback(struct smsdvb_client_t *client)
+{
+	if (client->fe_status & FE_HAS_LOCK)
+		return sms_board_led_feedback(client->coredev,
+			(client->sms_stat_dvb.ReceptionData.BER
+			== 0) ? SMS_LED_HI : SMS_LED_LO);
+	else
+		return sms_board_led_feedback(client->coredev, SMS_LED_OFF);
+}
+
+static int smsdvb_read_status(struct dvb_frontend *fe, fe_status_t *stat)
+{
+	int rc;
+	struct smsdvb_client_t *client;
+	client = container_of(fe, struct smsdvb_client_t, frontend);
+
+	rc = smsdvb_send_statistics_request(client);
+
+	*stat = client->fe_status;
+
+	led_feedback(client);
+
+	return rc;
+}
+
+static int smsdvb_read_ber(struct dvb_frontend *fe, u32 *ber)
+{
+	int rc;
+	struct smsdvb_client_t *client;
+	client = container_of(fe, struct smsdvb_client_t, frontend);
+
+	rc = smsdvb_send_statistics_request(client);
+
+	*ber = client->sms_stat_dvb.ReceptionData.BER;
+
+	led_feedback(client);
+
+	return rc;
+}
+
+static int smsdvb_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
+{
+	int rc;
+
+	struct smsdvb_client_t *client;
+	client = container_of(fe, struct smsdvb_client_t, frontend);
+
+	rc = smsdvb_send_statistics_request(client);
+
+	if (client->sms_stat_dvb.ReceptionData.InBandPwr < -95)
+		*strength = 0;
+		else if (client->sms_stat_dvb.ReceptionData.InBandPwr > -29)
+			*strength = 100;
+		else
+			*strength =
+				(client->sms_stat_dvb.ReceptionData.InBandPwr
+				+ 95) * 3 / 2;
+
+	led_feedback(client);
+
+	return rc;
+}
+
+static int smsdvb_read_snr(struct dvb_frontend *fe, u16 *snr)
+{
+	int rc;
+	struct smsdvb_client_t *client;
+	client = container_of(fe, struct smsdvb_client_t, frontend);
+
+	rc = smsdvb_send_statistics_request(client);
+
+	*snr = client->sms_stat_dvb.ReceptionData.SNR;
+
+	led_feedback(client);
+
+	return rc;
+}
+
+static int smsdvb_read_ucblocks(struct dvb_frontend *fe, u32 *ucblocks)
+{
+	int rc;
+	struct smsdvb_client_t *client;
+	client = container_of(fe, struct smsdvb_client_t, frontend);
+
+	rc = smsdvb_send_statistics_request(client);
+
+	*ucblocks = client->sms_stat_dvb.ReceptionData.ErrorTSPackets;
+
+	led_feedback(client);
+
+	return rc;
+}
+
+static int smsdvb_get_tune_settings(struct dvb_frontend *fe,
+				    struct dvb_frontend_tune_settings *tune)
+{
+	sms_debug("");
+
+	tune->min_delay_ms = 400;
+	tune->step_size = 250000;
+	tune->max_drift = 0;
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -681,7 +1010,10 @@ static int smsdvb_dvbt_set_frontend(struct dvb_frontend *fe)
 					   &client->tune_done);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> v3.4.6
 static int smsdvb_isdbt_set_frontend(struct dvb_frontend *fe)
 {
 	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
@@ -746,6 +1078,7 @@ static int smsdvb_isdbt_set_frontend(struct dvb_frontend *fe)
 					   &client->tune_done);
 }
 
+<<<<<<< HEAD
 static int smsdvb_get_tune_settings(struct dvb_frontend *fe,
 				    struct dvb_frontend_tune_settings *tune)
 {
@@ -757,6 +1090,8 @@ static int smsdvb_get_tune_settings(struct dvb_frontend *fe,
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static int smsdvb_set_frontend(struct dvb_frontend *fe)
 {
 	struct smsdvb_client_t *client =
@@ -779,11 +1114,18 @@ static int smsdvb_get_frontend(struct dvb_frontend *fe)
 {
 	struct dtv_frontend_properties *fep = &fe->dtv_property_cache;
 	struct smsdvb_client_t *client =
+<<<<<<< HEAD
 	    container_of(fe, struct smsdvb_client_t, frontend);
 
 	struct smscore_device_t *coredev = client->coredev;
 	struct TRANSMISSION_STATISTICS_S *td =
 			&client->sms_stat_dvb.TransmissionData;
+=======
+		container_of(fe, struct smsdvb_client_t, frontend);
+	struct smscore_device_t *coredev = client->coredev;
+	struct TRANSMISSION_STATISTICS_S *td =
+		&client->sms_stat_dvb.TransmissionData;
+>>>>>>> v3.4.6
 
 	switch (smscore_get_device_mode(coredev)) {
 	case DEVICE_MODE_DVBT:
@@ -900,14 +1242,23 @@ static int smsdvb_get_frontend(struct dvb_frontend *fe)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> v3.4.6
 	return 0;
 }
 
 static int smsdvb_init(struct dvb_frontend *fe)
 {
 	struct smsdvb_client_t *client =
+<<<<<<< HEAD
 	    container_of(fe, struct smsdvb_client_t, frontend);
+=======
+		container_of(fe, struct smsdvb_client_t, frontend);
+
+	sms_board_power(client->coredev, 1);
+>>>>>>> v3.4.6
 
 	sms_board_dvb3_event(client, DVB3_EVENT_INIT);
 	return 0;
@@ -916,7 +1267,14 @@ static int smsdvb_init(struct dvb_frontend *fe)
 static int smsdvb_sleep(struct dvb_frontend *fe)
 {
 	struct smsdvb_client_t *client =
+<<<<<<< HEAD
 	    container_of(fe, struct smsdvb_client_t, frontend);
+=======
+		container_of(fe, struct smsdvb_client_t, frontend);
+
+	sms_board_led_feedback(client->coredev, SMS_LED_OFF);
+	sms_board_power(client->coredev, 0);
+>>>>>>> v3.4.6
 
 	sms_board_dvb3_event(client, DVB3_EVENT_SLEEP);
 
@@ -930,6 +1288,7 @@ static void smsdvb_release(struct dvb_frontend *fe)
 
 static struct dvb_frontend_ops smsdvb_fe_ops = {
 	.info = {
+<<<<<<< HEAD
 		 .name = "Siano Mobile Digital MDTV Receiver",
 		 .frequency_min = 164000000,
 		 .frequency_max = 867250000,
@@ -942,6 +1301,21 @@ static struct dvb_frontend_ops smsdvb_fe_ops = {
 		 FE_CAN_GUARD_INTERVAL_AUTO |
 		 FE_CAN_RECOVER | FE_CAN_HIERARCHY_AUTO,
 		 },
+=======
+		.name			= "Siano Mobile Digital MDTV Receiver",
+		.frequency_min		= 44250000,
+		.frequency_max		= 867250000,
+		.frequency_stepsize	= 250000,
+		.caps = FE_CAN_INVERSION_AUTO |
+			FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
+			FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |
+			FE_CAN_QPSK | FE_CAN_QAM_16 | FE_CAN_QAM_64 |
+			FE_CAN_QAM_AUTO | FE_CAN_TRANSMISSION_MODE_AUTO |
+			FE_CAN_GUARD_INTERVAL_AUTO |
+			FE_CAN_RECOVER |
+			FE_CAN_HIERARCHY_AUTO,
+	},
+>>>>>>> v3.4.6
 
 	.release = smsdvb_release,
 
@@ -965,17 +1339,23 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 	struct smsclient_params_t params;
 	struct smsdvb_client_t *client;
 	int rc;
+<<<<<<< HEAD
 	int mode = smscore_get_device_mode(coredev);
+=======
+>>>>>>> v3.4.6
 
 	/* device removal handled by onremove callback */
 	if (!arrival)
 		return 0;
+<<<<<<< HEAD
 
 	if ((mode != DEVICE_MODE_DVBT_BDA) && (mode != DEVICE_MODE_ISDBT_BDA)) {
 		sms_err("SMS Device mode is not set for " "DVB operation.");
 		return 0;
 	}
 
+=======
+>>>>>>> v3.4.6
 	client = kzalloc(sizeof(struct smsdvb_client_t), GFP_KERNEL);
 	if (!client) {
 		sms_err("kmalloc() failed");
@@ -983,6 +1363,7 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 	}
 
 	/* register dvb adapter */
+<<<<<<< HEAD
 #ifdef SMS_DVB_OLD_DVB_REGISTER_ADAPTER
 	rc = dvb_register_adapter(&client->adapter,
 				  sms_get_board(smscore_get_board_id
@@ -994,6 +1375,12 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 						(coredev))->name, THIS_MODULE,
 				  device, adapter_nr);
 #endif
+=======
+	rc = dvb_register_adapter(&client->adapter,
+				  sms_get_board(
+					smscore_get_board_id(coredev))->name,
+				  THIS_MODULE, device, adapter_nr);
+>>>>>>> v3.4.6
 	if (rc < 0) {
 		sms_err("dvb_register_adapter() failed %d", rc);
 		goto adapter_error;
@@ -1001,7 +1388,11 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 
 	/* init dvb demux */
 	client->demux.dmx.capabilities = DMX_TS_FILTERING;
+<<<<<<< HEAD
 	client->demux.filternum = 32;	/* todo: nova ??? */
+=======
+	client->demux.filternum = 32; /* todo: nova ??? */
+>>>>>>> v3.4.6
 	client->demux.feednum = 32;
 	client->demux.start_feed = smsdvb_start_feed;
 	client->demux.stop_feed = smsdvb_stop_feed;
@@ -1027,6 +1418,20 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 	memcpy(&client->frontend.ops, &smsdvb_fe_ops,
 	       sizeof(struct dvb_frontend_ops));
 
+<<<<<<< HEAD
+=======
+	switch (smscore_get_device_mode(coredev)) {
+	case DEVICE_MODE_DVBT:
+	case DEVICE_MODE_DVBT_BDA:
+		client->frontend.ops.delsys[0] = SYS_DVBT;
+		break;
+	case DEVICE_MODE_ISDBT:
+	case DEVICE_MODE_ISDBT_BDA:
+		client->frontend.ops.delsys[0] = SYS_ISDBT;
+		break;
+	}
+
+>>>>>>> v3.4.6
 	rc = dvb_register_frontend(&client->adapter, &client->frontend);
 	if (rc < 0) {
 		sms_err("frontend registration failed %d", rc);
@@ -1048,7 +1453,10 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 	client->coredev = coredev;
 
 	init_completion(&client->tune_done);
+<<<<<<< HEAD
 	init_completion(&client->get_stats_done);
+=======
+>>>>>>> v3.4.6
 
 	kmutex_lock(&g_smsdvb_clientslock);
 
@@ -1061,6 +1469,10 @@ static int smsdvb_hotplug(struct smscore_device_t *coredev,
 	sms_board_dvb3_event(client, DVB3_EVENT_HOTPLUG);
 
 	sms_info("success");
+<<<<<<< HEAD
+=======
+	sms_board_setup(coredev);
+>>>>>>> v3.4.6
 
 	return 0;
 
@@ -1081,7 +1493,11 @@ adapter_error:
 	return rc;
 }
 
+<<<<<<< HEAD
 int smsdvb_register(void)
+=======
+static int __init smsdvb_module_init(void)
+>>>>>>> v3.4.6
 {
 	int rc;
 
@@ -1095,19 +1511,34 @@ int smsdvb_register(void)
 	return rc;
 }
 
+<<<<<<< HEAD
 void smsdvb_unregister(void)
+=======
+static void __exit smsdvb_module_exit(void)
+>>>>>>> v3.4.6
 {
 	smscore_unregister_hotplug(smsdvb_hotplug);
 
 	kmutex_lock(&g_smsdvb_clientslock);
 
 	while (!list_empty(&g_smsdvb_clients))
+<<<<<<< HEAD
 		smsdvb_unregister_client((struct smsdvb_client_t *)
 					 g_smsdvb_clients.next);
+=======
+	       smsdvb_unregister_client(
+			(struct smsdvb_client_t *) g_smsdvb_clients.next);
+>>>>>>> v3.4.6
 
 	kmutex_unlock(&g_smsdvb_clientslock);
 }
 
+<<<<<<< HEAD
+=======
+module_init(smsdvb_module_init);
+module_exit(smsdvb_module_exit);
+
+>>>>>>> v3.4.6
 MODULE_DESCRIPTION("SMS DVB subsystem adaptation module");
 MODULE_AUTHOR("Siano Mobile Silicon, Inc. (uris@siano-ms.com)");
 MODULE_LICENSE("GPL");

@@ -15,6 +15,7 @@ enum {
 	PM_QOS_CPU_DMA_LATENCY,
 	PM_QOS_NETWORK_LATENCY,
 	PM_QOS_NETWORK_THROUGHPUT,
+<<<<<<< HEAD
 	PM_QOS_CPUIDLE_BLOCK,
 	/* insert new class ID */
 #ifdef CONFIG_DDR_DEVFREQ
@@ -33,6 +34,10 @@ enum {
 	PM_QOS_GPUFREQ_3D_MAX,
 	PM_QOS_GPUFREQ_2D_MAX,
 	PM_QOS_GPUFREQ_SH_MAX,
+=======
+
+	/* insert new class ID */
+>>>>>>> v3.4.6
 	PM_QOS_NUM_CLASSES,
 };
 
@@ -42,15 +47,21 @@ enum {
 #define PM_QOS_NETWORK_LAT_DEFAULT_VALUE	(2000 * USEC_PER_SEC)
 #define PM_QOS_NETWORK_THROUGHPUT_DEFAULT_VALUE	0
 #define PM_QOS_DEV_LAT_DEFAULT_VALUE		0
+<<<<<<< HEAD
 #define PM_QOS_CPUIDLE_BLOCK_DEFAULT_VALUE	0
 #define PM_QOS_CPUIDLE_BLOCK_VCTCXO_VALUE	1
 #define PM_QOS_CPUIDLE_BLOCK_DDR_VALUE		2
 #define PM_QOS_CPUIDLE_BLOCK_AXI_VALUE		3
+=======
+>>>>>>> v3.4.6
 
 struct pm_qos_request {
 	struct plist_node node;
 	int pm_qos_class;
+<<<<<<< HEAD
 	const char *name;
+=======
+>>>>>>> v3.4.6
 	struct delayed_work work; /* for pm_qos_update_request_timeout */
 };
 
@@ -85,6 +96,7 @@ enum pm_qos_req_action {
 	PM_QOS_REMOVE_REQ	/* Remove an existing request */
 };
 
+<<<<<<< HEAD
 /*
  * locking rule: all changes to constraints or notifiers lists
  * or pm_qos_object list and pm_qos_objects need to happen with pm_qos_lock
@@ -100,6 +112,8 @@ struct pm_qos_object {
 extern spinlock_t pm_qos_lock;
 extern struct pm_qos_object *pm_qos_array[];
 
+=======
+>>>>>>> v3.4.6
 static inline int dev_pm_qos_request_active(struct dev_pm_qos_request *req)
 {
 	return req->dev != 0;

@@ -1579,6 +1579,7 @@ static int ipv6_generate_eui64(u8 *eui, struct net_device *dev)
 		return addrconf_ifid_sit(eui, dev);
 	case ARPHRD_IPGRE:
 		return addrconf_ifid_gre(eui, dev);
+<<<<<<< HEAD
 	case ARPHRD_RAWIP: {
 		struct in6_addr lladdr;
 
@@ -1589,6 +1590,8 @@ static int ipv6_generate_eui64(u8 *eui, struct net_device *dev)
 
 		return 0;
 	}
+=======
+>>>>>>> v3.4.6
 	}
 	return -1;
 }
@@ -2449,7 +2452,10 @@ static void addrconf_dev_config(struct net_device *dev)
 	    (dev->type != ARPHRD_FDDI) &&
 	    (dev->type != ARPHRD_IEEE802_TR) &&
 	    (dev->type != ARPHRD_ARCNET) &&
+<<<<<<< HEAD
 	    (dev->type != ARPHRD_RAWIP) &&
+=======
+>>>>>>> v3.4.6
 	    (dev->type != ARPHRD_INFINIBAND)) {
 		/* Alas, we support only Ethernet autoconfiguration. */
 		return;

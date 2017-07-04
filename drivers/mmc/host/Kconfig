@@ -619,6 +619,7 @@ config MMC_USHC
 
 	  Note: These controllers only support SDIO cards and do not
 	  support MMC or SD memory cards.
+<<<<<<< HEAD
 
 config SDHCI_USE_LEDS_CLASS
 	tristate "use kernel Led Class to control SDHCI leds"
@@ -627,3 +628,5 @@ config SDHCI_USE_LEDS_CLASS
 	  If you want to use "LEDS CLASS" for LED control, say Y
 
 	  And if unsure or don't want to use the "LEDS CLASS", say N.
+=======
+>>>>>>> v3.4.6

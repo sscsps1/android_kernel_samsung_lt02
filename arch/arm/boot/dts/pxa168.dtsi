@@ -18,6 +18,16 @@
 		i2c1 = &twsi2;
 	};
 
+<<<<<<< HEAD
+=======
+	intc: intc-interrupt-controller@d4282000 {
+		compatible = "mrvl,mmp-intc", "mrvl,intc";
+		interrupt-controller;
+		#interrupt-cells = <1>;
+		reg = <0xd4282000 0x1000>;
+	};
+
+>>>>>>> v3.4.6
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -25,6 +35,7 @@
 		interrupt-parent = <&intc>;
 		ranges;
 
+<<<<<<< HEAD
 		axi@d4200000 {	/* AXI */
 			compatible = "mrvl,axi-bus", "simple-bus";
 			#address-cells = <1>;
@@ -42,6 +53,8 @@
 
 		};
 
+=======
+>>>>>>> v3.4.6
 		apb@d4000000 {	/* APB */
 			compatible = "mrvl,apb-bus", "simple-bus";
 			#address-cells = <1>;
@@ -49,6 +62,7 @@
 			reg = <0xd4000000 0x00200000>;
 			ranges;
 
+<<<<<<< HEAD
 			timer0: timer@d4014000 {
 				compatible = "mrvl,mmp-timer";
 				reg = <0xd4014000 0x100>;
@@ -57,25 +71,38 @@
 
 			uart1: uart@d4017000 {
 				compatible = "mrvl,mmp-uart";
+=======
+			uart1: uart@d4017000 {
+				compatible = "mrvl,mmp-uart", "mrvl,pxa-uart";
+>>>>>>> v3.4.6
 				reg = <0xd4017000 0x1000>;
 				interrupts = <27>;
 				status = "disabled";
 			};
 
 			uart2: uart@d4018000 {
+<<<<<<< HEAD
 				compatible = "mrvl,mmp-uart";
+=======
+				compatible = "mrvl,mmp-uart", "mrvl,pxa-uart";
+>>>>>>> v3.4.6
 				reg = <0xd4018000 0x1000>;
 				interrupts = <28>;
 				status = "disabled";
 			};
 
 			uart3: uart@d4026000 {
+<<<<<<< HEAD
 				compatible = "mrvl,mmp-uart";
+=======
+				compatible = "mrvl,mmp-uart", "mrvl,pxa-uart";
+>>>>>>> v3.4.6
 				reg = <0xd4026000 0x1000>;
 				interrupts = <29>;
 				status = "disabled";
 			};
 
+<<<<<<< HEAD
 			gpio@d4019000 {
 				compatible = "mrvl,mmp-gpio";
 				#address-cells = <1>;
@@ -108,6 +135,21 @@
 
 			twsi1: i2c@d4011000 {
 				compatible = "mrvl,mmp-twsi";
+=======
+			gpio: gpio@d4019000 {
+				compatible = "mrvl,mmp-gpio", "mrvl,pxa-gpio";
+				reg = <0xd4019000 0x1000>;
+				interrupts = <49>;
+				interrupt-names = "gpio_mux";
+				gpio-controller;
+				#gpio-cells = <1>;
+				interrupt-controller;
+				#interrupt-cells = <1>;
+			};
+
+			twsi1: i2c@d4011000 {
+				compatible = "mrvl,mmp-twsi", "mrvl,pxa-i2c";
+>>>>>>> v3.4.6
 				reg = <0xd4011000 0x1000>;
 				interrupts = <7>;
 				mrvl,i2c-fast-mode;
@@ -115,7 +157,11 @@
 			};
 
 			twsi2: i2c@d4025000 {
+<<<<<<< HEAD
 				compatible = "mrvl,mmp-twsi";
+=======
+				compatible = "mrvl,mmp-twsi", "mrvl,pxa-i2c";
+>>>>>>> v3.4.6
 				reg = <0xd4025000 0x1000>;
 				interrupts = <58>;
 				status = "disabled";

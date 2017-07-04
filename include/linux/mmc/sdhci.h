@@ -91,6 +91,7 @@ struct sdhci_host {
 	unsigned int quirks2;	/* More deviations from spec. */
 
 #define SDHCI_QUIRK2_HOST_OFF_CARD_ON			(1<<0)
+<<<<<<< HEAD
 /* Some SDHCI v3 controller doesn't suppport current limit error*/
 #define SDHCI_QUIRK2_NO_CURRENT_LIMIT                  	(1<<1)
 #define SDHCI_QUIRK2_PRESET_VALUE_BROKEN               	(1<<2)
@@ -98,14 +99,20 @@ struct sdhci_host {
 #define SDHCI_QUIRK2_TIMEOUT_DIVIDE_4			(1<<3)
 /* After SD host request, prevent system to suspend state for a while */
 #define SDHCI_QUIRK2_HOLDSUSPEND_AFTER_REQUEST	(1<<4)
+=======
+>>>>>>> v3.4.6
 
 	int irq;		/* Device IRQ */
 	void __iomem *ioaddr;	/* Mapped address */
 
 	const struct sdhci_ops *ops;	/* Low level hw interface */
 
+<<<<<<< HEAD
 	struct regulator *vmmc;		/* Power regulator (vmmc) */
 	struct regulator *vqmmc;	/* Signaling regulator (vccq) */
+=======
+	struct regulator *vmmc;	/* Power regulator */
+>>>>>>> v3.4.6
 
 	/* Internal data */
 	struct mmc_host *mmc;	/* MMC structure */
@@ -130,7 +137,10 @@ struct sdhci_host {
 #define SDHCI_PV_ENABLED	(1<<8)	/* Preset value enabled */
 #define SDHCI_SDIO_IRQ_ENABLED	(1<<9)	/* SDIO irq enabled */
 #define SDHCI_HS200_NEEDS_TUNING (1<<10)	/* HS200 needs tuning */
+<<<<<<< HEAD
 #define SDHCI_USING_RETUNING_TIMER (1<<11)	/* Host is using a retuning timer for the card */
+=======
+>>>>>>> v3.4.6
 
 	unsigned int version;	/* SDHCI spec. version */
 
@@ -164,8 +174,12 @@ struct sdhci_host {
 
 	struct timer_list timer;	/* Timer for timeouts */
 
+<<<<<<< HEAD
 	unsigned int caps;	/* Alternative CAPABILITY_0 */
 	unsigned int caps1;	/* Alternative CAPABILITY_1 */
+=======
+	unsigned int caps;	/* Alternative capabilities */
+>>>>>>> v3.4.6
 
 	unsigned int            ocr_avail_sdio;	/* OCR bit masks */
 	unsigned int            ocr_avail_sd;
@@ -178,6 +192,7 @@ struct sdhci_host {
 	unsigned int		tuning_mode;	/* Re-tuning mode supported by host */
 #define SDHCI_TUNING_MODE_1	0
 	struct timer_list	tuning_timer;	/* Timer for tuning */
+<<<<<<< HEAD
 	int	constrain_ref;
 
 	/*
@@ -197,6 +212,8 @@ struct sdhci_host {
 	struct wake_lock muti_trans_lock;
 	int	muti_trans_lock_en;
 	int	muti_trans_timeout;
+=======
+>>>>>>> v3.4.6
 
 	unsigned long private[0] ____cacheline_aligned;
 };

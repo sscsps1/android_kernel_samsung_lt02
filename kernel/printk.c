@@ -56,10 +56,13 @@ void asmlinkage __attribute__((weak)) early_printk(const char *fmt, ...)
 
 #define __LOG_BUF_LEN	(1 << CONFIG_LOG_BUF_SHIFT)
 
+<<<<<<< HEAD
 #ifdef        CONFIG_DEBUG_LL
 extern void printascii(char *);
 #endif
 
+=======
+>>>>>>> v3.4.6
 /* printk's without a loglevel use this.. */
 #define DEFAULT_MESSAGE_LOGLEVEL CONFIG_DEFAULT_MESSAGE_LOGLEVEL
 
@@ -157,6 +160,7 @@ static int log_buf_len = __LOG_BUF_LEN;
 static unsigned logged_chars; /* Number of chars produced since last read+clear operation */
 static int saved_console_loglevel = -1;
 
+<<<<<<< HEAD
 /* Mark for GetLog */
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 struct struct_kernel_log_mark {
@@ -177,6 +181,8 @@ static struct struct_kernel_log_mark kernel_log_mark = {
 };
 #endif
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_KEXEC
 /*
  * This appends the listed symbols to /proc/vmcoreinfo
@@ -262,6 +268,7 @@ void __init setup_log_buf(int early)
 	pr_info("log_buf_len: %d\n", log_buf_len);
 	pr_info("early log buf free: %d(%d%%)\n",
 		free, (free * 100) / __LOG_BUF_LEN);
+<<<<<<< HEAD
 
 /* Mark for GetLog */
 #ifdef CONFIG_KERNEL_DEBUG_SEC
@@ -270,6 +277,8 @@ void __init setup_log_buf(int early)
 		//}} Mark for GetLog -2/2
 #endif /* CONFIG_SAMSUNG_USE_GETLOG */
 
+=======
+>>>>>>> v3.4.6
 }
 
 #ifdef CONFIG_BOOT_PRINTK_DELAY
@@ -325,6 +334,7 @@ static inline void boot_delay_msec(void)
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * Return the number of unread characters in the log buffer.
  */
@@ -372,6 +382,8 @@ int log_buf_copy(char *dest, int idx, int len)
 	return ret;
 }
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_SECURITY_DMESG_RESTRICT
 int dmesg_restrict = 1;
 #else
@@ -789,6 +801,7 @@ module_param_named(time, printk_time, bool, S_IRUGO | S_IWUSR);
 static bool always_kmsg_dump;
 module_param_named(always_kmsg_dump, always_kmsg_dump, bool, S_IRUGO | S_IWUSR);
 
+<<<<<<< HEAD
 #if defined(CONFIG_PRINTK_CPU_ID)
 static int printk_cpu_id = 1;
 #else
@@ -810,6 +823,8 @@ static int printk_comm = 0;
 #endif
 module_param_named(comm, printk_comm, bool, S_IRUGO | S_IWUSR);
 
+=======
+>>>>>>> v3.4.6
 /* Check if we have any console registered that can be called early in boot. */
 static int have_callable_console(void)
 {
@@ -984,11 +999,14 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 	printed_len += vscnprintf(printk_buf + printed_len,
 				  sizeof(printk_buf) - printed_len, fmt, args);
 
+<<<<<<< HEAD
 #ifdef	CONFIG_DEBUG_LL
 	if (console_drivers == NULL)
 		printascii(printk_buf);
 #endif
 
+=======
+>>>>>>> v3.4.6
 	p = printk_buf;
 
 	/* Read log level and handle special printk prefix */
@@ -1051,6 +1069,7 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 				printed_len += tlen;
 			}
 
+<<<<<<< HEAD
 			if (printk_cpu_id) {
 				/* Add the cpu id */
 				char tbuf[10], *tp;
@@ -1085,6 +1104,8 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 				printed_len += tlen;
 			}
 
+=======
+>>>>>>> v3.4.6
 			if (!*p)
 				break;
 		}
@@ -1300,6 +1321,10 @@ static int __cpuinit console_cpu_notify(struct notifier_block *self,
 	switch (action) {
 	case CPU_ONLINE:
 	case CPU_DEAD:
+<<<<<<< HEAD
+=======
+	case CPU_DYING:
+>>>>>>> v3.4.6
 	case CPU_DOWN_FAILED:
 	case CPU_UP_CANCELED:
 		console_lock();

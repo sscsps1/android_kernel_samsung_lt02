@@ -14,6 +14,7 @@
 #ifndef _PXA_SDHCI_H_
 #define _PXA_SDHCI_H_
 
+<<<<<<< HEAD
 #include <linux/pm_qos.h>
 
 enum cd_types {
@@ -51,6 +52,8 @@ struct sdhci_pxa_dtr_data {
 #define PXA_SDH_DTR_PS_NONE -1
 	unsigned long src_rate;
 };
+=======
+>>>>>>> v3.4.6
 /* pxa specific flag */
 /* Require clock free running */
 #define PXA_FLAG_ENABLE_CLOCK_GATING (1<<0)
@@ -58,12 +61,15 @@ struct sdhci_pxa_dtr_data {
 #define PXA_FLAG_CARD_PERMANENT	(1<<1)
 /* Board design supports 8-bit data on SD/SDIO BUS */
 #define PXA_FLAG_SD_8_BIT_CAPABLE_SLOT (1<<2)
+<<<<<<< HEAD
 /* SDIO device/SD Card detect wakeup host sleep feature */
 #define PXA_FLAG_WAKEUP_HOST (1<<3)
 /* disable card scanning in probe procedure */
 #define PXA_FLAG_DISABLE_PROBE_CDSCAN (1<<4)
 /* whether supports RPM in driver, it can used for source clock gating */
 #define PXA_FLAG_EN_PM_RUNTIME (1<<5)
+=======
+>>>>>>> v3.4.6
 
 /*
  * struct pxa_sdhci_platdata() - Platform device data for PXA SDHCI
@@ -82,7 +88,10 @@ struct sdhci_pxa_dtr_data {
  * @host_caps: Standard MMC host capabilities bit field.
  * @quirks: quirks of platfrom
  * @pm_caps: pm_caps of platfrom
+<<<<<<< HEAD
  * @signal_vol_change: signaling voltage change
+=======
+>>>>>>> v3.4.6
  */
 struct sdhci_pxa_platdata {
 	unsigned int	flags;
@@ -90,6 +99,7 @@ struct sdhci_pxa_platdata {
 	unsigned int	clk_delay_sel;
 	bool		clk_delay_enable;
 	unsigned int	ext_cd_gpio;
+<<<<<<< HEAD
 	enum cd_types	cd_type;
 	bool		ext_cd_gpio_invert;
 	unsigned int	max_speed;
@@ -108,6 +118,13 @@ struct sdhci_pxa_platdata {
 #endif
 	struct  pm_qos_request	qos_idle;
 	struct sdhci_pxa_dtr_data *dtr_data;
+=======
+	bool		ext_cd_gpio_invert;
+	unsigned int	max_speed;
+	unsigned int	host_caps;
+	unsigned int	quirks;
+	unsigned int	pm_caps;
+>>>>>>> v3.4.6
 };
 
 struct sdhci_pxa {

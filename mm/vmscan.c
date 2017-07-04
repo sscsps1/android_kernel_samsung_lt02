@@ -42,7 +42,10 @@
 #include <linux/sysctl.h>
 #include <linux/oom.h>
 #include <linux/prefetch.h>
+<<<<<<< HEAD
 #include <linux/debugfs.h>
+=======
+>>>>>>> v3.4.6
 
 #include <asm/tlbflush.h>
 #include <asm/div64.h>
@@ -72,6 +75,7 @@ typedef unsigned __bitwise__ reclaim_mode_t;
 #define RECLAIM_MODE_LUMPYRECLAIM	((__force reclaim_mode_t)0x08u)
 #define RECLAIM_MODE_COMPACTION		((__force reclaim_mode_t)0x10u)
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 struct rtcc_control {
 	int nr_anon;
@@ -81,6 +85,8 @@ struct rtcc_control {
 };
 #endif /* CONFIG_RUNTIME_COMPCACHE */
 
+=======
+>>>>>>> v3.4.6
 struct scan_control {
 	/* Incremented by the number of inactive pages that were scanned */
 	unsigned long nr_scanned;
@@ -123,10 +129,13 @@ struct scan_control {
 	 * are scanned.
 	 */
 	nodemask_t	*nodemask;
+<<<<<<< HEAD
 
 #ifdef CONFIG_RUNTIME_COMPCACHE
 	struct rtcc_control *rc;
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+>>>>>>> v3.4.6
 };
 
 struct mem_cgroup_zone {
@@ -170,6 +179,7 @@ struct mem_cgroup_zone {
 int vm_swappiness = 60;
 long vm_total_pages;	/* The total number of pages which the VM controls */
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 extern int get_rtcc_status(void);
 atomic_t kswapd_running = ATOMIC_INIT(1);
@@ -181,6 +191,8 @@ static bool rtcc_reclaim(struct scan_control *sc)
 }
 #endif /* CONFIG_RUNTIME_COMPCACHE */
 
+=======
+>>>>>>> v3.4.6
 static LIST_HEAD(shrinker_list);
 static DECLARE_RWSEM(shrinker_rwsem);
 
@@ -214,6 +226,7 @@ static struct zone_reclaim_stat *get_reclaim_stat(struct mem_cgroup_zone *mz)
 	return &mz->zone->reclaim_stat;
 }
 
+<<<<<<< HEAD
 unsigned long zone_reclaimable_pages(struct zone *zone)
 {
 	int nr;
@@ -235,6 +248,8 @@ bool zone_reclaimable(struct zone *zone)
 	return zone->pages_scanned < zone_reclaimable_pages(zone) * 6;
 }
 
+=======
+>>>>>>> v3.4.6
 static unsigned long zone_nr_lru_pages(struct mem_cgroup_zone *mz,
 				       enum lru_list lru)
 {
@@ -247,6 +262,7 @@ static unsigned long zone_nr_lru_pages(struct mem_cgroup_zone *mz,
 	return zone_page_state(mz->zone, NR_LRU_BASE + lru);
 }
 
+<<<<<<< HEAD
 struct dentry *debug_file;
 
 static int debug_shrinker_show(struct seq_file *s, void *unused)
@@ -280,6 +296,8 @@ static const struct file_operations debug_shrinker_fops = {
         .llseek = seq_lseek,
         .release = single_release,
 };
+=======
+>>>>>>> v3.4.6
 
 /*
  * Add a shrinker callback to be called from the vm
@@ -293,6 +311,7 @@ void register_shrinker(struct shrinker *shrinker)
 }
 EXPORT_SYMBOL(register_shrinker);
 
+<<<<<<< HEAD
 static int __init add_shrinker_debug(void)
 {
 	debugfs_create_file("shrinker", 0644, NULL, NULL,
@@ -302,6 +321,8 @@ static int __init add_shrinker_debug(void)
 
 late_initcall(add_shrinker_debug);
 
+=======
+>>>>>>> v3.4.6
 /*
  * Remove one
  */
@@ -1427,11 +1448,14 @@ static int too_many_isolated(struct zone *zone, int file,
 {
 	unsigned long inactive, isolated;
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 	if (get_rtcc_status() == 1)
 		return 0;
 #endif /* CONFIG_RUNTIME_COMPCACHE */
 
+=======
+>>>>>>> v3.4.6
 	if (current_is_kswapd())
 		return 0;
 
@@ -1705,6 +1729,7 @@ shrink_inactive_list(unsigned long nr_to_scan, struct mem_cgroup_zone *mz,
 	if (nr_writeback && nr_writeback >= (nr_taken >> (DEF_PRIORITY-priority)))
 		wait_iff_congested(zone, BLK_RW_ASYNC, HZ/10);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 	if (rtcc_reclaim(sc) && !file)
 		sc->rc->nr_swapped += nr_reclaimed;
@@ -1712,6 +1737,8 @@ shrink_inactive_list(unsigned long nr_to_scan, struct mem_cgroup_zone *mz,
 		nr_kswapd_swapped += nr_reclaimed;
 #endif /* CONFIG_RUNTIME_COMPCACHE */
 
+=======
+>>>>>>> v3.4.6
 	trace_mm_vmscan_lru_shrink_inactive(zone->zone_pgdat->node_id,
 		zone_idx(zone),
 		nr_scanned, nr_reclaimed,
@@ -1983,10 +2010,13 @@ static unsigned long shrink_list(enum lru_list lru, unsigned long nr_to_scan,
 static int vmscan_swappiness(struct mem_cgroup_zone *mz,
 			     struct scan_control *sc)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 	if (rtcc_reclaim(sc))
 		return sc->rc->swappiness;
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+>>>>>>> v3.4.6
 	if (global_reclaim(sc))
 		return vm_swappiness;
 	return mem_cgroup_swappiness(mz->mem_cgroup);
@@ -2189,9 +2219,12 @@ static void shrink_mem_cgroup_zone(int priority, struct mem_cgroup_zone *mz,
 	unsigned long nr_reclaimed, nr_scanned;
 	unsigned long nr_to_reclaim = sc->nr_to_reclaim;
 	struct blk_plug plug;
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 	struct rtcc_control *rc = sc->rc;
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+>>>>>>> v3.4.6
 
 restart:
 	nr_reclaimed = 0;
@@ -2201,6 +2234,7 @@ restart:
 	blk_start_plug(&plug);
 	while (nr[LRU_INACTIVE_ANON] || nr[LRU_ACTIVE_FILE] ||
 					nr[LRU_INACTIVE_FILE]) {
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		if (rtcc_reclaim(sc)) {
 			if (rc->nr_swapped >= rc->nr_anon)
@@ -2211,6 +2245,8 @@ restart:
 		}
 #endif /* CONFIG_RUNTIME_COMPCACHE */
 
+=======
+>>>>>>> v3.4.6
 		for_each_evictable_lru(lru) {
 			if (nr[lru]) {
 				nr_to_scan = min_t(unsigned long,
@@ -2409,6 +2445,14 @@ static bool shrink_zones(int priority, struct zonelist *zonelist,
 	return aborted_reclaim;
 }
 
+<<<<<<< HEAD
+=======
+static bool zone_reclaimable(struct zone *zone)
+{
+	return zone->pages_scanned < zone_reclaimable_pages(zone) * 6;
+}
+
+>>>>>>> v3.4.6
 /* All zones in zonelist are unreclaimable? */
 static bool all_unreclaimable(struct zonelist *zonelist,
 		struct scan_control *sc)
@@ -2552,11 +2596,15 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 		.may_writepage = !laptop_mode,
 		.nr_to_reclaim = SWAP_CLUSTER_MAX,
 		.may_unmap = 1,
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		.may_swap = 0,
 #else
 		.may_swap = 1,
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+		.may_swap = 1,
+>>>>>>> v3.4.6
 		.order = order,
 		.target_mem_cgroup = NULL,
 		.nodemask = nodemask,
@@ -2798,11 +2846,15 @@ static unsigned long balance_pgdat(pg_data_t *pgdat, int order,
 	struct scan_control sc = {
 		.gfp_mask = GFP_KERNEL,
 		.may_unmap = 1,
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		.may_swap = 0,
 #else
 		.may_swap = 1,
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+		.may_swap = 1,
+>>>>>>> v3.4.6
 		/*
 		 * kswapd doesn't want to be bailed out while reclaim. because
 		 * we want to put equal scanning pressure on each zone.
@@ -3124,9 +3176,12 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int order, int classzone_idx)
 	if (!sleeping_prematurely(pgdat, order, remaining, classzone_idx)) {
 		trace_mm_vmscan_kswapd_sleep(pgdat->node_id);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		atomic_set(&kswapd_running, 0);
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+>>>>>>> v3.4.6
 		/*
 		 * vmstat counters are not perfectly accurate and the estimated
 		 * value for counters such as NR_FREE_PAGES can deviate from the
@@ -3237,9 +3292,12 @@ static int kswapd(void *p)
 		if (kthread_should_stop())
 			break;
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		atomic_set(&kswapd_running, 1);
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+>>>>>>> v3.4.6
 		/*
 		 * We can speed up thawing tasks if we don't call balance_pgdat
 		 * after returning from the refrigerator
@@ -3294,6 +3352,7 @@ unsigned long global_reclaimable_pages(void)
 	nr = global_page_state(NR_ACTIVE_FILE) +
 	     global_page_state(NR_INACTIVE_FILE);
 
+<<<<<<< HEAD
 #ifndef CONFIG_RUNTIME_COMPCACHE
 	if (nr_swap_pages > 0)
 		nr += global_page_state(NR_ACTIVE_ANON) +
@@ -3438,6 +3497,28 @@ unsigned long rtcc_reclaim_pages(unsigned long nr_to_reclaim, int swappiness, un
 	return nr_reclaimed;
 }
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+	if (nr_swap_pages > 0)
+		nr += global_page_state(NR_ACTIVE_ANON) +
+		      global_page_state(NR_INACTIVE_ANON);
+
+	return nr;
+}
+
+unsigned long zone_reclaimable_pages(struct zone *zone)
+{
+	int nr;
+
+	nr = zone_page_state(zone, NR_ACTIVE_FILE) +
+	     zone_page_state(zone, NR_INACTIVE_FILE);
+
+	if (nr_swap_pages > 0)
+		nr += zone_page_state(zone, NR_ACTIVE_ANON) +
+		      zone_page_state(zone, NR_INACTIVE_ANON);
+
+	return nr;
+}
+>>>>>>> v3.4.6
 
 #ifdef CONFIG_HIBERNATION
 /*
@@ -3643,11 +3724,15 @@ static int __zone_reclaim(struct zone *zone, gfp_t gfp_mask, unsigned int order)
 	struct scan_control sc = {
 		.may_writepage = !!(zone_reclaim_mode & RECLAIM_WRITE),
 		.may_unmap = !!(zone_reclaim_mode & RECLAIM_SWAP),
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 		.may_swap = 0,
 #else
 		.may_swap = 1,
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+		.may_swap = 1,
+>>>>>>> v3.4.6
 		.nr_to_reclaim = max_t(unsigned long, nr_pages,
 				       SWAP_CLUSTER_MAX),
 		.gfp_mask = gfp_mask,

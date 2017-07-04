@@ -715,11 +715,17 @@ static void __enable_runtime(struct rq *rq)
 
 		raw_spin_lock(&rt_b->rt_runtime_lock);
 		raw_spin_lock(&rt_rq->rt_runtime_lock);
+<<<<<<< HEAD
 		if (rt_rq->rt_runtime == RUNTIME_INF) {
 			rt_rq->rt_runtime = rt_b->rt_runtime;
 			rt_rq->rt_time = 0;
 			rt_rq->rt_throttled = 0;
 		}
+=======
+		rt_rq->rt_runtime = rt_b->rt_runtime;
+		rt_rq->rt_time = 0;
+		rt_rq->rt_throttled = 0;
+>>>>>>> v3.4.6
 		raw_spin_unlock(&rt_rq->rt_runtime_lock);
 		raw_spin_unlock(&rt_b->rt_runtime_lock);
 	}
@@ -1985,8 +1991,11 @@ static void watchdog(struct rq *rq, struct task_struct *p)
 
 static void task_tick_rt(struct rq *rq, struct task_struct *p, int queued)
 {
+<<<<<<< HEAD
 	struct sched_rt_entity *rt_se = &p->rt;
 
+=======
+>>>>>>> v3.4.6
 	update_curr_rt(rq);
 
 	watchdog(rq, p);
@@ -2004,6 +2013,7 @@ static void task_tick_rt(struct rq *rq, struct task_struct *p, int queued)
 	p->rt.time_slice = RR_TIMESLICE;
 
 	/*
+<<<<<<< HEAD
 	 * Requeue to the end of queue if we (and all of our ancestors) are the
 	 * only element on the queue
 	 */
@@ -2013,6 +2023,14 @@ static void task_tick_rt(struct rq *rq, struct task_struct *p, int queued)
 			set_tsk_need_resched(p);
 			return;
 		}
+=======
+	 * Requeue to the end of queue if we are not the only element
+	 * on the queue:
+	 */
+	if (p->rt.run_list.prev != p->rt.run_list.next) {
+		requeue_task_rt(rq, p, 0);
+		set_tsk_need_resched(p);
+>>>>>>> v3.4.6
 	}
 }
 

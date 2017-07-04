@@ -301,6 +301,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int subdev_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct video_device *vdev = video_devdata(file);
@@ -313,6 +314,8 @@ static int subdev_mmap(struct file *file, struct vm_area_struct *vma)
 	return v4l2_subdev_call(sd, core, mmap, vma);
 }
 
+=======
+>>>>>>> v3.4.6
 static long subdev_ioctl(struct file *file, unsigned int cmd,
 	unsigned long arg)
 {
@@ -342,7 +345,10 @@ const struct v4l2_file_operations v4l2_subdev_fops = {
 	.unlocked_ioctl = subdev_ioctl,
 	.release = subdev_close,
 	.poll = subdev_poll,
+<<<<<<< HEAD
 	.mmap = subdev_mmap,
+=======
+>>>>>>> v3.4.6
 };
 
 void v4l2_subdev_init(struct v4l2_subdev *sd, const struct v4l2_subdev_ops *ops)

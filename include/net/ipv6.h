@@ -252,6 +252,7 @@ static inline void fl6_sock_release(struct ip6_flowlabel *fl)
 		atomic_dec(&fl->users);
 }
 
+<<<<<<< HEAD
 extern void icmpv6_notify(struct sk_buff *skb, u8 type, u8 code, __be32 info);
 
 int icmpv6_push_pending_frames(struct sock *sk, struct flowi6 *fl6,
@@ -260,6 +261,8 @@ int icmpv6_push_pending_frames(struct sock *sk, struct flowi6 *fl6,
 struct dst_entry *icmpv6_route_lookup(struct net *net, struct sk_buff *skb,
 				      struct sock *sk, struct flowi6 *fl6);
 
+=======
+>>>>>>> v3.4.6
 extern int 			ip6_ra_control(struct sock *sk, int sel);
 
 extern int			ipv6_parse_hopopts(struct sk_buff *skb);
@@ -302,6 +305,7 @@ static inline int ipv6_addr_src_scope(const struct in6_addr *addr)
 	return __ipv6_addr_src_scope(__ipv6_addr_type(addr));
 }
 
+<<<<<<< HEAD
 static inline bool __ipv6_addr_needs_scope_id(int type)
 {
 	return type & IPV6_ADDR_LINKLOCAL ||
@@ -314,6 +318,8 @@ static inline __u32 ipv6_iface_scope_id(const struct in6_addr *addr, int iface)
 	return __ipv6_addr_needs_scope_id(__ipv6_addr_type(addr)) ? iface : 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static inline int ipv6_addr_cmp(const struct in6_addr *a1, const struct in6_addr *a2)
 {
 	return memcmp(a1, a2, sizeof(struct in6_addr));

@@ -259,6 +259,7 @@ config DMA_SA11X0
 	  SA-1110 SoCs.  This DMA engine can only be used with on-chip
 	  devices.
 
+<<<<<<< HEAD
 config MMP_TDMA
 	bool "MMP Two-Channel DMA support"
 	depends on ARCH_MMP
@@ -269,6 +270,8 @@ config MMP_TDMA
 
 	  Say Y here if you enabled MMP ADMA, otherwise say N.
 
+=======
+>>>>>>> v3.4.6
 config DMA_ENGINE
 	bool
 

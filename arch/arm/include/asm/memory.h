@@ -49,6 +49,7 @@
  * and PAGE_OFFSET - it must be within 32MB of the kernel text.
  */
 #ifndef CONFIG_THUMB2_KERNEL
+<<<<<<< HEAD
 #if !defined(CONFIG_TEXT_OFFSET) || (CONFIG_TEXT_OFFSET < 8*1024*1024)
 #define MODULES_VADDR		(PAGE_OFFSET - 16*1024*1024)
 #else
@@ -58,6 +59,10 @@
 #define MODULES_VADDR		(PAGE_OFFSET - 8*1024*1024)
 #endif
 #else
+=======
+#define MODULES_VADDR		(PAGE_OFFSET - 16*1024*1024)
+#else
+>>>>>>> v3.4.6
 /* smaller range for Thumb-2 symbols relocation (2^24)*/
 #define MODULES_VADDR		(PAGE_OFFSET - 8*1024*1024)
 #endif

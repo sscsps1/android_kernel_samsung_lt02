@@ -155,7 +155,10 @@ struct mv_otg {
 	spinlock_t wq_lock;
 
 	struct mv_usb_platform_data *pdata;
+<<<<<<< HEAD
 	struct notifier_block notifier;
+=======
+>>>>>>> v3.4.6
 
 	unsigned int active;
 	unsigned int clock_gating;

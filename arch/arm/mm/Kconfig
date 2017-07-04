@@ -388,10 +388,13 @@ config CPU_PJ4
 	select CPU_V7
 	select ARM_THUMBEE
 
+<<<<<<< HEAD
 config CPU_PJ4B
 	bool
 	select CPU_V7
 	select ARM_THUMBEE
+=======
+>>>>>>> v3.4.6
 # ARMv6
 config CPU_V6
 	bool "Support ARM V6 processor" if ARCH_INTEGRATOR || MACH_REALVIEW_EB || MACH_REALVIEW_PBX
@@ -868,6 +871,7 @@ config CACHE_PL310
 	  This option enables optimisations for the PL310 cache
 	  controller.
 
+<<<<<<< HEAD
 config CACHE_L2X0_PREFETCH
 	bool "Enable prefetch modes for L2x0 cache"
 	depends on CACHE_L2X0
@@ -884,6 +888,8 @@ config CACHE_L2X0_PREFETCH_OFFSET
 	  According to the SPEC the valid values can be 0-7, 15, 23 and 31,
 	  other values are not supported by PL310
 
+=======
+>>>>>>> v3.4.6
 config CACHE_TAUROS2
 	bool "Enable the Tauros2 L2 cache controller"
 	depends on (ARCH_DOVE || ARCH_MMP || CPU_PJ4)
@@ -893,6 +899,7 @@ config CACHE_TAUROS2
 	  This option enables the Tauros2 L2 cache controller (as
 	  found on PJ1/PJ4).
 
+<<<<<<< HEAD
 config CACHE_TAUROS2_PREFETCH_OFF
 	bool "Disable prefetch mode for L2 cache"
 	depends on CACHE_TAUROS2
@@ -923,6 +930,8 @@ config CACHE_TAUROS3
 	  This option enables the Tauros3 L2 cache controller (as
 	  found on PJ4b).
 
+=======
+>>>>>>> v3.4.6
 config CACHE_XSC3L2
 	bool "Enable the L2 cache on XScale3"
 	depends on CPU_XSC3
@@ -968,6 +977,7 @@ config ARCH_HAS_BARRIERS
 	help
 	  This option allows the use of custom mandatory barriers
 	  included via the mach/barriers.h file.
+<<<<<<< HEAD
 
 config CACHE_TAUROS3_WRITETHROUGH
 	bool "Force Tauros3 L2 cache write through"
@@ -1003,3 +1013,5 @@ config PJ4_RETURNSTACK_ISSUE
 	help
 		This option enables the workaround for Marvell PJ4 to disable return
 		stack which might cause system unstable.
+=======
+>>>>>>> v3.4.6

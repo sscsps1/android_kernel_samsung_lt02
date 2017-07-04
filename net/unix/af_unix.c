@@ -1446,7 +1446,11 @@ static int unix_dgram_sendmsg(struct kiocb *kiocb, struct socket *sock,
 	if (NULL == siocb->scm)
 		siocb->scm = &tmp_scm;
 	wait_for_unix_gc();
+<<<<<<< HEAD
 	err = scm_send(sock, msg, siocb->scm, false);
+=======
+	err = scm_send(sock, msg, siocb->scm);
+>>>>>>> v3.4.6
 	if (err < 0)
 		return err;
 
@@ -1607,7 +1611,11 @@ static int unix_stream_sendmsg(struct kiocb *kiocb, struct socket *sock,
 	if (NULL == siocb->scm)
 		siocb->scm = &tmp_scm;
 	wait_for_unix_gc();
+<<<<<<< HEAD
 	err = scm_send(sock, msg, siocb->scm, false);
+=======
+	err = scm_send(sock, msg, siocb->scm);
+>>>>>>> v3.4.6
 	if (err < 0)
 		return err;
 
@@ -1987,7 +1995,11 @@ again:
 			if ((UNIXCB(skb).pid  != siocb->scm->pid) ||
 			    (UNIXCB(skb).cred != siocb->scm->cred))
 				break;
+<<<<<<< HEAD
 		} else if (test_bit(SOCK_PASSCRED, &sock->flags)) {
+=======
+		} else {
+>>>>>>> v3.4.6
 			/* Copy credentials */
 			scm_set_cred(siocb->scm, UNIXCB(skb).pid, UNIXCB(skb).cred);
 			check_creds = 1;

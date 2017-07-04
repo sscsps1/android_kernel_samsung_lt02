@@ -1085,7 +1085,11 @@ static int __init rpmsg_init(void)
 
 	return ret;
 }
+<<<<<<< HEAD
 module_init(rpmsg_init);
+=======
+subsys_initcall(rpmsg_init);
+>>>>>>> v3.4.6
 
 static void __exit rpmsg_fini(void)
 {

@@ -35,6 +35,7 @@
 
 #include <asm/io.h>
 
+<<<<<<< HEAD
 #include <plat/pxa3xx_onenand.h>
 
 #ifdef CONFIG_MTD_ONENAND_PXA3xx
@@ -43,6 +44,8 @@ extern void pxa3xx_onenand_release_device(struct mtd_info *mtd);
 #endif
 
 
+=======
+>>>>>>> v3.4.6
 /*
  * Multiblock erase if number of blocks to erase is 2 or more.
  * Maximum number of blocks for simultaneous erase is 64.
@@ -236,7 +239,11 @@ static int onenand_bufferram_address(struct onenand_chip *this, int block)
  *
  * Setup Start Address 8 Register (F107h)
  */
+<<<<<<< HEAD
 static int onenand_page_address(struct onenand_chip *this, int page, int sector)
+=======
+static int onenand_page_address(int page, int sector)
+>>>>>>> v3.4.6
 {
 	/* Flash Page Address, Flash Sector Address */
 	int fpa, fsa;
@@ -244,9 +251,12 @@ static int onenand_page_address(struct onenand_chip *this, int page, int sector)
 	fpa = page & ONENAND_FPA_MASK;
 	fsa = sector & ONENAND_FSA_MASK;
 
+<<<<<<< HEAD
 	if (ONENAND_IS_4KB_PAGE(this))
 		fsa |= ((sector & ONENAND_4K_FSA_MSB_MASK) << ONENAND_4K_FSA_MSB_SHIFT);
 
+=======
+>>>>>>> v3.4.6
 	return ((fpa << ONENAND_FPA_SHIFT) | fsa);
 }
 
@@ -381,6 +391,7 @@ EXPORT_SYMBOL(flexonenand_region);
  */
 static int onenand_command(struct mtd_info *mtd, int cmd, loff_t addr, size_t len)
 {
+<<<<<<< HEAD
 	struct pxa3xx_onenand_info *info =
 		container_of(mtd, struct pxa3xx_onenand_info, mtd);
 	struct onenand_chip *this = mtd->priv;
@@ -398,6 +409,10 @@ static int onenand_command(struct mtd_info *mtd, int cmd, loff_t addr, size_t le
 				(int)(oldaddr >> this->erase_shift),
 				(int)(addr >> this->erase_shift));
 	}
+=======
+	struct onenand_chip *this = mtd->priv;
+	int value, block, page;
+>>>>>>> v3.4.6
 
 	/* Address translation */
 	switch (cmd) {
@@ -499,7 +514,11 @@ static int onenand_command(struct mtd_info *mtd, int cmd, loff_t addr, size_t le
 		}
 
 		/* Write 'FPA, FSA' of Flash */
+<<<<<<< HEAD
 		value = onenand_page_address(this, page, sectors);
+=======
+		value = onenand_page_address(page, sectors);
+>>>>>>> v3.4.6
 		this->write_word(value, this->base + ONENAND_REG_START_ADDRESS8);
 
 		/* Write 'BSA, BSC' of DataRAM */
@@ -533,7 +552,11 @@ static inline int onenand_read_ecc(struct onenand_chip *this)
 			continue;
 		if (ecc & FLEXONENAND_UNCORRECTABLE_ERROR)
 			return ONENAND_ECC_2BIT_ALL;
+<<<<<<< HEAD
 		else if ((ecc & ONENAND_ECC_4BIT) || ((ecc >> 8) & ONENAND_ECC_4BIT))
+=======
+		else
+>>>>>>> v3.4.6
 			result = ONENAND_ECC_1BIT_ALL;
 	}
 
@@ -994,9 +1017,12 @@ static int onenand_get_device(struct mtd_info *mtd, int new_state)
 {
 	struct onenand_chip *this = mtd->priv;
 	DECLARE_WAITQUEUE(wait, current);
+<<<<<<< HEAD
 #ifdef CONFIG_MTD_ONENAND_PXA3xx
 	pxa3xx_onenand_get_device(mtd);
 #endif
+=======
+>>>>>>> v3.4.6
 
 	/*
 	 * Grab the lock and see if the device is available
@@ -1041,9 +1067,12 @@ static void onenand_release_device(struct mtd_info *mtd)
 	this->state = FL_READY;
 	wake_up(&this->wq);
 	spin_unlock(&this->chip_lock);
+<<<<<<< HEAD
 #ifdef CONFIG_MTD_ONENAND_PXA3xx
 	pxa3xx_onenand_release_device(mtd);
 #endif
+=======
+>>>>>>> v3.4.6
 }
 
 /**
@@ -2263,8 +2292,15 @@ static int onenand_write_oob(struct mtd_info *mtd, loff_t to,
 static int onenand_block_isbad_nolock(struct mtd_info *mtd, loff_t ofs, int allowbbt)
 {
 	struct onenand_chip *this = mtd->priv;
+<<<<<<< HEAD
 
 	return this->block_bad(mtd, ofs, allowbbt);
+=======
+	struct bbm_info *bbm = this->bbm;
+
+	/* Return info from the table */
+	return bbm->isbad_bbt(mtd, ofs, allowbbt);
+>>>>>>> v3.4.6
 }
 
 
@@ -2546,11 +2582,14 @@ static int onenand_erase(struct mtd_info *mtd, struct erase_info *instr)
 
 	/* Deselect and wake up anyone waiting on the device */
 	onenand_release_device(mtd);
+<<<<<<< HEAD
 	if (ret && (this->options & ONENAND_RELOC_IFBAD)) {
 		this->block_markbad(mtd, addr);
 		instr->state = MTD_ERASE_DONE;
 		ret = 0;
 	}
+=======
+>>>>>>> v3.4.6
 
 	/* Do call back function */
 	if (!ret) {
@@ -2653,6 +2692,7 @@ static int onenand_block_markbad(struct mtd_info *mtd, loff_t ofs)
 		return ret;
 	}
 
+<<<<<<< HEAD
 #ifndef CONFIG_PXA3XX_BBM
 	onenand_get_device(mtd, FL_WRITING);
 	ret = mtd_block_markbad(mtd, ofs);
@@ -2666,6 +2706,11 @@ static int onenand_block_markbad(struct mtd_info *mtd, loff_t ofs)
 	*/
 	ret = mtd_block_markbad(mtd, ofs);
 #endif
+=======
+	onenand_get_device(mtd, FL_WRITING);
+	ret = mtd_block_markbad(mtd, ofs);
+	onenand_release_device(mtd);
+>>>>>>> v3.4.6
 	return ret;
 }
 
@@ -3495,10 +3540,13 @@ static void onenand_check_features(struct mtd_info *mtd)
 		this->options |= ONENAND_HAS_UNLOCK_ALL;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_PXA3XX_BBM
 	this->options |= ONENAND_RELOC_IFBAD;
 #endif
 
+=======
+>>>>>>> v3.4.6
 	if (this->options & ONENAND_HAS_CONT_LOCK)
 		printk(KERN_DEBUG "Lock scheme is Continuous Lock\n");
 	if (this->options & ONENAND_HAS_UNLOCK_ALL)
@@ -3969,7 +4017,10 @@ static int onenand_probe(struct mtd_info *mtd)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_PXA95x_SUSPEND
+=======
+>>>>>>> v3.4.6
 /**
  * onenand_suspend - [MTD Interface] Suspend the OneNAND flash
  * @param mtd		MTD device structure
@@ -3993,7 +4044,10 @@ static void onenand_resume(struct mtd_info *mtd)
 		printk(KERN_ERR "%s: resume() called for the chip which is not "
 				"in suspended state\n", __func__);
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 
 /**
  * onenand_scan - [OneNAND Interface] Scan for the OneNAND device
@@ -4153,10 +4207,15 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
 	mtd->_sync = onenand_sync;
 	mtd->_lock = onenand_lock;
 	mtd->_unlock = onenand_unlock;
+<<<<<<< HEAD
 #ifndef CONFIG_PXA95x_SUSPEND
 	mtd->_suspend = onenand_suspend;
 	mtd->_resume = onenand_resume;
 #endif
+=======
+	mtd->_suspend = onenand_suspend;
+	mtd->_resume = onenand_resume;
+>>>>>>> v3.4.6
 	mtd->_block_isbad = onenand_block_isbad;
 	mtd->_block_markbad = onenand_block_markbad;
 	mtd->owner = THIS_MODULE;

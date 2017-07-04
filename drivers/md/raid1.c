@@ -2486,9 +2486,16 @@ static sector_t sync_request(struct mddev *mddev, sector_t sector_nr, int *skipp
 	 */
 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery)) {
 		atomic_set(&r1_bio->remaining, read_targets);
+<<<<<<< HEAD
 		for (i = 0; i < conf->raid_disks * 2; i++) {
 			bio = r1_bio->bios[i];
 			if (bio->bi_end_io == end_sync_read) {
+=======
+		for (i = 0; i < conf->raid_disks * 2 && read_targets; i++) {
+			bio = r1_bio->bios[i];
+			if (bio->bi_end_io == end_sync_read) {
+				read_targets--;
+>>>>>>> v3.4.6
 				md_sync_acct(bio->bi_bdev, nr_sectors);
 				generic_make_request(bio);
 			}

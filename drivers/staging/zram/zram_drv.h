@@ -26,8 +26,28 @@
  */
 static const unsigned max_num_devices = 32;
 
+<<<<<<< HEAD
 /*-- Configurable parameters */
 
+=======
+/*
+ * Stored at beginning of each compressed object.
+ *
+ * It stores back-reference to table entry which points to this
+ * object. This is required to support memory defragmentation.
+ */
+struct zobj_header {
+#if 0
+	u32 table_idx;
+#endif
+};
+
+/*-- Configurable parameters */
+
+/* Default zram disk size: 25% of total RAM */
+static const unsigned default_disksize_perc_ram = 25;
+
+>>>>>>> v3.4.6
 /*
  * Pages that compress to size greater than this are stored
  * uncompressed in memory.
@@ -36,8 +56,13 @@ static const size_t max_zpage_size = PAGE_SIZE / 4 * 3;
 
 /*
  * NOTE: max_zpage_size must be less than or equal to:
+<<<<<<< HEAD
  *   ZS_MAX_ALLOC_SIZE. Otherwise, zs_malloc() would
  * always return failure.
+=======
+ *   ZS_MAX_ALLOC_SIZE - sizeof(struct zobj_header)
+ * otherwise, xv_malloc() would always return failure.
+>>>>>>> v3.4.6
  */
 
 /*-- End of configurable params */
@@ -53,6 +78,12 @@ static const size_t max_zpage_size = PAGE_SIZE / 4 * 3;
 
 /* Flags for zram pages (table[page_no].flags) */
 enum zram_pageflags {
+<<<<<<< HEAD
+=======
+	/* Page is stored uncompressed */
+	ZRAM_UNCOMPRESSED,
+
+>>>>>>> v3.4.6
 	/* Page consists entirely of zeros */
 	ZRAM_ZERO,
 
@@ -63,11 +94,19 @@ enum zram_pageflags {
 
 /* Allocated for each disk page */
 struct table {
+<<<<<<< HEAD
 	unsigned long handle;
 	u16 size;	/* object size (excluding header) */
 	u8 count;	/* object ref count (not yet used) */
 	u8 flags;
 } __aligned(4);
+=======
+	void *handle;
+	u16 size;	/* object size (excluding header) */
+	u8 count;	/* object ref count (not yet used) */
+	u8 flags;
+} __attribute__((aligned(4)));
+>>>>>>> v3.4.6
 
 struct zram_stats {
 	u64 compr_size;		/* compressed size of pages stored */
@@ -80,6 +119,7 @@ struct zram_stats {
 	u32 pages_zero;		/* no. of zero filled pages */
 	u32 pages_stored;	/* no. of pages currently stored */
 	u32 good_compress;	/* % of pages with compression ratio<=50% */
+<<<<<<< HEAD
 	u32 bad_compress;	/* % of pages with compression ratio>=75% */
 };
 
@@ -92,6 +132,16 @@ struct zram_meta {
 
 struct zram {
 	struct zram_meta *meta;
+=======
+	u32 pages_expand;	/* % of incompressible pages */
+};
+
+struct zram {
+	struct zs_pool *mem_pool;
+	void *compress_workmem;
+	void *compress_buffer;
+	struct table *table;
+>>>>>>> v3.4.6
 	spinlock_t stat64_lock;	/* protect 64-bit stats */
 	struct rw_semaphore lock; /* protect compression buffers and table
 				   * against concurrent read and writes */
@@ -115,9 +165,14 @@ unsigned int zram_get_num_devices(void);
 extern struct attribute_group zram_disk_attr_group;
 #endif
 
+<<<<<<< HEAD
 extern void zram_reset_device(struct zram *zram);
 extern struct zram_meta *zram_meta_alloc(u64 disksize);
 extern void zram_meta_free(struct zram_meta *meta);
 extern void zram_init_device(struct zram *zram, struct zram_meta *meta);
+=======
+extern int zram_init_device(struct zram *zram);
+extern void __zram_reset_device(struct zram *zram);
+>>>>>>> v3.4.6
 
 #endif

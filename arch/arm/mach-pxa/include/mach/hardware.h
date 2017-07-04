@@ -103,7 +103,10 @@
  *  PXA935	B0	0x56056936	0x6E653013
  *  PXA935	B1	0x56056938	0x8E653013
  */
+<<<<<<< HEAD
 extern unsigned int pxa_chip_id;
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_PXA25x
 #define __cpu_is_pxa210(id)				\
 	({						\
@@ -298,6 +301,7 @@ extern unsigned int pxa_chip_id;
 #define __cpu_is_pxa93x(id)	(0)
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA978
 #define __cpu_is_pxa978(id)					\
 	({							\
@@ -320,6 +324,12 @@ extern unsigned int pxa_chip_id;
 	({						\
 		__cpu_is_pxa955(id)			\
 			|| __cpu_is_pxa978(id);		\
+=======
+#ifdef CONFIG_PXA95x
+#define __cpu_is_pxa95x(id)				\
+	({						\
+		__cpu_is_pxa955(id);			\
+>>>>>>> v3.4.6
 	})
 #else
 #define __cpu_is_pxa95x(id)	(0)
@@ -344,6 +354,7 @@ extern unsigned int pxa_chip_id;
 	({						\
 		__cpu_is_pxa95x(read_cpuid_id());	\
 	})
+<<<<<<< HEAD
 #define cpu_is_pxa978()					\
 	({						\
 		__cpu_is_pxa978(read_cpuid_id());	\
@@ -352,6 +363,8 @@ extern unsigned int pxa_chip_id;
 	({						\
 		__cpu_is_pxa978_Dx(read_cpuid_id());	\
 	})
+=======
+>>>>>>> v3.4.6
 
 /*
  * return current memory and LCD clock frequency in units of 10kHz

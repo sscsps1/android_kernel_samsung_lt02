@@ -183,8 +183,11 @@ header-y += if_plip.h
 header-y += if_ppp.h
 header-y += if_pppol2tp.h
 header-y += if_pppox.h
+<<<<<<< HEAD
 header-y += if_pppolac.h
 header-y += if_pppopns.h
+=======
+>>>>>>> v3.4.6
 header-y += if_slip.h
 header-y += if_strip.h
 header-y += if_team.h
@@ -274,6 +277,10 @@ header-y += netfilter_ipv4.h
 header-y += netfilter_ipv6.h
 header-y += netlink.h
 header-y += netrom.h
+<<<<<<< HEAD
+=======
+header-y += nfc.h
+>>>>>>> v3.4.6
 header-y += nfs.h
 header-y += nfs2.h
 header-y += nfs3.h
@@ -376,7 +383,10 @@ header-y += tty.h
 header-y += types.h
 header-y += udf_fs_i.h
 header-y += udp.h
+<<<<<<< HEAD
 header-y += uhid.h
+=======
+>>>>>>> v3.4.6
 header-y += uinput.h
 header-y += uio.h
 header-y += ultrasound.h

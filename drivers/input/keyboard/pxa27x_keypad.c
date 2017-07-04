@@ -27,14 +27,18 @@
 #include <linux/err.h>
 #include <linux/input/matrix_keypad.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/workqueue.h>
+=======
+>>>>>>> v3.4.6
 
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 
 #include <mach/hardware.h>
 #include <plat/pxa27x_keypad.h>
+<<<<<<< HEAD
 #include <mach/gpio-edge.h>
 #include <plat/mfp.h> 
 
@@ -42,6 +46,8 @@
 #include <linux/power/fake-sysoff.h>
 #endif
 
+=======
+>>>>>>> v3.4.6
 /*
  * Keypad Controller registers
  */
@@ -108,6 +114,7 @@
 #define MAX_MATRIX_KEY_NUM	(MAX_MATRIX_KEY_ROWS * MAX_MATRIX_KEY_COLS)
 #define MAX_KEYPAD_KEYS		(MAX_MATRIX_KEY_NUM + MAX_DIRECT_KEY_NUM)
 
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
 int is_volumeUp_pressed;	
 #endif
@@ -115,6 +122,8 @@ extern struct class *sec_class;
 static int is_key_pressed;
 static int sec_debug_mode = 0;
 
+=======
+>>>>>>> v3.4.6
 struct pxa27x_keypad {
 	struct pxa27x_keypad_platform_data *pdata;
 
@@ -132,6 +141,7 @@ struct pxa27x_keypad {
 	uint32_t direct_key_state;
 
 	unsigned int direct_key_mask;
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	struct work_struct	keypad_lpm_work;
 	struct workqueue_struct	*keypad_lpm_wq;
@@ -141,6 +151,10 @@ struct pxa27x_keypad {
 };
 
 static struct pxa27x_keypad *g_pxa27x_keypad;
+=======
+};
+
+>>>>>>> v3.4.6
 static void pxa27x_keypad_build_keycode(struct pxa27x_keypad *keypad)
 {
 	struct pxa27x_keypad_platform_data *pdata = keypad->pdata;
@@ -207,7 +221,11 @@ static void pxa27x_keypad_scan_matrix(struct pxa27x_keypad *keypad)
 {
 	struct pxa27x_keypad_platform_data *pdata = keypad->pdata;
 	struct input_dev *input_dev = keypad->input_dev;
+<<<<<<< HEAD
 	int row, col, num_keys_pressed;
+=======
+	int row, col, num_keys_pressed = 0;
+>>>>>>> v3.4.6
 	uint32_t new_state[MAX_MATRIX_KEY_COLS];
 	uint32_t kpas = keypad_readl(KPAS);
 
@@ -217,9 +235,13 @@ static void pxa27x_keypad_scan_matrix(struct pxa27x_keypad *keypad)
 
 	if (num_keys_pressed == 0)
 		goto scan;
+<<<<<<< HEAD
 	/* do not scan more than three keys to avoid fake key */
 	if (num_keys_pressed > 3)
 		return;
+=======
+
+>>>>>>> v3.4.6
 	if (num_keys_pressed == 1) {
 		col = KPAS_CP(kpas);
 		row = KPAS_RP(kpas);
@@ -260,12 +282,17 @@ scan:
 		for (row = 0; row < pdata->matrix_key_rows; row++) {
 			if ((bits_changed & (1 << row)) == 0)
 				continue;
+<<<<<<< HEAD
 			is_key_pressed = new_state[col] & (1 << row); // AT + keyshort cmd
 	//		printk("new_state = %d, last bits_changed = %d\n",new_state[col], bits_changed);
+=======
+
+>>>>>>> v3.4.6
 			code = MATRIX_SCAN_CODE(row, col, MATRIX_ROW_SHIFT);
 			input_event(input_dev, EV_MSC, MSC_SCAN, code);
 			input_report_key(input_dev, keypad->keycodes[code],
 					 new_state[col] & (1 << row));
+<<<<<<< HEAD
 #ifdef CONFIG_KERNEL_DEBUG_SEC
  			 if (keypad->keycodes[code] == KEY_VOLUMEUP)
   			{
@@ -273,6 +300,8 @@ scan:
 //				printk("%s is_volumeUp_pressed( %d ) \n",__func__,is_volumeUp_pressed);
   			}
 #endif 			
+=======
+>>>>>>> v3.4.6
 		}
 	}
 	input_sync(input_dev);
@@ -331,6 +360,7 @@ static void pxa27x_keypad_scan_rotary(struct pxa27x_keypad *keypad)
 		report_rotary_event(keypad, 1, rotary_delta(kprec >> 16));
 }
 
+<<<<<<< HEAD
 static int get_sec_debug_mode(char *str)
 {
 	get_option(&str, &sec_debug_mode);
@@ -345,6 +375,8 @@ int sec_debug_mode_get()
 
 __setup("androidboot.debug_level=",get_sec_debug_mode);
 
+=======
+>>>>>>> v3.4.6
 static void pxa27x_keypad_scan_direct(struct pxa27x_keypad *keypad)
 {
 	struct pxa27x_keypad_platform_data *pdata = keypad->pdata;
@@ -358,6 +390,7 @@ static void pxa27x_keypad_scan_direct(struct pxa27x_keypad *keypad)
 	if (pdata->enable_rotary0 || pdata->enable_rotary1)
 		pxa27x_keypad_scan_rotary(keypad);
 
+<<<<<<< HEAD
 	/*
 	 * The KPDR_DK only output the key pin level, so it relates to board,
 	 * and low level may be active.
@@ -379,6 +412,10 @@ static void pxa27x_keypad_scan_direct(struct pxa27x_keypad *keypad)
 		}
 	}
 #endif
+=======
+	new_state = KPDK_DK(kpdk) & keypad->direct_key_mask;
+	bits_changed = keypad->direct_key_state ^ new_state;
+>>>>>>> v3.4.6
 
 	if (bits_changed == 0)
 		return;
@@ -386,8 +423,12 @@ static void pxa27x_keypad_scan_direct(struct pxa27x_keypad *keypad)
 	for (i = 0; i < pdata->direct_key_num; i++) {
 		if (bits_changed & (1 << i)) {
 			int code = MAX_MATRIX_KEY_NUM + i;
+<<<<<<< HEAD
 			is_key_pressed = new_state & (1 << i); // AT + keyshort cmd
 //			printk("new_state = %d, new_state & (1 << i) = %d, last bits_changed = %d\n",new_state, new_state & (1 << i),bits_changed);
+=======
+
+>>>>>>> v3.4.6
 			input_event(input_dev, EV_MSC, MSC_SCAN, code);
 			input_report_key(input_dev, keypad->keycodes[code],
 					 new_state & (1 << i));
@@ -409,6 +450,7 @@ static irqreturn_t pxa27x_keypad_irq_handler(int irq, void *dev_id)
 {
 	struct pxa27x_keypad *keypad = dev_id;
 	unsigned long kpc = keypad_readl(KPC);
+<<<<<<< HEAD
 	clear_wakeup_event(keypad);
 #ifdef CONFIG_FAKE_SYSTEMOFF
 	/*
@@ -425,13 +467,21 @@ static irqreturn_t pxa27x_keypad_irq_handler(int irq, void *dev_id)
 	kpc = kpc;
 	queue_work(keypad->keypad_lpm_wq, &keypad->keypad_lpm_work);
 #else
+=======
+
+	clear_wakeup_event(keypad);
+
+>>>>>>> v3.4.6
 	if (kpc & KPC_DI)
 		pxa27x_keypad_scan_direct(keypad);
 
 	if (kpc & KPC_MI)
 		pxa27x_keypad_scan_matrix(keypad);
 
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 	return IRQ_HANDLED;
 }
 
@@ -464,6 +514,7 @@ static void pxa27x_keypad_config(struct pxa27x_keypad *keypad)
 	if (pdata->direct_key_num > direct_key_num)
 		direct_key_num = pdata->direct_key_num;
 
+<<<<<<< HEAD
 	/*
 	 * Direct keys usage may not start from KP_DKIN0, check the platfrom
 	 * mask data to config the specific.
@@ -472,6 +523,9 @@ static void pxa27x_keypad_config(struct pxa27x_keypad *keypad)
 		keypad->direct_key_mask = pdata->direct_key_mask;
 	else
 		keypad->direct_key_mask = ((1 << direct_key_num) - 1) & ~mask;
+=======
+	keypad->direct_key_mask = ((2 << direct_key_num) - 1) & ~mask;
+>>>>>>> v3.4.6
 
 	/* enable direct key */
 	if (direct_key_num)
@@ -487,7 +541,11 @@ static int pxa27x_keypad_open(struct input_dev *dev)
 	struct pxa27x_keypad *keypad = input_get_drvdata(dev);
 
 	/* Enable unit clock */
+<<<<<<< HEAD
 	clk_prepare_enable(keypad->clk);
+=======
+	clk_enable(keypad->clk);
+>>>>>>> v3.4.6
 	pxa27x_keypad_config(keypad);
 
 	return 0;
@@ -498,6 +556,7 @@ static void pxa27x_keypad_close(struct input_dev *dev)
 	struct pxa27x_keypad *keypad = input_get_drvdata(dev);
 
 	/* Disable clock unit */
+<<<<<<< HEAD
 	clk_disable_unprepare(keypad->clk);
 }
 
@@ -554,11 +613,17 @@ void trigger_keypad_wakeup(int mfp, void *data)
 	return;
 }
 #endif
+=======
+	clk_disable(keypad->clk);
+}
+
+>>>>>>> v3.4.6
 #ifdef CONFIG_PM
 static int pxa27x_keypad_suspend(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct pxa27x_keypad *keypad = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	u8 i;
 #endif
@@ -577,6 +642,14 @@ static int pxa27x_keypad_suspend(struct device *dev)
 		}
 #endif
 	}
+=======
+
+	clk_disable(keypad->clk);
+
+	if (device_may_wakeup(&pdev->dev))
+		enable_irq_wake(keypad->irq);
+
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -585,6 +658,7 @@ static int pxa27x_keypad_resume(struct device *dev)
 	struct platform_device *pdev = to_platform_device(dev);
 	struct pxa27x_keypad *keypad = platform_get_drvdata(pdev);
 	struct input_dev *input_dev = keypad->input_dev;
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	u8 i;
 #endif
@@ -612,6 +686,22 @@ static int pxa27x_keypad_resume(struct device *dev)
 
 		mutex_unlock(&input_dev->mutex);
 	}
+=======
+
+	if (device_may_wakeup(&pdev->dev))
+		disable_irq_wake(keypad->irq);
+
+	mutex_lock(&input_dev->mutex);
+
+	if (input_dev->users) {
+		/* Enable unit clock */
+		clk_enable(keypad->clk);
+		pxa27x_keypad_config(keypad);
+	}
+
+	mutex_unlock(&input_dev->mutex);
+
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -621,6 +711,7 @@ static const struct dev_pm_ops pxa27x_keypad_pm_ops = {
 };
 #endif
 
+<<<<<<< HEAD
 // AT + KEYSHORT cmd
 static ssize_t keys_read(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -639,6 +730,8 @@ static ssize_t keys_read(struct device *dev, struct device_attribute *attr, char
        return count;
 }
 static DEVICE_ATTR(sec_key_pressed, S_IRUGO, keys_read, NULL);
+=======
+>>>>>>> v3.4.6
 static int __devinit pxa27x_keypad_probe(struct platform_device *pdev)
 {
 	struct pxa27x_keypad_platform_data *pdata = pdev->dev.platform_data;
@@ -646,10 +739,13 @@ static int __devinit pxa27x_keypad_probe(struct platform_device *pdev)
 	struct input_dev *input_dev;
 	struct resource *res;
 	int irq, error;
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	u8 i;
 	struct gpio_edge_desc *c;
 #endif
+=======
+>>>>>>> v3.4.6
 
 	if (pdata == NULL) {
 		dev_err(&pdev->dev, "no platform data defined\n");
@@ -713,8 +809,12 @@ static int __devinit pxa27x_keypad_probe(struct platform_device *pdev)
 
 	input_set_drvdata(input_dev, keypad);
 
+<<<<<<< HEAD
 	input_dev->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_ABS)
 		| BIT_MASK(EV_ABS);
+=======
+	input_dev->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_REP);
+>>>>>>> v3.4.6
 	input_set_capability(input_dev, EV_MSC, MSC_SCAN);
 
 	pxa27x_keypad_build_keycode(keypad);
@@ -724,10 +824,21 @@ static int __devinit pxa27x_keypad_probe(struct platform_device *pdev)
 		input_dev->evbit[0] |= BIT_MASK(EV_REL);
 	}
 
+<<<<<<< HEAD
+=======
+	error = request_irq(irq, pxa27x_keypad_irq_handler, 0,
+			    pdev->name, keypad);
+	if (error) {
+		dev_err(&pdev->dev, "failed to request IRQ\n");
+		goto failed_put_clk;
+	}
+
+>>>>>>> v3.4.6
 	/* Register the input device */
 	error = input_register_device(input_dev);
 	if (error) {
 		dev_err(&pdev->dev, "failed to register input device\n");
+<<<<<<< HEAD
 		goto failed_put_clk;
 	}
 #ifdef CONFIG_CPU_PXA988
@@ -770,6 +881,18 @@ static int __devinit pxa27x_keypad_probe(struct platform_device *pdev)
 
 failed_input_device:
 	input_unregister_device(keypad->input_dev);
+=======
+		goto failed_free_irq;
+	}
+
+	platform_set_drvdata(pdev, keypad);
+	device_init_wakeup(&pdev->dev, 1);
+
+	return 0;
+
+failed_free_irq:
+	free_irq(irq, pdev);
+>>>>>>> v3.4.6
 failed_put_clk:
 	clk_put(keypad->clk);
 failed_free_io:
@@ -786,15 +909,20 @@ static int __devexit pxa27x_keypad_remove(struct platform_device *pdev)
 {
 	struct pxa27x_keypad *keypad = platform_get_drvdata(pdev);
 	struct resource *res;
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	u8 i;
 #endif
+=======
+
+>>>>>>> v3.4.6
 	free_irq(keypad->irq, pdev);
 	clk_put(keypad->clk);
 
 	input_unregister_device(keypad->input_dev);
 	iounmap(keypad->mmio_base);
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 	for (i = 0; i < MAX_DIRECT_KEY_NUM; i++) {
 		if (keypad->gpio_wakeup[i]) {
@@ -804,6 +932,8 @@ static int __devexit pxa27x_keypad_remove(struct platform_device *pdev)
 		}
 	}
 #endif
+=======
+>>>>>>> v3.4.6
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	release_mem_region(res->start, resource_size(res));
 

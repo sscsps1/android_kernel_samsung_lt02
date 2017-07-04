@@ -17,8 +17,11 @@ extern void cpu_resume_mmu(void);
  */
 void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
 {
+<<<<<<< HEAD
 	u32 *ctx = ptr;
 
+=======
+>>>>>>> v3.4.6
 	*save_ptr = virt_to_phys(ptr);
 
 	/* This must correspond to the LDM in cpu_resume() assembly */
@@ -28,6 +31,7 @@ void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
 
 	cpu_do_suspend(ptr);
 
+<<<<<<< HEAD
 #ifndef CONFIG_CPU_PXA988
 	flush_cache_louis();
 #endif
@@ -44,6 +48,9 @@ void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
 	__cpuc_flush_dcache_area(ctx, ptrsz);
 	__cpuc_flush_dcache_area(save_ptr, sizeof(*save_ptr));
 
+=======
+	flush_cache_all();
+>>>>>>> v3.4.6
 	outer_clean_range(*save_ptr, *save_ptr + ptrsz);
 	outer_clean_range(virt_to_phys(save_ptr),
 			  virt_to_phys(save_ptr) + sizeof(*save_ptr));

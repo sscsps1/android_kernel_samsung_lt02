@@ -31,9 +31,15 @@
 #include <linux/random.h>
 #include <linux/hw_breakpoint.h>
 #include <linux/cpuidle.h>
+<<<<<<< HEAD
 #include <linux/console.h>
 
 #include <asm/cacheflush.h>
+=======
+
+#include <asm/cacheflush.h>
+#include <asm/leds.h>
+>>>>>>> v3.4.6
 #include <asm/processor.h>
 #include <asm/thread_notify.h>
 #include <asm/stacktrace.h>
@@ -60,6 +66,7 @@ extern void setup_mm_for_reboot(void);
 
 static volatile int hlt_counter;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 void arch_trigger_all_cpu_backtrace(void)
 {
@@ -72,6 +79,8 @@ void arch_trigger_all_cpu_backtrace(void)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 void disable_hlt(void)
 {
 	hlt_counter++;
@@ -104,6 +113,7 @@ __setup("hlt", hlt_setup);
 extern void call_with_stack(void (*fn)(void *), void *arg, void *sp);
 typedef void (*phys_reset_t)(unsigned long);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_FLUSH_CONSOLE_ON_RESTART
 void arm_machine_flush_console(void)
 {
@@ -129,6 +139,8 @@ void arm_machine_flush_console(void)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 /*
  * A temporary stack to use for CPU reset. This is static so that we
  * don't clobber it with the identity mapping. When running with this
@@ -244,9 +256,15 @@ void cpu_idle(void)
 
 	/* endless idle loop with no priority at all */
 	while (1) {
+<<<<<<< HEAD
 		idle_notifier_call_chain(IDLE_START);
 		tick_nohz_idle_enter();
 		rcu_idle_enter();
+=======
+		tick_nohz_idle_enter();
+		rcu_idle_enter();
+		leds_event(led_idle_start);
+>>>>>>> v3.4.6
 		while (!need_resched()) {
 #ifdef CONFIG_HOTPLUG_CPU
 			if (cpu_is_offline(smp_processor_id()))
@@ -277,9 +295,15 @@ void cpu_idle(void)
 			} else
 				local_irq_enable();
 		}
+<<<<<<< HEAD
 		rcu_idle_exit();
 		tick_nohz_idle_exit();
 		idle_notifier_call_chain(IDLE_END);
+=======
+		leds_event(led_idle_end);
+		rcu_idle_exit();
+		tick_nohz_idle_exit();
+>>>>>>> v3.4.6
 		schedule_preempt_disabled();
 	}
 }
@@ -297,6 +321,7 @@ __setup("reboot=", reboot_setup);
 void machine_shutdown(void)
 {
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	/*
 	 * Disable preemption so we're guaranteed to
 	 * run to power off or reboot and prevent
@@ -306,6 +331,8 @@ void machine_shutdown(void)
 	 */
 	preempt_disable();
 
+=======
+>>>>>>> v3.4.6
 	smp_send_stop();
 #endif
 }
@@ -327,10 +354,13 @@ void machine_restart(char *cmd)
 {
 	machine_shutdown();
 
+<<<<<<< HEAD
 	/* Flush the console to make sure all the relevant messages make it
 	 * out to the console drivers */
 	arm_machine_flush_console();
 
+=======
+>>>>>>> v3.4.6
 	arm_pm_restart(reboot_mode, cmd);
 
 	/* Give a grace period for failure to restart of 1s */
@@ -341,6 +371,7 @@ void machine_restart(char *cmd)
 	while (1);
 }
 
+<<<<<<< HEAD
 /*
  * dump a block of kernel memory from around the given address
  */
@@ -412,6 +443,8 @@ static void show_extra_register_data(struct pt_regs *regs, int nbytes)
 	set_fs(fs);
 }
 
+=======
+>>>>>>> v3.4.6
 void __show_regs(struct pt_regs *regs)
 {
 	unsigned long flags;
@@ -471,8 +504,11 @@ void __show_regs(struct pt_regs *regs)
 		printk("Control: %08x%s\n", ctrl, buf);
 	}
 #endif
+<<<<<<< HEAD
 
 	show_extra_register_data(regs, 128);
+=======
+>>>>>>> v3.4.6
 }
 
 void show_regs(struct pt_regs * regs)

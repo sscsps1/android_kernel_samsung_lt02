@@ -1328,6 +1328,7 @@ config SENSORS_WM831X
 	  This driver can also be built as a module.  If so, the module
 	  will be called wm831x-hwmon.
 
+<<<<<<< HEAD
 config SENSORS_ISL29043
 	tristate "ISL29043 light and proximity sensor"
 	depends on I2C && INPUT
@@ -1338,6 +1339,8 @@ config SENSORS_ISL29043
 	  This driver provides support for ISL29043, which include light
 	  sensor and proximity sensor.
 
+=======
+>>>>>>> v3.4.6
 config SENSORS_WM8350
 	tristate "Wolfson Microelectronics WM835x"
 	depends on MFD_WM8350
@@ -1386,6 +1389,7 @@ config SENSORS_MC13783_ADC
         help
           Support for the A/D converter on MC13783 and MC13892 PMIC.
 
+<<<<<<< HEAD
 config SENSORS_LPS331AP
        tristate "STMicroelectronics LPS331AP Barometer Sensor"
        depends on I2C && INPUT
@@ -1395,6 +1399,8 @@ config SENSORS_LPS331AP
          This driver support STMicroelectronics LPS331AP Barometer
          sensor.Read pressures and temperatures output.
 
+=======
+>>>>>>> v3.4.6
 if ACPI
 
 comment "ACPI drivers"

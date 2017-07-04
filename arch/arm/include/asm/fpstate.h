@@ -68,9 +68,12 @@ struct fp_soft_struct {
 
 struct iwmmxt_struct {
 	unsigned int save[IWMMXT_SIZE / sizeof(unsigned int)];
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 	unsigned int cpu;
 #endif
+=======
+>>>>>>> v3.4.6
 };
 
 union fp_state {

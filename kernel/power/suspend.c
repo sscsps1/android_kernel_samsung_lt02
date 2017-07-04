@@ -24,7 +24,10 @@
 #include <linux/export.h>
 #include <linux/suspend.h>
 #include <linux/syscore_ops.h>
+<<<<<<< HEAD
 #include <linux/rtc.h>
+=======
+>>>>>>> v3.4.6
 #include <trace/events/power.h>
 
 #include "power.h"
@@ -301,6 +304,7 @@ static int enter_state(suspend_state_t state)
 	return error;
 }
 
+<<<<<<< HEAD
 static void pm_suspend_marker(char *annotation)
 {
 	struct timespec ts;
@@ -313,6 +317,8 @@ static void pm_suspend_marker(char *annotation)
 		tm.tm_hour, tm.tm_min, tm.tm_sec, ts.tv_nsec);
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * pm_suspend - Externally visible function for suspending the system.
  * @state: System sleep state to enter.
@@ -327,7 +333,10 @@ int pm_suspend(suspend_state_t state)
 	if (state <= PM_SUSPEND_ON || state >= PM_SUSPEND_MAX)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	pm_suspend_marker("entry");
+=======
+>>>>>>> v3.4.6
 	error = enter_state(state);
 	if (error) {
 		suspend_stats.fail++;
@@ -335,7 +344,10 @@ int pm_suspend(suspend_state_t state)
 	} else {
 		suspend_stats.success++;
 	}
+<<<<<<< HEAD
 	pm_suspend_marker("exit");
+=======
+>>>>>>> v3.4.6
 	return error;
 }
 EXPORT_SYMBOL(pm_suspend);

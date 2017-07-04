@@ -68,7 +68,10 @@ static const char * const iio_chan_type_name_spec[] = {
 	[IIO_ANGL] = "angl",
 	[IIO_TIMESTAMP] = "timestamp",
 	[IIO_CAPACITANCE] = "capacitance",
+<<<<<<< HEAD
 	[IIO_QUATERNION] = "quaternion",
+=======
+>>>>>>> v3.4.6
 };
 
 static const char * const iio_modifier_names[] = {
@@ -77,7 +80,10 @@ static const char * const iio_modifier_names[] = {
 	[IIO_MOD_Z] = "z",
 	[IIO_MOD_LIGHT_BOTH] = "both",
 	[IIO_MOD_LIGHT_IR] = "ir",
+<<<<<<< HEAD
 	[IIO_MOD_R]  = "r",
+=======
+>>>>>>> v3.4.6
 };
 
 /* relies on pairs of these shared then separate */
@@ -794,6 +800,7 @@ EXPORT_SYMBOL(iio_allocate_device);
 
 void iio_free_device(struct iio_dev *dev)
 {
+<<<<<<< HEAD
 	struct device *device;
 	struct kobject *kobject;
 
@@ -804,6 +811,9 @@ void iio_free_device(struct iio_dev *dev)
 		kfree(device->p);
 		kfree(kobject->name);
 
+=======
+	if (dev) {
+>>>>>>> v3.4.6
 		ida_simple_remove(&iio_ida, dev->id);
 		kfree(dev);
 	}

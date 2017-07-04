@@ -50,8 +50,11 @@ union gic_base {
 	void __percpu __iomem **percpu_base;
 };
 
+<<<<<<< HEAD
 static void __iomem *common_base_store;
 
+=======
+>>>>>>> v3.4.6
 struct gic_chip_data {
 	union gic_base dist_base;
 	union gic_base cpu_base;
@@ -82,7 +85,10 @@ struct irq_chip gic_arch_extn = {
 	.irq_retrigger	= NULL,
 	.irq_set_type	= NULL,
 	.irq_set_wake	= NULL,
+<<<<<<< HEAD
 	.irq_set_affinity = NULL,
+=======
+>>>>>>> v3.4.6
 };
 
 #ifndef MAX_GIC_NR
@@ -154,6 +160,7 @@ static void gic_mask_irq(struct irq_data *d)
 	raw_spin_unlock(&irq_controller_lock);
 }
 
+<<<<<<< HEAD
 void gic_dump(void)
 {
 	u32 val;
@@ -168,6 +175,8 @@ void gic_dump(void)
 }
 EXPORT_SYMBOL_GPL(gic_dump);
 
+=======
+>>>>>>> v3.4.6
 static void gic_unmask_irq(struct irq_data *d)
 {
 	u32 mask = 1 << (gic_irq(d) % 32);
@@ -262,10 +271,13 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
 	bit = 1 << (cpu_logical_map(cpu) + shift);
 
 	raw_spin_lock(&irq_controller_lock);
+<<<<<<< HEAD
 
 	if (gic_arch_extn.irq_set_affinity)
 		gic_arch_extn.irq_set_affinity(d, mask_val, false);
 
+=======
+>>>>>>> v3.4.6
 	val = readl_relaxed(reg) & ~mask;
 	writel_relaxed(val | bit, reg);
 	raw_spin_unlock(&irq_controller_lock);
@@ -396,10 +408,13 @@ static void __init gic_dist_init(struct gic_chip_data *gic)
 	for (i = 32; i < gic_irqs; i += 4)
 		writel_relaxed(0xa0a0a0a0, base + GIC_DIST_PRI + i * 4 / 4);
 
+<<<<<<< HEAD
 #ifdef CONFIG_EOF_FC_WORKAROUND
 	writel_relaxed(0xa0a090a0, base + GIC_DIST_PRI + 0x48);
 #endif
 
+=======
+>>>>>>> v3.4.6
 	/*
 	 * Disable all interrupts.  Leave the PPI and SGIs alone
 	 * as these enables are banked registers.
@@ -703,7 +718,10 @@ void __init gic_init_bases(unsigned int gic_nr, int irq_start,
 		     "GIC_NON_BANKED not enabled, ignoring %08x offset!",
 		     percpu_offset);
 		gic->dist_base.common_base = dist_base;
+<<<<<<< HEAD
 		common_base_store = dist_base;
+=======
+>>>>>>> v3.4.6
 		gic->cpu_base.common_base = cpu_base;
 		gic_set_base_accessor(gic, gic_get_common_base);
 	}

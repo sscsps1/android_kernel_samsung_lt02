@@ -32,7 +32,10 @@ struct ehci_hcd_mv {
 
 	struct mv_usb_platform_data *pdata;
 
+<<<<<<< HEAD
 	unsigned int	port_speed;
+=======
+>>>>>>> v3.4.6
 	/* clock source and total clock number */
 	unsigned int clknum;
 	struct clk *clk[0];
@@ -104,7 +107,10 @@ static int mv_ehci_reset(struct usb_hcd *hcd)
 		dev_err(dev, "ehci_reset failed %d\n", retval);
 		return retval;
 	}
+<<<<<<< HEAD
 	ehci_port_power(ehci, 1);
+=======
+>>>>>>> v3.4.6
 
 	return 0;
 }
@@ -278,7 +284,12 @@ static int mv_ehci_probe(struct platform_device *pdev)
 		goto err_disable_clk;
 #endif
 	} else {
+<<<<<<< HEAD
 		pxa_usb_extern_call(pdata->id, vbus, set_vbus, 1);
+=======
+		if (pdata->set_vbus)
+			pdata->set_vbus(1);
+>>>>>>> v3.4.6
 
 		retval = usb_add_hcd(hcd, hcd->irq, IRQF_SHARED);
 		if (retval) {
@@ -299,7 +310,12 @@ static int mv_ehci_probe(struct platform_device *pdev)
 	return 0;
 
 err_set_vbus:
+<<<<<<< HEAD
 	pxa_usb_extern_call(pdata->id, vbus, set_vbus, 0);
+=======
+	if (pdata->set_vbus)
+		pdata->set_vbus(0);
+>>>>>>> v3.4.6
 #ifdef CONFIG_USB_OTG_UTILS
 err_put_transceiver:
 	if (ehci_mv->otg)
@@ -337,7 +353,12 @@ static int mv_ehci_remove(struct platform_device *pdev)
 	}
 
 	if (ehci_mv->mode == MV_USB_MODE_HOST) {
+<<<<<<< HEAD
 		pxa_usb_extern_call(ehci_mv->pdata->id, vbus, set_vbus, 0);
+=======
+		if (ehci_mv->pdata->set_vbus)
+			ehci_mv->pdata->set_vbus(0);
+>>>>>>> v3.4.6
 
 		mv_ehci_disable(ehci_mv);
 	}
@@ -378,6 +399,7 @@ static void mv_ehci_shutdown(struct platform_device *pdev)
 		hcd->driver->shutdown(hcd);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int mv_ehci_suspend(struct platform_device *pdev,
 				pm_message_t message)
@@ -538,14 +560,19 @@ out:
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 static struct platform_driver ehci_mv_driver = {
 	.probe = mv_ehci_probe,
 	.remove = mv_ehci_remove,
 	.shutdown = mv_ehci_shutdown,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend	= mv_ehci_suspend,
 	.resume		= mv_ehci_resume,
 #endif
+=======
+>>>>>>> v3.4.6
 	.driver = {
 		   .name = "mv-ehci",
 		   .bus = &platform_bus_type,

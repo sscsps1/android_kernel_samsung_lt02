@@ -805,7 +805,11 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
 	     ntype == NL80211_IFTYPE_P2P_CLIENT))
 		return -EBUSY;
 
+<<<<<<< HEAD
 	if (ntype != otype) {
+=======
+	if (ntype != otype && netif_running(dev)) {
+>>>>>>> v3.4.6
 		err = cfg80211_can_change_interface(rdev, dev->ieee80211_ptr,
 						    ntype);
 		if (err)

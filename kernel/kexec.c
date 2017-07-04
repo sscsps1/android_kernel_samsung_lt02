@@ -936,6 +936,7 @@ struct kimage *kexec_image;
 struct kimage *kexec_crash_image;
 
 static DEFINE_MUTEX(kexec_mutex);
+<<<<<<< HEAD
 void crash_update(struct pt_regs *regs)
 {
 	if (mutex_trylock(&kexec_mutex)) {
@@ -947,6 +948,8 @@ void crash_update(struct pt_regs *regs)
 		mutex_unlock(&kexec_mutex);
 	}
 }
+=======
+>>>>>>> v3.4.6
 
 SYSCALL_DEFINE4(kexec_load, unsigned long, entry, unsigned long, nr_segments,
 		struct kexec_segment __user *, segments, unsigned long, flags)

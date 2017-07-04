@@ -194,9 +194,12 @@ config NEED_RET_TO_USER
 config ARCH_MTD_XIP
 	bool
 
+<<<<<<< HEAD
 config ARCH_PROVIDES_UDELAY
 	bool
 
+=======
+>>>>>>> v3.4.6
 config VECTORS_BASE
 	hex
 	default 0xffff0000 if MMU || CPU_HIGH_VECTOR
@@ -629,12 +632,17 @@ config ARCH_ORION5X
 	  Orion-2 (5281), Orion-1-90 (6183).
 
 config ARCH_MMP
+<<<<<<< HEAD
 	bool "Marvell PXA168/910/988/MMP2"
+=======
+	bool "Marvell PXA168/910/MMP2"
+>>>>>>> v3.4.6
 	depends on MMU
 	select ARCH_REQUIRE_GPIOLIB
 	select CLKDEV_LOOKUP
 	select GENERIC_CLOCKEVENTS
 	select GPIO_PXA
+<<<<<<< HEAD
 	select IRQ_DOMAIN
 	select TICK_ONESHOT
 	select PLAT_PXA
@@ -645,6 +653,14 @@ config ARCH_MMP
 	select NEED_MACH_MEMORY_H
 	help
 	  Support for Marvell's PXA168/PXA910/PXA988 and MMP2 processor line.
+=======
+	select TICK_ONESHOT
+	select PLAT_PXA
+	select SPARSE_IRQ
+	select GENERIC_ALLOCATOR
+	help
+	  Support for Marvell's PXA168/PXA910(MMP) and MMP2 processor line.
+>>>>>>> v3.4.6
 
 config ARCH_KS8695
 	bool "Micrel/Kendin KS8695"
@@ -730,7 +746,10 @@ config ARCH_PXA
 	select MULTI_IRQ_HANDLER
 	select ARM_CPU_SUSPEND if PM
 	select HAVE_IDE
+<<<<<<< HEAD
 	select NEED_MACH_IO_H
+=======
+>>>>>>> v3.4.6
 	help
 	  Support for Intel/Marvell's PXA2xx/PXA3xx processor line.
 
@@ -1168,7 +1187,11 @@ config ARM_NR_BANKS
 
 config IWMMXT
 	bool "Enable iWMMXt support"
+<<<<<<< HEAD
 	depends on CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_PJ4 || CPU_PJ4B
+=======
+	depends on CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_PJ4
+>>>>>>> v3.4.6
 	default y if PXA27x || PXA3xx || PXA95x || ARCH_MMP
 	help
 	  Enable support for iWMMXt context switching at run time if
@@ -1413,6 +1436,7 @@ config PL310_ERRATA_769419
 	  on systems with an outer cache, the store buffer is drained
 	  explicitly.
 
+<<<<<<< HEAD
 config PJ4B_ERRATA_6315
        bool "PJ4B errata 6315"
        depends on CPU_PJ4B
@@ -1434,6 +1458,8 @@ config PJ4B_ERRATA_6409
 	  IFU predicts-taken a branch, but tells ROB not-taken. This option disable static
 	  branch prediction
 
+=======
+>>>>>>> v3.4.6
 endmenu
 
 source "arch/arm/common/Kconfig"
@@ -1611,6 +1637,7 @@ config PAGE_OFFSET
 	default 0x80000000 if VMSPLIT_2G
 	default 0xC0000000
 
+<<<<<<< HEAD
 config TEXT_OFFSET_OVERRIDE
 	bool "Enable CONFIG_TEXT_OFFSET"
 	default n
@@ -1620,6 +1647,8 @@ config TEXT_OFFSET
 	depends on TEXT_OFFSET_OVERRIDE
 	default 0x00008000
 
+=======
+>>>>>>> v3.4.6
 config NR_CPUS
 	int "Maximum number of CPUs (2-32)"
 	range 2 32
@@ -1923,6 +1952,7 @@ config DEPRECATED_PARAM_STRUCT
 	  This was deprecated in 2001 and announced to live on for 5 years.
 	  Some old boot loaders still use this way.
 
+<<<<<<< HEAD
 config ARM_FLUSH_CONSOLE_ON_RESTART
 	bool "Force flush the console on restart"
 	help
@@ -1932,6 +1962,8 @@ config ARM_FLUSH_CONSOLE_ON_RESTART
 	  released if it failed to be acquired, which will cause all the
 	  pending messages to be flushed.
 
+=======
+>>>>>>> v3.4.6
 endmenu
 
 menu "Boot options"
@@ -2074,6 +2106,7 @@ config CMDLINE_FORCE
 	  command-line options your boot loader passes to the kernel.
 endchoice
 
+<<<<<<< HEAD
 config CMDLINE_INITRD_SIZE_OVERRIDE
 	bool "Override bootloader initrd size"
 	depends on BLK_DEV_INITRD && !CMDLINE_FORCE
@@ -2088,6 +2121,8 @@ config CMDLINE_INITRD_SIZE
 	depends on CMDLINE_INITRD_SIZE_OVERRIDE
 	default "5m"
 
+=======
+>>>>>>> v3.4.6
 config XIP_KERNEL
 	bool "Kernel Execute-In-Place from ROM"
 	depends on !ZBOOT_ROM && !ARM_LPAE
@@ -2319,10 +2354,13 @@ config NEON
 	  Say Y to include support code for NEON, the ARMv7 Advanced SIMD
 	  Extension.
 
+<<<<<<< HEAD
 config GPU_RESERVE_MEM
 	bool "GC video memory allocator"
 	help
 		reserve memory for GC as video memory
+=======
+>>>>>>> v3.4.6
 endmenu
 
 menu "Userspace binary formats"
@@ -2348,15 +2386,22 @@ source "kernel/power/Kconfig"
 config ARCH_SUSPEND_POSSIBLE
 	depends on !ARCH_S5PC100
 	depends on CPU_ARM920T || CPU_ARM926T || CPU_SA1100 || \
+<<<<<<< HEAD
 		CPU_V6 || CPU_V6K || CPU_V7 || CPU_XSC3 || CPU_XSCALE || CPU_MOHAWK
+=======
+		CPU_V6 || CPU_V6K || CPU_V7 || CPU_XSC3 || CPU_XSCALE
+>>>>>>> v3.4.6
 	def_bool y
 
 config ARM_CPU_SUSPEND
 	def_bool PM_SLEEP
 
+<<<<<<< HEAD
 config KERNEL_DEBUG_SEC
 	bool
 	default y
+=======
+>>>>>>> v3.4.6
 endmenu
 
 source "net/Kconfig"

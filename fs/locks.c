@@ -1465,7 +1465,11 @@ int generic_setlease(struct file *filp, long arg, struct file_lock **flp)
 	case F_WRLCK:
 		return generic_add_lease(filp, arg, flp);
 	default:
+<<<<<<< HEAD
 		BUG();
+=======
+		return -EINVAL;
+>>>>>>> v3.4.6
 	}
 }
 EXPORT_SYMBOL(generic_setlease);

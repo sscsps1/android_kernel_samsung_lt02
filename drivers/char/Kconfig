@@ -6,6 +6,7 @@ menu "Character devices"
 
 source "drivers/tty/Kconfig"
 
+<<<<<<< HEAD
 config DEVMEM
 	bool "Memory device driver"
 	default y
@@ -19,6 +20,8 @@ config DEVMEM
 	  system and most users should say Y here. You might say N if very
 	  security conscience or memory is tight.
 
+=======
+>>>>>>> v3.4.6
 config DEVKMEM
 	bool "/dev/kmem virtual device support"
 	default y
@@ -596,10 +599,13 @@ config DEVPORT
 	depends on ISA || PCI
 	default y
 
+<<<<<<< HEAD
 config DCC_TTY
 	tristate "DCC tty driver"
 	depends on ARM
 
+=======
+>>>>>>> v3.4.6
 source "drivers/s390/char/Kconfig"
 
 config RAMOOPS
@@ -610,6 +616,7 @@ config RAMOOPS
 	  This enables panic and oops messages to be logged to a circular
 	  buffer in RAM where it can be read back at some later point.
 
+<<<<<<< HEAD
 config VIBRATOR_88PM80X
         tristate "88pm80X based vibrator"
         depends on MFD_88PM800
@@ -625,6 +632,8 @@ config VIBRATOR_ANDROID
         help
           Say Y here if you want to enable defualt vibrator driver
 
+=======
+>>>>>>> v3.4.6
 config MSM_SMD_PKT
 	bool "Enable device interface for some SMD packet ports"
 	default n
@@ -633,6 +642,7 @@ config MSM_SMD_PKT
 	  Enables userspace clients to read and write to some packet SMD
 	  ports via device interface for MSM chipset.
 
+<<<<<<< HEAD
 config PXA9XX_ACIPC
 	tristate "PXA9xx AC-IPC Driver"
 	depends on CPU_PXA910 || CPU_PXA988 || PXA93x || PXA95x
@@ -651,6 +661,8 @@ config USB_88PM80X
 	  To compile this driver as a module, choose M here: the module will
 	  be called 88pm80x_usb.
 
+=======
+>>>>>>> v3.4.6
 config TILE_SROM
 	bool "Character-device access via hypervisor to the Tilera SPI ROM"
 	depends on TILE
@@ -662,7 +674,10 @@ config TILE_SROM
 	  device appear much like a simple EEPROM, and knows
 	  how to partition a single ROM for multiple purposes.
 
+<<<<<<< HEAD
 source "drivers/char/maxscend/Kconfig"
 
+=======
+>>>>>>> v3.4.6
 endmenu
 

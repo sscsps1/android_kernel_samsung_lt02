@@ -33,6 +33,10 @@ config FS_MBCACHE
 
 source "fs/reiserfs/Kconfig"
 source "fs/jfs/Kconfig"
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 source "fs/xfs/Kconfig"
 source "fs/gfs2/Kconfig"
 source "fs/ocfs2/Kconfig"
@@ -101,7 +105,10 @@ if BLOCK
 menu "DOS/FAT/NT Filesystems"
 
 source "fs/fat/Kconfig"
+<<<<<<< HEAD
 source "fs/exfat/Kconfig"
+=======
+>>>>>>> v3.4.6
 source "fs/ntfs/Kconfig"
 
 endmenu
@@ -199,15 +206,21 @@ source "fs/adfs/Kconfig"
 source "fs/affs/Kconfig"
 source "fs/ecryptfs/Kconfig"
 source "fs/hfs/Kconfig"
+<<<<<<< HEAD
 source "fs/sdcardfs/Kconfig"
+=======
+>>>>>>> v3.4.6
 source "fs/hfsplus/Kconfig"
 source "fs/befs/Kconfig"
 source "fs/bfs/Kconfig"
 source "fs/efs/Kconfig"
+<<<<<<< HEAD
 
 # Patched by YAFFS
 source "fs/yaffs2/Kconfig"
 
+=======
+>>>>>>> v3.4.6
 source "fs/jffs2/Kconfig"
 # UBIFS File system configuration
 source "fs/ubifs/Kconfig"
@@ -225,7 +238,10 @@ source "fs/pstore/Kconfig"
 source "fs/sysv/Kconfig"
 source "fs/ufs/Kconfig"
 source "fs/exofs/Kconfig"
+<<<<<<< HEAD
 #source "fs/j4fs/Kconfig"
+=======
+>>>>>>> v3.4.6
 
 endif # MISC_FILESYSTEMS
 

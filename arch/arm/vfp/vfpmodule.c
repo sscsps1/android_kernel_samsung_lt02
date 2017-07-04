@@ -79,8 +79,13 @@ static void vfp_force_reload(unsigned int cpu, struct thread_info *thread)
 {
 	if (vfp_state_in_hw(cpu, thread)) {
 		fmxr(FPEXC, fmrx(FPEXC) & ~FPEXC_EN);
+<<<<<<< HEAD
 	}
 	vfp_current_hw_state[cpu] = NULL;
+=======
+		vfp_current_hw_state[cpu] = NULL;
+	}
+>>>>>>> v3.4.6
 #ifdef CONFIG_SMP
 	thread->vfpstate.hard.cpu = NR_CPUS;
 #endif
@@ -457,6 +462,7 @@ static int vfp_pm_suspend(void)
 
 		/* disable, just in case */
 		fmxr(FPEXC, fmrx(FPEXC) & ~FPEXC_EN);
+<<<<<<< HEAD
 	} else if (vfp_current_hw_state[ti->cpu]) {
 #ifndef CONFIG_SMP
 		fmxr(FPEXC, fpexc | FPEXC_EN);
@@ -467,6 +473,12 @@ static int vfp_pm_suspend(void)
 
 	/* clear any information we had about last context state */
 	vfp_current_hw_state[ti->cpu] = NULL;
+=======
+	}
+
+	/* clear any information we had about last context state */
+	memset(vfp_current_hw_state, 0, sizeof(vfp_current_hw_state));
+>>>>>>> v3.4.6
 
 	return 0;
 }

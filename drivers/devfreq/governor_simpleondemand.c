@@ -12,15 +12,21 @@
 #include <linux/errno.h>
 #include <linux/devfreq.h>
 #include <linux/math64.h>
+<<<<<<< HEAD
 #include <linux/device.h>
 #include "governor.h"
 
+=======
+>>>>>>> v3.4.6
 
 /* Default constants for DevFreq-Simple-Ondemand (DFSO) */
 #define DFSO_UPTHRESHOLD	(90)
 #define DFSO_DOWNDIFFERENCTIAL	(5)
+<<<<<<< HEAD
 #define DFSO_MAX_UPTHRESHOLD	(100)
 
+=======
+>>>>>>> v3.4.6
 static int devfreq_simple_ondemand_func(struct devfreq *df,
 					unsigned long *freq)
 {
@@ -32,6 +38,7 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 	struct devfreq_simple_ondemand_data *data = df->data;
 	unsigned long max = (df->max_freq) ? df->max_freq : UINT_MAX;
 
+<<<<<<< HEAD
 	if (err) {
 		/* Used to represent ignoring the profiling result */
 		if (err == -EINVAL) {
@@ -40,6 +47,10 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 		} else
 		  return err;
 	}
+=======
+	if (err)
+		return err;
+>>>>>>> v3.4.6
 
 	if (data) {
 		if (data->upthreshold)
@@ -63,14 +74,20 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 		stat.total_time >>= 7;
 	}
 
+<<<<<<< HEAD
 #ifndef CONFIG_CPU_PXA988
+=======
+>>>>>>> v3.4.6
 	/* Set MAX if it's busy enough */
 	if (stat.busy_time * 100 >
 	    stat.total_time * dfso_upthreshold) {
 		*freq = max;
 		return 0;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 
 	/* Set MAX if we do not know the initial frequency */
 	if (stat.current_frequency == 0) {
@@ -78,6 +95,7 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * if (upthreshold - downdifferential) <
 	 * workload < upthreshold
@@ -87,11 +105,20 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 	    stat.total_time * (dfso_upthreshold - dfso_downdifferential))
 				&& (stat.busy_time * 100 <
 					stat.total_time * dfso_upthreshold)) {
+=======
+	/* Keep the current frequency */
+	if (stat.busy_time * 100 >
+	    stat.total_time * (dfso_upthreshold - dfso_downdifferential)) {
+>>>>>>> v3.4.6
 		*freq = stat.current_frequency;
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/* else we set the desired frequency based on the load */
+=======
+	/* Set the desired frequency based on the load */
+>>>>>>> v3.4.6
 	a = stat.busy_time;
 	a *= stat.current_frequency;
 	b = div_u64(a, stat.total_time);
@@ -107,6 +134,7 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 	return 0;
 }
 
+<<<<<<< HEAD
 static ssize_t upthreshold_show(struct device *dev,
 	struct device_attribute *attr, char *buf)
 {
@@ -216,4 +244,9 @@ const struct devfreq_governor devfreq_simple_ondemand = {
 	.get_target_freq = devfreq_simple_ondemand_func,
 	.init = devfreq_simpleondemand_init,
 	.exit = devfreq_simpleondemand_exit,
+=======
+const struct devfreq_governor devfreq_simple_ondemand = {
+	.name = "simple_ondemand",
+	.get_target_freq = devfreq_simple_ondemand_func,
+>>>>>>> v3.4.6
 };

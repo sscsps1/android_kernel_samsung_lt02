@@ -40,6 +40,10 @@
 #include <linux/mmc/sdio_func.h>
 #include <linux/mmc/sdio_ids.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 #include "smscoreapi.h"
 #include "sms-cards.h"
 
@@ -60,6 +64,7 @@ static const struct sdio_device_id smssdio_ids[] __devinitconst = {
 	 .driver_data = SMS1XXX_BOARD_SIANO_VEGA},
 	{SDIO_DEVICE(SDIO_VENDOR_ID_SIANO, SDIO_DEVICE_ID_SIANO_VENICE),
 	 .driver_data = SMS1XXX_BOARD_SIANO_VEGA},
+<<<<<<< HEAD
 	{SDIO_DEVICE(SDIO_VENDOR_ID_SIANO, 0x302),
 	 .driver_data = SMS1XXX_BOARD_SIANO_MING},
 	{SDIO_DEVICE(SDIO_VENDOR_ID_SIANO, 0x500),
@@ -70,6 +75,8 @@ static const struct sdio_device_id smssdio_ids[] __devinitconst = {
 	 .driver_data = SMS1XXX_BOARD_SIANO_DENVER_2160},
 	{SDIO_DEVICE(SDIO_VENDOR_ID_SIANO, 0x800),
 	 .driver_data = SMS1XXX_BOARD_SIANO_DENVER_1530},
+=======
+>>>>>>> v3.4.6
 	{ /* end: all zeroes */ },
 };
 
@@ -349,7 +356,11 @@ static struct sdio_driver smssdio_driver = {
 /* Module functions                                                */
 /*******************************************************************/
 
+<<<<<<< HEAD
 int smssdio_register(void)
+=======
+static int __init smssdio_module_init(void)
+>>>>>>> v3.4.6
 {
 	int ret = 0;
 
@@ -361,11 +372,21 @@ int smssdio_register(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 void smssdio_unregister(void)
+=======
+static void __exit smssdio_module_exit(void)
+>>>>>>> v3.4.6
 {
 	sdio_unregister_driver(&smssdio_driver);
 }
 
+<<<<<<< HEAD
+=======
+module_init(smssdio_module_init);
+module_exit(smssdio_module_exit);
+
+>>>>>>> v3.4.6
 MODULE_DESCRIPTION("Siano SMS1xxx SDIO driver");
 MODULE_AUTHOR("Pierre Ossman");
 MODULE_LICENSE("GPL");

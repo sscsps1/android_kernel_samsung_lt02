@@ -65,6 +65,7 @@ TRACE_EVENT(machine_suspend,
 	TP_printk("state=%lu", (unsigned long)__entry->state)
 );
 
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(wakeup_source,
 
 	TP_PROTO(const char *name, unsigned int state),
@@ -99,6 +100,8 @@ DEFINE_EVENT(wakeup_source, wakeup_source_deactivate,
 	TP_ARGS(name, state)
 );
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_EVENT_POWER_TRACING_DEPRECATED
 
 /*
@@ -238,6 +241,7 @@ DEFINE_EVENT(clock, clock_set_rate,
 	TP_ARGS(name, state, cpu_id)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(clock_set_parent,
 
 	TP_PROTO(const char *name, const char *parent_name),
@@ -257,6 +261,8 @@ TRACE_EVENT(clock_set_parent,
 	TP_printk("%s parent=%s", __get_str(name), __get_str(parent_name))
 );
 
+=======
+>>>>>>> v3.4.6
 /*
  * The power domain events are used for power domains transitions
  */

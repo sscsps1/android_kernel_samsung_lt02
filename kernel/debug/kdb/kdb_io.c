@@ -216,7 +216,11 @@ static char *kdb_read(char *buffer, size_t bufsize)
 	int i;
 	int diag, dtab_count;
 	int key;
+<<<<<<< HEAD
 	static int last_crlf;
+=======
+
+>>>>>>> v3.4.6
 
 	diag = kdbgetintenv("DTABCOUNT", &dtab_count);
 	if (diag)
@@ -237,9 +241,12 @@ poll_again:
 		return buffer;
 	if (key != 9)
 		tab = 0;
+<<<<<<< HEAD
 	if (key != 10 && key != 13)
 		last_crlf = 0;
 
+=======
+>>>>>>> v3.4.6
 	switch (key) {
 	case 8: /* backspace */
 		if (cp > buffer) {
@@ -257,12 +264,16 @@ poll_again:
 			*cp = tmp;
 		}
 		break;
+<<<<<<< HEAD
 	case 10: /* new line */
 	case 13: /* carriage return */
 		/* handle \n after \r */
 		if (last_crlf && last_crlf != key)
 			break;
 		last_crlf = key;
+=======
+	case 13: /* enter */
+>>>>>>> v3.4.6
 		*lastchar++ = '\n';
 		*lastchar++ = '\0';
 		if (!KDB_STATE(KGDB_TRANS)) {

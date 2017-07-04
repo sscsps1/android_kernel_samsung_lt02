@@ -14,12 +14,19 @@
  * - Alternative access techniques?
  */
 #include <linux/kernel.h>
+<<<<<<< HEAD
+=======
+#include <linux/export.h>
+>>>>>>> v3.4.6
 #include <linux/device.h>
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/slab.h>
 #include <linux/poll.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> v3.4.6
 
 #include "iio.h"
 #include "iio_core.h"
@@ -56,8 +63,11 @@ unsigned int iio_buffer_poll(struct file *filp,
 {
 	struct iio_dev *indio_dev = filp->private_data;
 	struct iio_buffer *rb = indio_dev->buffer;
+<<<<<<< HEAD
 	if (rb->stufftoread)
 		return POLLIN | POLLRDNORM;
+=======
+>>>>>>> v3.4.6
 
 	poll_wait(filp, &rb->pollq, wait);
 	if (rb->stufftoread)

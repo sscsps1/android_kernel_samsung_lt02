@@ -19,7 +19,10 @@
 #include <linux/io.h>
 
 #include <linux/mmc/sdhci.h>
+<<<<<<< HEAD
 #include <plat/clock.h>
+=======
+>>>>>>> v3.4.6
 
 /*
  * Controller registers
@@ -168,7 +171,10 @@
 #define   SDHCI_CTRL_DRV_TYPE_D		0x0030
 #define  SDHCI_CTRL_EXEC_TUNING		0x0040
 #define  SDHCI_CTRL_TUNED_CLK		0x0080
+<<<<<<< HEAD
 #define  SDHCI_CTRL_ASYNC_INT		0x4000
+=======
+>>>>>>> v3.4.6
 #define  SDHCI_CTRL_PRESET_VAL_ENABLE	0x8000
 
 #define SDHCI_CAPABILITIES	0x40
@@ -207,7 +213,10 @@
 #define SDHCI_CAPABILITIES_1	0x44
 
 #define SDHCI_MAX_CURRENT		0x48
+<<<<<<< HEAD
 #define  SDHCI_MAX_CURRENT_LIMIT	0xFF
+=======
+>>>>>>> v3.4.6
 #define  SDHCI_MAX_CURRENT_330_MASK	0x0000FF
 #define  SDHCI_MAX_CURRENT_330_SHIFT	0
 #define  SDHCI_MAX_CURRENT_300_MASK	0x00FF00
@@ -229,6 +238,7 @@
 
 /* 60-FB reserved */
 
+<<<<<<< HEAD
 #define SDHCI_PRESET_FOR_SDR12 0x66
 #define SDHCI_PRESET_FOR_SDR25 0x68
 #define SDHCI_PRESET_FOR_SDR50 0x6A
@@ -241,6 +251,8 @@
 #define SDHCI_PRESET_SDCLK_FREQ_MASK   0x3FF
 #define SDHCI_PRESET_SDCLK_FREQ_SHIFT	0
 
+=======
+>>>>>>> v3.4.6
 #define SDHCI_SLOT_INT_STATUS	0xFC
 
 #define SDHCI_HOST_VERSION	0xFE
@@ -292,12 +304,15 @@ struct sdhci_ops {
 	void	(*hw_reset)(struct sdhci_host *host);
 	void	(*platform_suspend)(struct sdhci_host *host);
 	void	(*platform_resume)(struct sdhci_host *host);
+<<<<<<< HEAD
 	void    (*signal_vol_change)(struct sdhci_host *host, u8 vol);
 	void    (*access_constrain)(struct sdhci_host *host, unsigned int ac);
 	void    (*clk_gate_auto)(struct sdhci_host *host, unsigned int ctrl);
 	unsigned long (*clk_prepare)(struct sdhci_host *host,
 			unsigned long rate);
 	void    (*clr_wakeup_event)(struct sdhci_host *host);
+=======
+>>>>>>> v3.4.6
 };
 
 #ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
@@ -396,8 +411,11 @@ static inline void *sdhci_priv(struct sdhci_host *host)
 extern void sdhci_card_detect(struct sdhci_host *host);
 extern int sdhci_add_host(struct sdhci_host *host);
 extern void sdhci_remove_host(struct sdhci_host *host, int dead);
+<<<<<<< HEAD
 extern void gic_dump(void);
 extern void sdh_clk_dump(struct clk *clk);
+=======
+>>>>>>> v3.4.6
 
 #ifdef CONFIG_PM
 extern int sdhci_suspend_host(struct sdhci_host *host);

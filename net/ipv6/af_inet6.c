@@ -49,7 +49,10 @@
 #include <net/udplite.h>
 #include <net/tcp.h>
 #include <net/ipip.h>
+<<<<<<< HEAD
 #include <net/ping.h>
+=======
+>>>>>>> v3.4.6
 #include <net/protocol.h>
 #include <net/inet_common.h>
 #include <net/route.h>
@@ -63,6 +66,7 @@
 #include <asm/uaccess.h>
 #include <linux/mroute6.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_ANDROID_PARANOID_NETWORK
 #include <linux/android_aid.h>
 
@@ -77,6 +81,8 @@ static inline int current_has_network(void)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 MODULE_AUTHOR("Cast of dozens");
 MODULE_DESCRIPTION("IPv6 protocol stack for Linux");
 MODULE_LICENSE("GPL");
@@ -123,9 +129,12 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
 	int try_loading_module = 0;
 	int err;
 
+<<<<<<< HEAD
 	if (!current_has_network())
 		return -EACCES;
 
+=======
+>>>>>>> v3.4.6
 	if (sock->type != SOCK_RAW &&
 	    sock->type != SOCK_DGRAM &&
 	    !inet_ehash_secret)
@@ -495,6 +504,7 @@ int inet6_getname(struct socket *sock, struct sockaddr *uaddr,
 
 EXPORT_SYMBOL(inet6_getname);
 
+<<<<<<< HEAD
 int inet6_killaddr_ioctl(struct net *net, void __user *arg) {
 	struct in6_ifreq ireq;
 	struct sockaddr_in6 sin6;
@@ -510,6 +520,8 @@ int inet6_killaddr_ioctl(struct net *net, void __user *arg) {
 	return tcp_nuke_addr(net, (struct sockaddr *) &sin6);
 }
 
+=======
+>>>>>>> v3.4.6
 int inet6_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 {
 	struct sock *sk = sock->sk;
@@ -534,8 +546,11 @@ int inet6_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 		return addrconf_del_ifaddr(net, (void __user *) arg);
 	case SIOCSIFDSTADDR:
 		return addrconf_set_dstaddr(net, (void __user *) arg);
+<<<<<<< HEAD
 	case SIOCKILLADDR:
 		return inet6_killaddr_ioctl(net, (void __user *) arg);
+=======
+>>>>>>> v3.4.6
 	default:
 		if (!sk->sk_prot->ioctl)
 			return -ENOIOCTLCMD;
@@ -1131,9 +1146,12 @@ static int __init inet6_init(void)
 	if (err)
 		goto out_unregister_udplite_proto;
 
+<<<<<<< HEAD
 	err = proto_register(&pingv6_prot, 1);
 	if (err)
 		goto out_unregister_ping_proto;
+=======
+>>>>>>> v3.4.6
 
 	/* We MUST register RAW sockets before we create the ICMP6,
 	 * IGMP6, or NDISC control sockets.
@@ -1229,10 +1247,13 @@ static int __init inet6_init(void)
 	if (err)
 		goto ipv6_packet_fail;
 
+<<<<<<< HEAD
 	err = pingv6_init();
 	if (err)
 		goto pingv6_fail;
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_SYSCTL
 	err = ipv6_sysctl_register();
 	if (err)
@@ -1245,8 +1266,11 @@ out:
 sysctl_fail:
 	ipv6_packet_cleanup();
 #endif
+<<<<<<< HEAD
 pingv6_fail:
 	pingv6_exit();
+=======
+>>>>>>> v3.4.6
 ipv6_packet_fail:
 	tcpv6_exit();
 tcpv6_fail:
@@ -1294,8 +1318,11 @@ static_sysctl_fail:
 	rtnl_unregister_all(PF_INET6);
 out_sock_register_fail:
 	rawv6_exit();
+<<<<<<< HEAD
 out_unregister_ping_proto:
 	proto_unregister(&pingv6_prot);
+=======
+>>>>>>> v3.4.6
 out_unregister_raw_proto:
 	proto_unregister(&rawv6_prot);
 out_unregister_udplite_proto:

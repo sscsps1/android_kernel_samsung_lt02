@@ -25,7 +25,10 @@
 #include <linux/list.h>
 #include <linux/printk.h>
 #include <linux/hrtimer.h>
+<<<<<<< HEAD
 #include <linux/pm_qos.h>
+=======
+>>>>>>> v3.4.6
 #include "governor.h"
 
 struct class *devfreq_class;
@@ -100,17 +103,23 @@ int update_devfreq(struct devfreq *devfreq)
 	 * Adjust the freuqency with user freq and QoS.
 	 *
 	 * List from the highest proiority
+<<<<<<< HEAD
 	 * Qos_freq
+=======
+>>>>>>> v3.4.6
 	 * max_freq (probably called by thermal when it's too hot)
 	 * min_freq
 	 */
 
+<<<<<<< HEAD
 	if (devfreq->qos_min_freq && freq < devfreq->qos_min_freq) {
 		freq = (devfreq->qos_min_freq > devfreq->min_freq) ?\
 			   devfreq->qos_min_freq : devfreq->min_freq;
 		flags |= DEVFREQ_FLAG_LEAST_UPPER_BOUND; /* Use LUB */
 		goto update;
 	}
+=======
+>>>>>>> v3.4.6
 	if (devfreq->min_freq && freq < devfreq->min_freq) {
 		freq = devfreq->min_freq;
 		flags &= ~DEVFREQ_FLAG_LEAST_UPPER_BOUND; /* Use GLB */
@@ -120,7 +129,10 @@ int update_devfreq(struct devfreq *devfreq)
 		flags |= DEVFREQ_FLAG_LEAST_UPPER_BOUND; /* Use LUB */
 	}
 
+<<<<<<< HEAD
 update:
+=======
+>>>>>>> v3.4.6
 	err = devfreq->profile->target(devfreq->dev.parent, &freq, flags);
 	if (err)
 		return err;
@@ -152,6 +164,7 @@ static int devfreq_notifier_call(struct notifier_block *nb, unsigned long type,
 }
 
 /**
+<<<<<<< HEAD
  * devfreq_qos_notifier_call() - It is called when kernel driver
  * has constraints
  */
@@ -197,6 +210,8 @@ update:
 
 
 /**
+=======
+>>>>>>> v3.4.6
  * _remove_devfreq() - Remove devfreq from the device.
  * @devfreq:	the devfreq struct
  * @skip:	skip calling device_unregister().
@@ -404,7 +419,11 @@ struct devfreq *devfreq_add_device(struct device *dev,
 				   void *data)
 {
 	struct devfreq *devfreq;
+<<<<<<< HEAD
 	int err = 0, i;
+=======
+	int err = 0;
+>>>>>>> v3.4.6
 
 	if (!dev || !profile || !governor) {
 		dev_err(dev, "%s: Invalid parameters.\n", __func__);
@@ -443,6 +462,7 @@ struct devfreq *devfreq_add_device(struct device *dev,
 	devfreq->next_polling = devfreq->polling_jiffies
 			      = msecs_to_jiffies(devfreq->profile->polling_ms);
 	devfreq->nb.notifier_call = devfreq_notifier_call;
+<<<<<<< HEAD
 	devfreq->qos_nb.notifier_call = devfreq_qos_notifier_call;
 
 	/* Check the sanity of qos_list/qos_type */
@@ -513,12 +533,18 @@ struct devfreq *devfreq_add_device(struct device *dev,
 
 		pm_qos_add_notifier(profile->qos_type, &devfreq->qos_nb);
 	}
+=======
+>>>>>>> v3.4.6
 
 	dev_set_name(&devfreq->dev, dev_name(dev));
 	err = device_register(&devfreq->dev);
 	if (err) {
 		put_device(&devfreq->dev);
+<<<<<<< HEAD
 		goto err_qos_add;
+=======
+		goto err_dev;
+>>>>>>> v3.4.6
 	}
 
 	if (governor->init)
@@ -546,9 +572,12 @@ out:
 
 err_init:
 	device_unregister(&devfreq->dev);
+<<<<<<< HEAD
 err_qos_add:
 	if (profile->qos_type || profile->qos_list)
 		pm_qos_remove_notifier(profile->qos_type, &devfreq->qos_nb);
+=======
+>>>>>>> v3.4.6
 err_dev:
 	mutex_unlock(&devfreq->lock);
 	kfree(devfreq);
@@ -579,11 +608,14 @@ int devfreq_remove_device(struct devfreq *devfreq)
 	}
 
 	mutex_lock(&devfreq->lock);
+<<<<<<< HEAD
 
 	if (devfreq->profile->qos_type)
 		pm_qos_remove_notifier(devfreq->profile->qos_type,
 				  &devfreq->qos_nb);
 
+=======
+>>>>>>> v3.4.6
 	_remove_devfreq(devfreq, false); /* it unlocks devfreq->lock */
 
 	if (central_polling)
@@ -592,12 +624,15 @@ int devfreq_remove_device(struct devfreq *devfreq)
 	return 0;
 }
 
+<<<<<<< HEAD
 void devfreq_set_freq_table(struct devfreq *devfreq,
 			struct devfreq_frequency_table *table)
 {
 	devfreq->freq_table = table;
 }
 
+=======
+>>>>>>> v3.4.6
 static ssize_t show_governor(struct device *dev,
 			     struct device_attribute *attr, char *buf)
 {
@@ -610,6 +645,7 @@ static ssize_t show_freq(struct device *dev,
 	return sprintf(buf, "%lu\n", to_devfreq(dev)->previous_freq);
 }
 
+<<<<<<< HEAD
 static ssize_t show_avail_freq(struct device *dev,
 			       struct device_attribute *attr, char *buf)
 {
@@ -627,6 +663,8 @@ static ssize_t show_avail_freq(struct device *dev,
 	return len;
 }
 
+=======
+>>>>>>> v3.4.6
 static ssize_t show_polling_interval(struct device *dev,
 				     struct device_attribute *attr, char *buf)
 {
@@ -693,11 +731,14 @@ static ssize_t store_min_freq(struct device *dev, struct device_attribute *attr,
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	if (df->min_freq == value) {
 		ret = count;
 		goto unlock;
 	}
 
+=======
+>>>>>>> v3.4.6
 	df->min_freq = value;
 	update_devfreq(df);
 	ret = count;
@@ -732,11 +773,14 @@ static ssize_t store_max_freq(struct device *dev, struct device_attribute *attr,
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	if (df->max_freq == value) {
 		ret = count;
 		goto unlock;
 	}
 
+=======
+>>>>>>> v3.4.6
 	df->max_freq = value;
 	update_devfreq(df);
 	ret = count;
@@ -752,6 +796,7 @@ static ssize_t show_max_freq(struct device *dev, struct device_attribute *attr,
 	return sprintf(buf, "%lu\n", to_devfreq(dev)->max_freq);
 }
 
+<<<<<<< HEAD
 static ssize_t show_qos_min_freq(struct device *dev,
 				 struct device_attribute *attr,
 				 char *buf)
@@ -759,6 +804,8 @@ static ssize_t show_qos_min_freq(struct device *dev,
 	return sprintf(buf, "%lu\n", to_devfreq(dev)->qos_min_freq);
 }
 
+=======
+>>>>>>> v3.4.6
 static struct device_attribute devfreq_attrs[] = {
 	__ATTR(governor, S_IRUGO, show_governor, NULL),
 	__ATTR(cur_freq, S_IRUGO, show_freq, NULL),
@@ -767,8 +814,11 @@ static struct device_attribute devfreq_attrs[] = {
 	       store_polling_interval),
 	__ATTR(min_freq, S_IRUGO | S_IWUSR, show_min_freq, store_min_freq),
 	__ATTR(max_freq, S_IRUGO | S_IWUSR, show_max_freq, store_max_freq),
+<<<<<<< HEAD
 	__ATTR(available_freqs, S_IRUGO, show_avail_freq, NULL),
 	__ATTR(qos_min_freq, S_IRUGO, show_qos_min_freq, NULL),
+=======
+>>>>>>> v3.4.6
 	{ },
 };
 

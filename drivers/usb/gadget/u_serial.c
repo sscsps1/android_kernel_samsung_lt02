@@ -1025,7 +1025,11 @@ static const struct tty_operations gs_tty_ops = {
 
 static struct tty_driver *gs_tty_driver;
 
+<<<<<<< HEAD
 static int
+=======
+static int __init
+>>>>>>> v3.4.6
 gs_port_alloc(unsigned port_num, struct usb_cdc_line_coding *coding)
 {
 	struct gs_port	*port;
@@ -1071,7 +1075,11 @@ gs_port_alloc(unsigned port_num, struct usb_cdc_line_coding *coding)
  *
  * Returns negative errno or zero.
  */
+<<<<<<< HEAD
 int gserial_setup(struct usb_gadget *g, unsigned count)
+=======
+int __init gserial_setup(struct usb_gadget *g, unsigned count)
+>>>>>>> v3.4.6
 {
 	unsigned			i;
 	struct usb_cdc_line_coding	coding;

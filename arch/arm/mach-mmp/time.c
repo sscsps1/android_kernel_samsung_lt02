@@ -25,12 +25,17 @@
 
 #include <linux/io.h>
 #include <linux/irq.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
 
 #include <asm/sched_clock.h>
 #include <asm/delay.h>
+=======
+
+#include <asm/sched_clock.h>
+>>>>>>> v3.4.6
 #include <mach/addr-map.h>
 #include <mach/regs-timers.h>
 #include <mach/regs-apbc.h>
@@ -40,6 +45,7 @@
 
 #include "clock.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_PXA_32KTIMER
 #define CLOCK_TICK_RATE_32KHZ	32768
 #endif
@@ -50,18 +56,24 @@
 #define TIMER2_EN	0x0
 #endif
 
+=======
+>>>>>>> v3.4.6
 #define TIMERS_VIRT_BASE	TIMERS1_VIRT_BASE
 
 #define MAX_DELTA		(0xfffffffe)
 #define MIN_DELTA		(16)
 
+<<<<<<< HEAD
 static void __iomem *mmp_timer_base = TIMERS_VIRT_BASE;
 
+=======
+>>>>>>> v3.4.6
 /*
  * FIXME: the timer needs some delay to stablize the counter capture
  */
 static inline uint32_t timer_read(void)
 {
+<<<<<<< HEAD
 	u32 val = 0;
 
 #ifdef CONFIG_PXA_32KTIMER
@@ -123,6 +135,18 @@ void __const_udelay(unsigned long usecs)
 }
 #endif /* CONFIG_ARCH_PROVIDES_UDELAY */
 
+=======
+	int delay = 100;
+
+	__raw_writel(1, TIMERS_VIRT_BASE + TMR_CVWR(1));
+
+	while (delay--)
+		cpu_relax();
+
+	return __raw_readl(TIMERS_VIRT_BASE + TMR_CVWR(1));
+}
+
+>>>>>>> v3.4.6
 static u32 notrace mmp_read_sched_clock(void)
 {
 	return timer_read();
@@ -135,12 +159,20 @@ static irqreturn_t timer_interrupt(int irq, void *dev_id)
 	/*
 	 * Clear pending interrupt status.
 	 */
+<<<<<<< HEAD
 	__raw_writel(0x01, mmp_timer_base + TMR_ICR(0));
+=======
+	__raw_writel(0x01, TIMERS_VIRT_BASE + TMR_ICR(0));
+>>>>>>> v3.4.6
 
 	/*
 	 * Disable timer 0.
 	 */
+<<<<<<< HEAD
 	__raw_writel(0x02 | TIMER2_EN, mmp_timer_base + TMR_CER);
+=======
+	__raw_writel(0x02, TIMERS_VIRT_BASE + TMR_CER);
+>>>>>>> v3.4.6
 
 	c->event_handler(c);
 
@@ -157,6 +189,7 @@ static int timer_set_next_event(unsigned long delta,
 	/*
 	 * Disable timer 0.
 	 */
+<<<<<<< HEAD
 	__raw_writel(0x02 | TIMER2_EN, mmp_timer_base + TMR_CER);
 
 #ifdef CONFIG_PXA_32KTIMER
@@ -168,10 +201,20 @@ static int timer_set_next_event(unsigned long delta,
 	 */
 	__raw_writel(0x01, mmp_timer_base + TMR_ICR(0));
 	__raw_writel(0x01, mmp_timer_base + TMR_IER(0));
+=======
+	__raw_writel(0x02, TIMERS_VIRT_BASE + TMR_CER);
+
+	/*
+	 * Clear and enable timer match 0 interrupt.
+	 */
+	__raw_writel(0x01, TIMERS_VIRT_BASE + TMR_ICR(0));
+	__raw_writel(0x01, TIMERS_VIRT_BASE + TMR_IER(0));
+>>>>>>> v3.4.6
 
 	/*
 	 * Setup new clockevent timer value.
 	 */
+<<<<<<< HEAD
 	__raw_writel(delta - 1, mmp_timer_base + TMR_TN_MM(0, 0));
 
 #ifdef CONFIG_PXA_32KTIMER
@@ -182,6 +225,14 @@ static int timer_set_next_event(unsigned long delta,
 	 * Enable timer 0.
 	 */
 	__raw_writel(0x03 | TIMER2_EN, mmp_timer_base + TMR_CER);
+=======
+	__raw_writel(delta - 1, TIMERS_VIRT_BASE + TMR_TN_MM(0, 0));
+
+	/*
+	 * Enable timer 0.
+	 */
+	__raw_writel(0x03, TIMERS_VIRT_BASE + TMR_CER);
+>>>>>>> v3.4.6
 
 	local_irq_restore(flags);
 
@@ -199,7 +250,11 @@ static void timer_set_mode(enum clock_event_mode mode,
 	case CLOCK_EVT_MODE_UNUSED:
 	case CLOCK_EVT_MODE_SHUTDOWN:
 		/* disable the matching interrupt */
+<<<<<<< HEAD
 		__raw_writel(0x00, mmp_timer_base + TMR_IER(0));
+=======
+		__raw_writel(0x00, TIMERS_VIRT_BASE + TMR_IER(0));
+>>>>>>> v3.4.6
 		break;
 	case CLOCK_EVT_MODE_RESUME:
 	case CLOCK_EVT_MODE_PERIODIC:
@@ -211,6 +266,10 @@ static void timer_set_mode(enum clock_event_mode mode,
 static struct clock_event_device ckevt = {
 	.name		= "clockevent",
 	.features	= CLOCK_EVT_FEAT_ONESHOT,
+<<<<<<< HEAD
+=======
+	.shift		= 32,
+>>>>>>> v3.4.6
 	.rating		= 200,
 	.set_next_event	= timer_set_next_event,
 	.set_mode	= timer_set_mode,
@@ -231,6 +290,7 @@ static struct clocksource cksrc = {
 
 static void __init timer_config(void)
 {
+<<<<<<< HEAD
 	uint32_t ccr;
 
 	__raw_writel(0x0, mmp_timer_base + TMR_CER); /* disable */
@@ -260,6 +320,29 @@ static void __init timer_config(void)
 #endif
 	/* enable timer 1/2 counter */
 	__raw_writel(0x2 | TIMER2_EN, mmp_timer_base + TMR_CER);
+=======
+	uint32_t ccr = __raw_readl(TIMERS_VIRT_BASE + TMR_CCR);
+
+	__raw_writel(0x0, TIMERS_VIRT_BASE + TMR_CER); /* disable */
+
+	ccr &= (cpu_is_mmp2()) ? (TMR_CCR_CS_0(0) | TMR_CCR_CS_1(0)) :
+		(TMR_CCR_CS_0(3) | TMR_CCR_CS_1(3));
+	__raw_writel(ccr, TIMERS_VIRT_BASE + TMR_CCR);
+
+	/* set timer 0 to periodic mode, and timer 1 to free-running mode */
+	__raw_writel(0x2, TIMERS_VIRT_BASE + TMR_CMR);
+
+	__raw_writel(0x1, TIMERS_VIRT_BASE + TMR_PLCR(0)); /* periodic */
+	__raw_writel(0x7, TIMERS_VIRT_BASE + TMR_ICR(0));  /* clear status */
+	__raw_writel(0x0, TIMERS_VIRT_BASE + TMR_IER(0));
+
+	__raw_writel(0x0, TIMERS_VIRT_BASE + TMR_PLCR(1)); /* free-running */
+	__raw_writel(0x7, TIMERS_VIRT_BASE + TMR_ICR(1));  /* clear status */
+	__raw_writel(0x0, TIMERS_VIRT_BASE + TMR_IER(1));
+
+	/* enable timer 1 counter */
+	__raw_writel(0x2, TIMERS_VIRT_BASE + TMR_CER);
+>>>>>>> v3.4.6
 }
 
 static struct irqaction timer_irq = {
@@ -273,6 +356,7 @@ void __init timer_init(int irq)
 {
 	timer_config();
 
+<<<<<<< HEAD
 #ifdef CONFIG_PXA_32KTIMER
 	setup_sched_clock(mmp_read_sched_clock, 32, CLOCK_TICK_RATE_32KHZ);
 	clockevents_calc_mult_shift(&ckevt, CLOCK_TICK_RATE_32KHZ, 4);
@@ -327,3 +411,17 @@ out:
 	pr_err("Failed to get timer from device tree with error:%d\n", ret);
 }
 #endif
+=======
+	setup_sched_clock(mmp_read_sched_clock, 32, CLOCK_TICK_RATE);
+
+	ckevt.mult = div_sc(CLOCK_TICK_RATE, NSEC_PER_SEC, ckevt.shift);
+	ckevt.max_delta_ns = clockevent_delta2ns(MAX_DELTA, &ckevt);
+	ckevt.min_delta_ns = clockevent_delta2ns(MIN_DELTA, &ckevt);
+	ckevt.cpumask = cpumask_of(0);
+
+	setup_irq(irq, &timer_irq);
+
+	clocksource_register_hz(&cksrc, CLOCK_TICK_RATE);
+	clockevents_register_device(&ckevt);
+}
+>>>>>>> v3.4.6

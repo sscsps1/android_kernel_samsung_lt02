@@ -113,6 +113,7 @@ config USB_GADGET_STORAGE_NUM_BUFFERS
 	   a module parameter as well.
 	   If unsure, say 2.
 
+<<<<<<< HEAD
 config USB_ANDROID_SAMSUNG_MTP
 	boolean "Samsung MTP function"
 	depends on USB_G_ANDROID
@@ -123,6 +124,8 @@ config USB_ANDROID_SAMSUNG_MTP
 	  google mtp will be changed to samsung mtp.
 
 
+=======
+>>>>>>> v3.4.6
 #
 # USB Peripheral Controller Support
 #
@@ -856,6 +859,7 @@ config USB_G_PRINTER
 	  For more information, see Documentation/usb/gadget_printer.txt
 	  which includes sample code for accessing the device file.
 
+<<<<<<< HEAD
 config USB_G_ANDROID
 	boolean "Android Composite Gadget"
 	help
@@ -883,6 +887,8 @@ config USB_DUN_SUPPORT
 	  It uses misc register.
 	  Support fops : open, close, release, read, poll, llseek, ioctl
 
+=======
+>>>>>>> v3.4.6
 config USB_CDC_COMPOSITE
 	tristate "CDC Composite Device (Ethernet and ACM)"
 	depends on NET

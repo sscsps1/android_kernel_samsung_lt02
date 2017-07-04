@@ -39,7 +39,10 @@ int snd_hwparams_to_dma_slave_config(const struct snd_pcm_substream *substream,
 	const struct snd_pcm_hw_params *params, struct dma_slave_config *slave_config);
 int snd_dmaengine_pcm_trigger(struct snd_pcm_substream *substream, int cmd);
 snd_pcm_uframes_t snd_dmaengine_pcm_pointer(struct snd_pcm_substream *substream);
+<<<<<<< HEAD
 snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream *substream);
+=======
+>>>>>>> v3.4.6
 
 int snd_dmaengine_pcm_open(struct snd_pcm_substream *substream,
 	dma_filter_fn filter_fn, void *filter_data);

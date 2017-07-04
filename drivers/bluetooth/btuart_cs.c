@@ -38,7 +38,10 @@
 #include <linux/serial.h>
 #include <linux/serial_reg.h>
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <asm/system.h>
+=======
+>>>>>>> v3.4.6
 #include <asm/io.h>
 
 #include <pcmcia/cistpl.h>
@@ -397,7 +400,11 @@ static void btuart_change_speed(btuart_info_t *info, unsigned int speed)
 
 static int btuart_hci_flush(struct hci_dev *hdev)
 {
+<<<<<<< HEAD
 	btuart_info_t *info = (btuart_info_t *)(hdev->driver_data);
+=======
+	btuart_info_t *info = hci_get_drvdata(hdev);
+>>>>>>> v3.4.6
 
 	/* Drop TX queue */
 	skb_queue_purge(&(info->txq));
@@ -435,7 +442,11 @@ static int btuart_hci_send_frame(struct sk_buff *skb)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	info = (btuart_info_t *)(hdev->driver_data);
+=======
+	info = hci_get_drvdata(hdev);
+>>>>>>> v3.4.6
 
 	switch (bt_cb(skb)->pkt_type) {
 	case HCI_COMMAND_PKT:
@@ -459,11 +470,14 @@ static int btuart_hci_send_frame(struct sk_buff *skb)
 }
 
 
+<<<<<<< HEAD
 static void btuart_hci_destruct(struct hci_dev *hdev)
 {
 }
 
 
+=======
+>>>>>>> v3.4.6
 static int btuart_hci_ioctl(struct hci_dev *hdev, unsigned int cmd, unsigned long arg)
 {
 	return -ENOIOCTLCMD;
@@ -498,18 +512,27 @@ static int btuart_open(btuart_info_t *info)
 	info->hdev = hdev;
 
 	hdev->bus = HCI_PCCARD;
+<<<<<<< HEAD
 	hdev->driver_data = info;
+=======
+	hci_set_drvdata(hdev, info);
+>>>>>>> v3.4.6
 	SET_HCIDEV_DEV(hdev, &info->p_dev->dev);
 
 	hdev->open     = btuart_hci_open;
 	hdev->close    = btuart_hci_close;
 	hdev->flush    = btuart_hci_flush;
 	hdev->send     = btuart_hci_send_frame;
+<<<<<<< HEAD
 	hdev->destruct = btuart_hci_destruct;
 	hdev->ioctl    = btuart_hci_ioctl;
 
 	hdev->owner = THIS_MODULE;
 
+=======
+	hdev->ioctl    = btuart_hci_ioctl;
+
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&(info->lock), flags);
 
 	/* Reset UART */
@@ -565,9 +588,13 @@ static int btuart_close(btuart_info_t *info)
 
 	spin_unlock_irqrestore(&(info->lock), flags);
 
+<<<<<<< HEAD
 	if (hci_unregister_dev(hdev) < 0)
 		BT_ERR("Can't unregister HCI device %s", hdev->name);
 
+=======
+	hci_unregister_dev(hdev);
+>>>>>>> v3.4.6
 	hci_free_dev(hdev);
 
 	return 0;

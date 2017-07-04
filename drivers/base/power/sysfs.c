@@ -118,12 +118,16 @@ static ssize_t control_store(struct device * dev, struct device_attribute *attr,
 	cp = memchr(buf, '\n', n);
 	if (cp)
 		len = cp - buf;
+<<<<<<< HEAD
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("%s rt pre-acquired dev_pwr_lock\n", dev_name(dev));
 	device_lock(dev);
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("%s rt post-acquired dev_pwr_lock\n", dev_name(dev));
 
+=======
+	device_lock(dev);
+>>>>>>> v3.4.6
 	if (len == sizeof ctrl_auto - 1 && strncmp(buf, ctrl_auto, len) == 0)
 		pm_runtime_allow(dev);
 	else if (len == sizeof ctrl_on - 1 && strncmp(buf, ctrl_on, len) == 0)
@@ -319,6 +323,7 @@ static ssize_t wakeup_active_count_show(struct device *dev,
 
 static DEVICE_ATTR(wakeup_active_count, 0444, wakeup_active_count_show, NULL);
 
+<<<<<<< HEAD
 static ssize_t wakeup_abort_count_show(struct device *dev,
 					struct device_attribute *attr,
 					char *buf)
@@ -340,20 +345,32 @@ static DEVICE_ATTR(wakeup_abort_count, 0444, wakeup_abort_count_show, NULL);
 static ssize_t wakeup_expire_count_show(struct device *dev,
 					struct device_attribute *attr,
 					char *buf)
+=======
+static ssize_t wakeup_hit_count_show(struct device *dev,
+				struct device_attribute *attr, char *buf)
+>>>>>>> v3.4.6
 {
 	unsigned long count = 0;
 	bool enabled = false;
 
 	spin_lock_irq(&dev->power.lock);
 	if (dev->power.wakeup) {
+<<<<<<< HEAD
 		count = dev->power.wakeup->expire_count;
+=======
+		count = dev->power.wakeup->hit_count;
+>>>>>>> v3.4.6
 		enabled = true;
 	}
 	spin_unlock_irq(&dev->power.lock);
 	return enabled ? sprintf(buf, "%lu\n", count) : sprintf(buf, "\n");
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(wakeup_expire_count, 0444, wakeup_expire_count_show, NULL);
+=======
+static DEVICE_ATTR(wakeup_hit_count, 0444, wakeup_hit_count_show, NULL);
+>>>>>>> v3.4.6
 
 static ssize_t wakeup_active_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
@@ -422,6 +439,7 @@ static ssize_t wakeup_last_time_show(struct device *dev,
 }
 
 static DEVICE_ATTR(wakeup_last_time_ms, 0444, wakeup_last_time_show, NULL);
+<<<<<<< HEAD
 
 #ifdef CONFIG_PM_AUTOSLEEP
 static ssize_t wakeup_prevent_sleep_time_show(struct device *dev,
@@ -443,6 +461,8 @@ static ssize_t wakeup_prevent_sleep_time_show(struct device *dev,
 static DEVICE_ATTR(wakeup_prevent_sleep_time_ms, 0444,
 		   wakeup_prevent_sleep_time_show, NULL);
 #endif /* CONFIG_PM_AUTOSLEEP */
+=======
+>>>>>>> v3.4.6
 #endif /* CONFIG_PM_SLEEP */
 
 #ifdef CONFIG_PM_ADVANCED_DEBUG
@@ -531,15 +551,22 @@ static struct attribute *wakeup_attrs[] = {
 	&dev_attr_wakeup.attr,
 	&dev_attr_wakeup_count.attr,
 	&dev_attr_wakeup_active_count.attr,
+<<<<<<< HEAD
 	&dev_attr_wakeup_abort_count.attr,
 	&dev_attr_wakeup_expire_count.attr,
+=======
+	&dev_attr_wakeup_hit_count.attr,
+>>>>>>> v3.4.6
 	&dev_attr_wakeup_active.attr,
 	&dev_attr_wakeup_total_time_ms.attr,
 	&dev_attr_wakeup_max_time_ms.attr,
 	&dev_attr_wakeup_last_time_ms.attr,
+<<<<<<< HEAD
 #ifdef CONFIG_PM_AUTOSLEEP
 	&dev_attr_wakeup_prevent_sleep_time_ms.attr,
 #endif
+=======
+>>>>>>> v3.4.6
 #endif
 	NULL,
 };

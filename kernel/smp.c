@@ -555,6 +555,7 @@ void smp_call_function_many(const struct cpumask *mask,
 }
 EXPORT_SYMBOL(smp_call_function_many);
 
+<<<<<<< HEAD
 void wait_smp_call_complete(void)
 {
 	struct call_function_data *data;
@@ -563,6 +564,8 @@ void wait_smp_call_complete(void)
 	csd_lock_wait(&data->csd);
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * smp_call_function(): Run a function on all other CPUs.
  * @func: The function to run. This must be fast and non-blocking.

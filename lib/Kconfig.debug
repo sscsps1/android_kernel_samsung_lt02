@@ -10,6 +10,7 @@ config PRINTK_TIME
 	  in kernel startup.  Or add printk.time=1 at boot-time.
 	  See Documentation/kernel-parameters.txt
 
+<<<<<<< HEAD
 config PRINTK_CPU_ID
 	bool "Show cpu id on printks"
 	depends on PRINTK
@@ -35,6 +36,8 @@ config PRINTK_COMM
 	  included in printk output. This allows you to see the running process with kernel log.
 	  See Documentation/kernel-parameters.txt
 
+=======
+>>>>>>> v3.4.6
 config DEFAULT_MESSAGE_LOGLEVEL
 	int "Default message log level (1-7)"
 	range 1 7
@@ -211,6 +214,7 @@ config HARDLOCKUP_DETECTOR
 	def_bool LOCKUP_DETECTOR && PERF_EVENTS && HAVE_PERF_EVENTS_NMI && \
 		 !HAVE_NMI_WATCHDOG
 
+<<<<<<< HEAD
 config SMP_HARDLOCKUP_DETECTOR
 	bool "Detect hard lockups on SMP systems"
 	depends on SMP
@@ -220,6 +224,8 @@ config SMP_HARDLOCKUP_DETECTOR
 	  more CPUs online (alive). If there is only one CPU, this detector
 	  will not work.
 
+=======
+>>>>>>> v3.4.6
 config BOOTPARAM_HARDLOCKUP_PANIC
 	bool "Panic (Reboot) On Hard Lockups"
 	depends on LOCKUP_DETECTOR
@@ -710,9 +716,14 @@ config DEBUG_LOCKING_API_SELFTESTS
 	  mutexes and rwsems.
 
 config STACKTRACE
+<<<<<<< HEAD
 	bool "Stacktrace"
 	depends on STACKTRACE_SUPPORT
 	default y
+=======
+	bool
+	depends on STACKTRACE_SUPPORT
+>>>>>>> v3.4.6
 
 config DEBUG_STACK_USAGE
 	bool "Stack utilization instrumentation"
@@ -1324,6 +1335,7 @@ config ASYNC_RAID6_TEST
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config REGDUMP
 	bool "perform regdump while in running time or crash"
 	---help---
@@ -1331,6 +1343,8 @@ config REGDUMP
 
 	  If unsure, say N.
 
+=======
+>>>>>>> v3.4.6
 source "samples/Kconfig"
 
 source "lib/Kconfig.kgdb"

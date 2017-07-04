@@ -71,7 +71,11 @@ void scu_enable(void __iomem *scu_base)
  * has the side effect of disabling coherency, caches must have been
  * flushed.  Interrupts must also have been disabled.
  */
+<<<<<<< HEAD
 int notrace scu_power_mode(void __iomem *scu_base, unsigned int mode)
+=======
+int scu_power_mode(void __iomem *scu_base, unsigned int mode)
+>>>>>>> v3.4.6
 {
 	unsigned int val;
 	int cpu = smp_processor_id();

@@ -71,8 +71,11 @@ struct f_rndis {
 	struct gether			port;
 	u8				ctrl_id, data_id;
 	u8				ethaddr[ETH_ALEN];
+<<<<<<< HEAD
 	u32				vendorID;
 	const char			*manufacturer;
+=======
+>>>>>>> v3.4.6
 	int				config;
 
 	struct usb_ep			*notify;
@@ -715,11 +718,15 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
 	rndis->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
 	if (!rndis->notify_req)
 		goto fail;
+<<<<<<< HEAD
 #ifdef CONFIG_PXA910_1G_DDR_WORKAROUND
 	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL | GFP_DMA);
 #else
 	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
 #endif
+=======
+	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
+>>>>>>> v3.4.6
 	if (!rndis->notify_req->buf)
 		goto fail;
 	rndis->notify_req->length = STATUS_BYTECOUNT;
@@ -774,10 +781,19 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
 	rndis_set_param_medium(rndis->config, NDIS_MEDIUM_802_3, 0);
 	rndis_set_host_mac(rndis->config, rndis->ethaddr);
 
+<<<<<<< HEAD
 	if (rndis->manufacturer && rndis->vendorID &&
 			rndis_set_param_vendor(rndis->config, rndis->vendorID,
 					       rndis->manufacturer))
 		goto fail;
+=======
+#if 0
+// FIXME
+	if (rndis_set_param_vendor(rndis->config, vendorID,
+				manufacturer))
+		goto fail0;
+#endif
+>>>>>>> v3.4.6
 
 	/* NOTE:  all that is done without knowing or caring about
 	 * the network link ... which is unavailable to this code
@@ -859,6 +875,7 @@ static inline bool can_support_rndis(struct usb_configuration *c)
 int
 rndis_bind_config(struct usb_configuration *c, u8 ethaddr[ETH_ALEN])
 {
+<<<<<<< HEAD
 	return rndis_bind_config_vendor(c, ethaddr, 0, NULL);
 }
 
@@ -866,12 +883,15 @@ int
 rndis_bind_config_vendor(struct usb_configuration *c, u8 ethaddr[ETH_ALEN],
 				u32 vendorID, const char *manufacturer)
 {
+=======
+>>>>>>> v3.4.6
 	struct f_rndis	*rndis;
 	int		status;
 
 	if (!can_support_rndis(c) || !ethaddr)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* setup RNDIS itself */
 	status = rndis_init();
 	if (status < 0)
@@ -880,6 +900,16 @@ rndis_bind_config_vendor(struct usb_configuration *c, u8 ethaddr[ETH_ALEN],
 	/* maybe allocate device-global string IDs */
 	if (rndis_string_defs[0].id == 0) {
 
+=======
+	/* maybe allocate device-global string IDs */
+	if (rndis_string_defs[0].id == 0) {
+
+		/* ... and setup RNDIS itself */
+		status = rndis_init();
+		if (status < 0)
+			return status;
+
+>>>>>>> v3.4.6
 		/* control interface label */
 		status = usb_string_id(c->cdev);
 		if (status < 0)
@@ -909,8 +939,11 @@ rndis_bind_config_vendor(struct usb_configuration *c, u8 ethaddr[ETH_ALEN],
 		goto fail;
 
 	memcpy(rndis->ethaddr, ethaddr, ETH_ALEN);
+<<<<<<< HEAD
 	rndis->vendorID = vendorID;
 	rndis->manufacturer = manufacturer;
+=======
+>>>>>>> v3.4.6
 
 	/* RNDIS activates when the host changes this filter */
 	rndis->port.cdc_filter = 0;

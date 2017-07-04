@@ -24,11 +24,15 @@
 #include <linux/gpio.h>
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
+<<<<<<< HEAD
 #include <linux/mmc/slot-gpio.h>
+=======
+>>>>>>> v3.4.6
 #include <linux/platform_data/pxa_sdhci.h>
 #include <linux/slab.h>
 #include <linux/delay.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/pm.h>
@@ -42,6 +46,11 @@
 
 #define PXAV3_RPM_DELAY_MS	50
 
+=======
+#include "sdhci.h"
+#include "sdhci-pltfm.h"
+
+>>>>>>> v3.4.6
 #define SD_CLOCK_BURST_SIZE_SETUP		0x10A
 #define SDCLK_SEL	0x100
 #define SDCLK_DELAY_SHIFT	9
@@ -59,6 +68,7 @@
 #define SDCE_MISC_INT		(1<<2)
 #define SDCE_MISC_INT_EN	(1<<1)
 
+<<<<<<< HEAD
 #define SD_FIFO_PARAM	0x104
 #define PAD_CLK_GATE_MASK	(0x3<<11)
 
@@ -108,6 +118,8 @@ static u32 pxav3_get_max_clock(struct sdhci_host *host)
 	return clk_get_rate(pltfm_host->clk);
 }
 
+=======
+>>>>>>> v3.4.6
 static void pxav3_set_private_registers(struct sdhci_host *host, u8 mask)
 {
 	struct platform_device *pdev = to_platform_device(mmc_dev(host->mmc));
@@ -218,6 +230,7 @@ static int pxav3_set_uhs_signaling(struct sdhci_host *host, unsigned int uhs)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void pxav3_signal_vol_change(struct sdhci_host *host, u8 vol)
 {
 	struct platform_device *pdev = to_platform_device(mmc_dev(host->mmc));
@@ -348,6 +361,14 @@ static inline struct sdhci_pxa_platdata *pxav3_get_mmc_pdata(struct device *dev)
 }
 #endif
 
+=======
+static struct sdhci_ops pxav3_sdhci_ops = {
+	.platform_reset_exit = pxav3_set_private_registers,
+	.set_uhs_signaling = pxav3_set_uhs_signaling,
+	.platform_send_init_74_clocks = pxav3_gen_init_74_clocks,
+};
+
+>>>>>>> v3.4.6
 static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 {
 	struct sdhci_pltfm_host *pltfm_host;
@@ -355,6 +376,7 @@ static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct sdhci_host *host = NULL;
 	struct sdhci_pxa *pxa = NULL;
+<<<<<<< HEAD
 	const struct of_device_id *match;
 
 	int ret;
@@ -362,6 +384,11 @@ static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 
 	int qos_class = PM_QOS_CPUIDLE_BLOCK;
 
+=======
+	int ret;
+	struct clk *clk;
+
+>>>>>>> v3.4.6
 	pxa = kzalloc(sizeof(struct sdhci_pxa), GFP_KERNEL);
 	if (!pxa)
 		return -ENOMEM;
@@ -381,6 +408,7 @@ static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 		goto err_clk_get;
 	}
 	pltfm_host->clk = clk;
+<<<<<<< HEAD
 	clk_prepare_enable(clk);
 
 	host->quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK
@@ -399,11 +427,29 @@ static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 		pdata->qos_idle.name = mmc_hostname(host->mmc);
 		pm_qos_add_request(&pdata->qos_idle, qos_class,
 			PM_QOS_CPUIDLE_BLOCK_DEFAULT_VALUE);
+=======
+	clk_enable(clk);
+
+	host->quirks = SDHCI_QUIRK_BROKEN_TIMEOUT_VAL
+		| SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
+		| SDHCI_QUIRK_32BIT_ADMA_SIZE;
+
+	/* enable 1/8V DDR capable */
+	host->mmc->caps |= MMC_CAP_1_8V_DDR;
+
+	if (pdata) {
+		if (pdata->flags & PXA_FLAG_CARD_PERMANENT) {
+			/* on-chip device */
+			host->quirks |= SDHCI_QUIRK_BROKEN_CARD_DETECTION;
+			host->mmc->caps |= MMC_CAP_NONREMOVABLE;
+		}
+>>>>>>> v3.4.6
 
 		/* If slot design supports 8 bit data, indicate this to MMC. */
 		if (pdata->flags & PXA_FLAG_SD_8_BIT_CAPABLE_SLOT)
 			host->mmc->caps |= MMC_CAP_8_BIT_DATA;
 
+<<<<<<< HEAD
 		if (pdata->flags & PXA_FLAG_ENABLE_CLOCK_GATING)
 			host->mmc->caps2 |= MMC_CAP2_BUS_AUTO_CLK_GATE;
 
@@ -452,10 +498,22 @@ static int __devinit sdhci_pxav3_probe(struct platform_device *pdev)
 #ifdef _MMC_SAFE_ACCESS_
 	mmc_is_available = 1;
 #endif
+=======
+		if (pdata->quirks)
+			host->quirks |= pdata->quirks;
+		if (pdata->host_caps)
+			host->mmc->caps |= pdata->host_caps;
+		if (pdata->pm_caps)
+			host->mmc->pm_caps |= pdata->pm_caps;
+	}
+
+	host->ops = &pxav3_sdhci_ops;
+>>>>>>> v3.4.6
 
 	ret = sdhci_add_host(host);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to add host\n");
+<<<<<<< HEAD
 		if (pdata && pdata->flags & PXA_FLAG_EN_PM_RUNTIME) {
 			pm_runtime_forbid(&pdev->dev);
 			pm_runtime_get_noresume(&pdev->dev);
@@ -492,6 +550,18 @@ err_add_host:
 		pm_qos_remove_request(&pdata->qos_idle);
 err_cd_req:
 	mmc_gpio_free_cd(host->mmc);
+=======
+		goto err_add_host;
+	}
+
+	platform_set_drvdata(pdev, host);
+
+	return 0;
+
+err_add_host:
+	clk_disable(clk);
+	clk_put(clk);
+>>>>>>> v3.4.6
 err_clk_get:
 	sdhci_pltfm_free(pdev);
 	kfree(pxa);
@@ -503,6 +573,7 @@ static int __devexit sdhci_pxav3_remove(struct platform_device *pdev)
 	struct sdhci_host *host = platform_get_drvdata(pdev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_pxa *pxa = pltfm_host->priv;
+<<<<<<< HEAD
 	struct sdhci_pxa_platdata *pdata = pdev->dev.platform_data;
 
 	sdhci_remove_host(host, 1);
@@ -519,6 +590,13 @@ static int __devexit sdhci_pxav3_remove(struct platform_device *pdev)
 			gpio_is_valid(pdata->ext_cd_gpio))
 		mmc_gpio_free_cd(host->mmc);
 
+=======
+
+	sdhci_remove_host(host, 1);
+
+	clk_disable(pltfm_host->clk);
+	clk_put(pltfm_host->clk);
+>>>>>>> v3.4.6
 	sdhci_pltfm_free(pdev);
 	kfree(pxa);
 
@@ -527,6 +605,7 @@ static int __devexit sdhci_pxav3_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int sdhci_pxav3_suspend(struct device *dev)
 {
@@ -605,6 +684,13 @@ static struct platform_driver sdhci_pxav3_driver = {
 #endif
 		.owner	= THIS_MODULE,
 		.pm	= SDHCI_PXAV3_PMOPS,
+=======
+static struct platform_driver sdhci_pxav3_driver = {
+	.driver		= {
+		.name	= "sdhci-pxav3",
+		.owner	= THIS_MODULE,
+		.pm	= SDHCI_PLTFM_PMOPS,
+>>>>>>> v3.4.6
 	},
 	.probe		= sdhci_pxav3_probe,
 	.remove		= __devexit_p(sdhci_pxav3_remove),

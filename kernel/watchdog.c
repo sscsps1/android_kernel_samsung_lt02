@@ -25,9 +25,12 @@
 
 #include <asm/irq_regs.h>
 #include <linux/perf_event.h>
+<<<<<<< HEAD
 #ifdef CONFIG_CORESIGHT_SUPPORT
 #include <mach/regs-coresight.h>
 #endif
+=======
+>>>>>>> v3.4.6
 
 int watchdog_enabled = 1;
 int __read_mostly watchdog_thresh = 10;
@@ -45,10 +48,13 @@ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
 static DEFINE_PER_CPU(struct perf_event *, watchdog_ev);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP_HARDLOCKUP_DETECTOR
 static DEFINE_PER_CPU(unsigned long, hardlockup_touch_ts);
 #endif /* CONFIG_SMP_HARDLOCKUP_DETECTOR */
 
+=======
+>>>>>>> v3.4.6
 /* boot commands */
 /*
  * Should we panic when a soft-lockup or hard-lockup occurs:
@@ -206,6 +212,7 @@ static int is_softlockup(unsigned long touch_ts)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP_HARDLOCKUP_DETECTOR
 DEFINE_SPINLOCK(hardlockup_lock);
 static void smp_check_and_update_hardlockup(void)
@@ -231,6 +238,8 @@ static void smp_check_and_update_hardlockup(void)
 }
 #endif /* CONFIG_SMP_HARDLOCKUP_DETECTOR */
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_HARDLOCKUP_DETECTOR
 
 static struct perf_event_attr wd_hw_attr = {
@@ -297,10 +306,13 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
 	/* kick the hardlockup detector */
 	watchdog_interrupt_count();
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP_HARDLOCKUP_DETECTOR
 	smp_check_and_update_hardlockup();
 #endif /* CONFIG_SMP_HARDLOCKUP_DETECTOR */
 
+=======
+>>>>>>> v3.4.6
 	/* kick the softlockup detector */
 	wake_up_process(__this_cpu_read(softlockup_watchdog));
 
@@ -463,6 +475,7 @@ static void watchdog_prepare_cpu(int cpu)
 {
 	struct hrtimer *hrtimer = &per_cpu(watchdog_hrtimer, cpu);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP_HARDLOCKUP_DETECTOR
 	unsigned long flags;
 
@@ -476,6 +489,9 @@ static void watchdog_prepare_cpu(int cpu)
 
 	WARN_ON(per_cpu(softlockup_watchdog, cpu));
 
+=======
+	WARN_ON(per_cpu(softlockup_watchdog, cpu));
+>>>>>>> v3.4.6
 	hrtimer_init(hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	hrtimer->function = watchdog_timer_fn;
 }
@@ -614,8 +630,13 @@ cpu_callback(struct notifier_block *nfb, unsigned long action, void *hcpu)
 	case CPU_UP_CANCELED_FROZEN:
 		watchdog_disable(hotcpu);
 		break;
+<<<<<<< HEAD
 	case CPU_DOWN_PREPARE:
 	case CPU_DOWN_PREPARE_FROZEN:
+=======
+	case CPU_DEAD:
+	case CPU_DEAD_FROZEN:
+>>>>>>> v3.4.6
 		watchdog_disable(hotcpu);
 		break;
 #endif /* CONFIG_HOTPLUG_CPU */

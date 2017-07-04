@@ -81,8 +81,11 @@
 #define USB_EP_LIST_ADDRESS_MASK              0xfffff800
 
 #define PORTSCX_W1C_BITS			0x2a
+<<<<<<< HEAD
 #define PORTSCX_PORT_DM				(1 << 10)
 #define PORTSCX_PORT_DP				(1 << 11)
+=======
+>>>>>>> v3.4.6
 #define PORTSCX_PORT_RESET			0x00000100
 #define PORTSCX_PORT_POWER			0x00001000
 #define PORTSCX_FORCE_FULL_SPEED_CONNECT	0x01000000
@@ -210,7 +213,10 @@ struct mv_udc {
 	unsigned		softconnect:1,
 				vbus_active:1,
 				remote_wakeup:1,
+<<<<<<< HEAD
 				selfpowered:1,
+=======
+>>>>>>> v3.4.6
 				softconnected:1,
 				force_fs:1,
 				clock_gating:1,
@@ -220,6 +226,7 @@ struct mv_udc {
 	struct work_struct	vbus_work;
 	struct workqueue_struct *qwork;
 
+<<<<<<< HEAD
 	struct pm_qos_request	qos_idle;
 
 	unsigned int		power;
@@ -229,12 +236,17 @@ struct mv_udc {
 
 	struct work_struct event_work;
 
+=======
+>>>>>>> v3.4.6
 	struct usb_phy		*transceiver;
 
 	struct mv_usb_platform_data     *pdata;
 
+<<<<<<< HEAD
 	struct notifier_block notifier;
 
+=======
+>>>>>>> v3.4.6
 	/* some SOC has mutiple clock sources for USB*/
 	unsigned int    clknum;
 	struct clk      *clk[0];

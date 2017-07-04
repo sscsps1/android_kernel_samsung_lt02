@@ -34,6 +34,7 @@
 #include <linux/platform_device.h>
 #include <linux/clk.h>
 #include <linux/platform_data/mv_usb.h>
+<<<<<<< HEAD
 #ifdef CONFIG_FAKE_SYSTEMOFF
 #include <linux/power/fake-sysoff.h>
 #include <linux/reboot.h>
@@ -42,6 +43,10 @@
 
 #include <plat/pm.h>
 
+=======
+#include <asm/unaligned.h>
+
+>>>>>>> v3.4.6
 #include "mv_udc.h"
 
 #define DRIVER_DESC		"Marvell PXA USB Device Controller driver"
@@ -56,11 +61,19 @@
 #define EPSTATUS_TIMEOUT	10000
 #define PRIME_TIMEOUT		10000
 #define READSAFE_TIMEOUT	1000
+<<<<<<< HEAD
 
 #define LOOPS_USEC_SHIFT	1
 #define LOOPS_USEC		(1 << LOOPS_USEC_SHIFT)
 #define LOOPS(timeout)		((timeout) >> LOOPS_USEC_SHIFT)
 #define	ENUMERATION_DELAY	(10 * HZ)
+=======
+#define DTD_TIMEOUT		1000
+
+#define LOOPS_USEC_SHIFT	4
+#define LOOPS_USEC		(1 << LOOPS_USEC_SHIFT)
+#define LOOPS(timeout)		((timeout) >> LOOPS_USEC_SHIFT)
+>>>>>>> v3.4.6
 
 static DECLARE_COMPLETION(release_done);
 
@@ -69,12 +82,19 @@ static const char driver_desc[] = DRIVER_DESC;
 
 /* controller device global variable */
 static struct mv_udc	*the_controller;
+<<<<<<< HEAD
 
 static int mv_udc_enable(struct mv_udc *udc);
 static void mv_udc_disable(struct mv_udc *udc);
 static void nuke(struct mv_ep *ep, int status);
 static void stop_activity(struct mv_udc *udc, struct usb_gadget_driver *driver);
 static void call_charger_notifier(struct mv_udc *udc);
+=======
+int mv_usb_otgsc;
+
+static void nuke(struct mv_ep *ep, int status);
+static void stop_activity(struct mv_udc *udc, struct usb_gadget_driver *driver);
+>>>>>>> v3.4.6
 
 /* for endpoint 0 operations */
 static const struct usb_endpoint_descriptor mv_ep0_desc = {
@@ -102,7 +122,11 @@ static void ep0_reset(struct mv_udc *udc)
 		/* configure ep0 endpoint capabilities in dQH */
 		ep->dqh->max_packet_length =
 			(EP0_MAX_PKT_SIZE << EP_QUEUE_HEAD_MAX_PKT_LEN_POS)
+<<<<<<< HEAD
 			| EP_QUEUE_HEAD_IOS | EP_QUEUE_HEAD_ZLT_SEL;
+=======
+			| EP_QUEUE_HEAD_IOS;
+>>>>>>> v3.4.6
 
 		ep->dqh->next_dtd_ptr = EP_QUEUE_HEAD_NEXT_TERMINATE;
 
@@ -360,9 +384,12 @@ static int queue_dtd(struct mv_ep *ep, struct mv_req *req)
 	/* Prime the Endpoint */
 	writel(bit_pos, &udc->op_regs->epprime);
 
+<<<<<<< HEAD
 	while (readl(&udc->op_regs->epprime) & bit_pos)
 		cpu_relax();
 
+=======
+>>>>>>> v3.4.6
 done:
 	return retval;
 }
@@ -371,6 +398,7 @@ done:
 static struct mv_dtd *build_dtd(struct mv_req *req, unsigned *length,
 		dma_addr_t *dma, int *is_last)
 {
+<<<<<<< HEAD
 	u32 temp, mult = 0;
 	struct mv_dtd *dtd;
 	struct mv_udc *udc;
@@ -387,6 +415,15 @@ static struct mv_dtd *build_dtd(struct mv_req *req, unsigned *length,
 	} else
 		*length = min(req->req.length - req->req.actual,
 				(unsigned)EP_MAX_LENGTH_TRANSFER);
+=======
+	u32 temp;
+	struct mv_dtd *dtd;
+	struct mv_udc *udc;
+
+	/* how big will this transfer be? */
+	*length = min(req->req.length - req->req.actual,
+			(unsigned)EP_MAX_LENGTH_TRANSFER);
+>>>>>>> v3.4.6
 
 	udc = req->ep->udc;
 
@@ -394,7 +431,11 @@ static struct mv_dtd *build_dtd(struct mv_req *req, unsigned *length,
 	 * Be careful that no _GFP_HIGHMEM is set,
 	 * or we can not use dma_to_virt
 	 */
+<<<<<<< HEAD
 	dtd = dma_pool_alloc(udc->dtd_pool, GFP_ATOMIC, dma);
+=======
+	dtd = dma_pool_alloc(udc->dtd_pool, GFP_KERNEL, dma);
+>>>>>>> v3.4.6
 	if (dtd == NULL)
 		return dtd;
 
@@ -427,7 +468,10 @@ static struct mv_dtd *build_dtd(struct mv_req *req, unsigned *length,
 	/* Enable interrupt for the last dtd of a request */
 	if (*is_last && !req->req.no_interrupt)
 		temp |= DTD_IOC;
+<<<<<<< HEAD
 	temp |= mult << 10;
+=======
+>>>>>>> v3.4.6
 
 	dtd->size_ioc_sts = temp;
 
@@ -599,7 +643,10 @@ static int  mv_ep_disable(struct usb_ep *_ep)
 	struct mv_dqh *dqh;
 	u32 bit_pos, epctrlx, direction;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 active;
+=======
+>>>>>>> v3.4.6
 
 	ep = container_of(_ep, struct mv_ep, ep);
 	if ((_ep == NULL) || !ep->desc)
@@ -610,9 +657,12 @@ static int  mv_ep_disable(struct usb_ep *_ep)
 	/* Get the endpoint queue head address */
 	dqh = ep->dqh;
 
+<<<<<<< HEAD
 	active = udc->active;
 	if (!active)
 		mv_udc_enable(udc);
+=======
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&udc->lock, flags);
 
 	direction = ep_dir(ep);
@@ -636,8 +686,11 @@ static int  mv_ep_disable(struct usb_ep *_ep)
 	ep->stopped = 1;
 
 	spin_unlock_irqrestore(&udc->lock, flags);
+<<<<<<< HEAD
 	if (!active)
 		mv_udc_disable(udc);
+=======
+>>>>>>> v3.4.6
 
 	return 0;
 }
@@ -725,8 +778,11 @@ static void mv_ep_fifo_flush(struct usb_ep *_ep)
 		}
 		loops--;
 	} while (readl(&udc->op_regs->epstatus) & bit_pos);
+<<<<<<< HEAD
 
 	writel(bit_pos, &udc->op_regs->epcomplete);
+=======
+>>>>>>> v3.4.6
 }
 
 /* queues (submits) an I/O request to an endpoint */
@@ -737,7 +793,10 @@ mv_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 	struct mv_req *req = container_of(_req, struct mv_req, req);
 	struct mv_udc *udc = ep->udc;
 	unsigned long flags;
+<<<<<<< HEAD
 	int retval;
+=======
+>>>>>>> v3.4.6
 
 	/* catch various bogus parameters */
 	if (!_req || !req->req.complete || !req->req.buf
@@ -749,6 +808,13 @@ mv_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 		dev_err(&udc->dev->dev, "%s, bad ep", __func__);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if (ep->desc->bmAttributes == USB_ENDPOINT_XFER_ISOC) {
+		if (req->req.length > ep->ep.maxpacket)
+			return -EMSGSIZE;
+	}
+>>>>>>> v3.4.6
 
 	udc = ep->udc;
 	if (!udc->driver || udc->gadget.speed == USB_SPEED_UNKNOWN)
@@ -781,6 +847,7 @@ mv_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 
 	/* build dtds and push them to device queue */
 	if (!req_to_dtd(req)) {
+<<<<<<< HEAD
 		retval = queue_dtd(ep, req);
 		if (retval) {
 			spin_unlock_irqrestore(&udc->lock, flags);
@@ -792,6 +859,17 @@ mv_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 		dev_err(&udc->dev->dev, "Failed to dma_pool_alloc\n");
 		retval = -ENOMEM;
 		goto err_unmap_dma;
+=======
+		int retval;
+		retval = queue_dtd(ep, req);
+		if (retval) {
+			spin_unlock_irqrestore(&udc->lock, flags);
+			return retval;
+		}
+	} else {
+		spin_unlock_irqrestore(&udc->lock, flags);
+		return -ENOMEM;
+>>>>>>> v3.4.6
 	}
 
 	/* Update ep0 state */
@@ -803,6 +881,7 @@ mv_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 	spin_unlock_irqrestore(&udc->lock, flags);
 
 	return 0;
+<<<<<<< HEAD
 
 err_unmap_dma:
 	if (req->mapped) {
@@ -819,6 +898,8 @@ err_unmap_dma:
 					DMA_TO_DEVICE : DMA_FROM_DEVICE));
 
 	return retval;
+=======
+>>>>>>> v3.4.6
 }
 
 static void mv_prime_ep(struct mv_ep *ep, struct mv_req *req)
@@ -840,10 +921,13 @@ static void mv_prime_ep(struct mv_ep *ep, struct mv_req *req)
 
 	/* Prime the Endpoint */
 	writel(bit_pos, &ep->udc->op_regs->epprime);
+<<<<<<< HEAD
 
 	while (readl(&ep->udc->op_regs->epprime) & bit_pos)
 		cpu_relax();
 
+=======
+>>>>>>> v3.4.6
 }
 
 /* dequeues (cancels, unlinks) an I/O request from an endpoint */
@@ -859,9 +943,12 @@ static int mv_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 	if (!_ep || !_req)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!udc->active)
 		return 0;
 
+=======
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&ep->udc->lock, flags);
 	stopped = ep->stopped;
 
@@ -1116,7 +1203,11 @@ static int udc_reset(struct mv_udc *udc)
 	tmp |= USBMODE_CTRL_MODE_DEVICE;
 
 	/* turn setup lockout off, require setup tripwire in usbcmd */
+<<<<<<< HEAD
 	tmp |= USBMODE_SETUP_LOCK_OFF;
+=======
+	tmp |= USBMODE_SETUP_LOCK_OFF | USBMODE_STREAM_DISABLE;
+>>>>>>> v3.4.6
 
 	writel(tmp, &udc->op_regs->usbmode);
 
@@ -1227,6 +1318,7 @@ static int mv_udc_wakeup(struct usb_gadget *gadget)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void uevent_worker(struct work_struct *work)
 {
 	struct mv_udc *udc = the_controller;
@@ -1240,6 +1332,8 @@ static void uevent_worker(struct work_struct *work)
 			udc->vbus_active ? connected : disconnected);
 }
 
+=======
+>>>>>>> v3.4.6
 static int mv_udc_vbus_session(struct usb_gadget *gadget, int is_active)
 {
 	struct mv_udc *udc;
@@ -1251,6 +1345,7 @@ static int mv_udc_vbus_session(struct usb_gadget *gadget, int is_active)
 
 	udc->vbus_active = (is_active != 0);
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAKE_SYSTEMOFF
 	if (fake_sysoff_status_query() && udc->vbus_active)
 		kernel_power_off();
@@ -1285,10 +1380,19 @@ static int mv_udc_vbus_session(struct usb_gadget *gadget, int is_active)
 				PM_QOS_CPUIDLE_BLOCK_DEFAULT_VALUE);
 	}
 	if (udc->driver && udc->softconnect && udc->vbus_active) {
+=======
+	dev_dbg(&udc->dev->dev, "%s: softconnect %d, vbus_active %d\n",
+		__func__, udc->softconnect, udc->vbus_active);
+
+	if (udc->driver && udc->softconnect && udc->vbus_active) {
+		retval = mv_udc_enable(udc);
+		if (retval == 0) {
+>>>>>>> v3.4.6
 			/* Clock is disabled, need re-init registers */
 			udc_reset(udc);
 			ep0_reset(udc);
 			udc_start(udc);
+<<<<<<< HEAD
 	} else if (udc->driver && udc->softconnect) {
 		if (!udc->active)
 			goto out;
@@ -1302,10 +1406,21 @@ static int mv_udc_vbus_session(struct usb_gadget *gadget, int is_active)
 		pm_relax(&udc->dev->dev);
 	}
 out:
+=======
+		}
+	} else if (udc->driver && udc->softconnect) {
+		/* stop all the transfer in queue*/
+		stop_activity(udc, udc->driver);
+		udc_stop(udc);
+		mv_udc_disable(udc);
+	}
+
+>>>>>>> v3.4.6
 	spin_unlock_irqrestore(&udc->lock, flags);
 	return retval;
 }
 
+<<<<<<< HEAD
 /* constrain controller's VBUS power usage */
 static int mv_udc_vbus_draw(struct usb_gadget *gadget, unsigned mA)
 {
@@ -1317,6 +1432,8 @@ static int mv_udc_vbus_draw(struct usb_gadget *gadget, unsigned mA)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static int mv_udc_pullup(struct usb_gadget *gadget, int is_on)
 {
 	struct mv_udc *udc;
@@ -1350,6 +1467,7 @@ static int mv_udc_pullup(struct usb_gadget *gadget, int is_on)
 	return retval;
 }
 
+<<<<<<< HEAD
 static int mv_set_selfpowered(struct usb_gadget *gadget, int is_on)
 {
 	struct mv_udc *udc;
@@ -1363,6 +1481,8 @@ static int mv_set_selfpowered(struct usb_gadget *gadget, int is_on)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static int mv_udc_start(struct usb_gadget_driver *driver,
 		int (*bind)(struct usb_gadget *));
 static int mv_udc_stop(struct usb_gadget_driver *driver);
@@ -1378,6 +1498,7 @@ static const struct usb_gadget_ops mv_ops = {
 	/* notify controller that VBUS is powered or not */
 	.vbus_session	= mv_udc_vbus_session,
 
+<<<<<<< HEAD
 	/* constrain controller's VBUS power usage */
 	.vbus_draw	= mv_udc_vbus_draw,
 	/* D+ pullup, software-controlled connect/disconnect to USB host */
@@ -1385,6 +1506,10 @@ static const struct usb_gadget_ops mv_ops = {
 
 	.set_selfpowered = mv_set_selfpowered,
 
+=======
+	/* D+ pullup, software-controlled connect/disconnect to USB host */
+	.pullup		= mv_udc_pullup,
+>>>>>>> v3.4.6
 	.start		= mv_udc_start,
 	.stop		= mv_udc_stop,
 };
@@ -1496,7 +1621,10 @@ static int mv_udc_start(struct usb_gadget_driver *driver,
 	udc->usb_state = USB_STATE_ATTACHED;
 	udc->ep0_state = WAIT_FOR_SETUP;
 	udc->ep0_dir = EP_DIR_OUT;
+<<<<<<< HEAD
 	udc->selfpowered = 0;
+=======
+>>>>>>> v3.4.6
 
 	spin_unlock_irqrestore(&udc->lock, flags);
 
@@ -1524,6 +1652,12 @@ static int mv_udc_start(struct usb_gadget_driver *driver,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* pullup is always on */
+	mv_udc_pullup(&udc->gadget, 1);
+
+>>>>>>> v3.4.6
 	/* When boot with cable attached, there will be no vbus irq occurred */
 	if (udc->qwork)
 		queue_work(udc->qwork, &udc->vbus_work);
@@ -1623,6 +1757,7 @@ udc_prime_status(struct mv_udc *udc, u8 direction, u16 status, bool empty)
 	}
 
 	/* prime the data phase */
+<<<<<<< HEAD
 	if (!req_to_dtd(req)) {
 		retval = queue_dtd(ep, req);
 		if (retval) {
@@ -1634,6 +1769,17 @@ udc_prime_status(struct mv_udc *udc, u8 direction, u16 status, bool empty)
 		retval = -ENOMEM;
 		dev_err(&udc->dev->dev,
 			"Failed to dma_pool_alloc when prime status\n");
+=======
+	if (!req_to_dtd(req))
+		retval = queue_dtd(ep, req);
+	else{	/* no mem */
+		retval = -ENOMEM;
+		goto out;
+	}
+
+	if (retval) {
+		dev_err(&udc->dev->dev, "response error on GET_STATUS request\n");
+>>>>>>> v3.4.6
 		goto out;
 	}
 
@@ -1641,6 +1787,7 @@ udc_prime_status(struct mv_udc *udc, u8 direction, u16 status, bool empty)
 
 	return 0;
 out:
+<<<<<<< HEAD
 	if (req->mapped) {
 		dma_unmap_single(ep->udc->gadget.dev.parent,
 				req->req.dma, req->req.length,
@@ -1650,6 +1797,8 @@ out:
 		req->mapped = 0;
 	}
 
+=======
+>>>>>>> v3.4.6
 	return retval;
 }
 
@@ -1686,7 +1835,11 @@ static void ch9getstatus(struct mv_udc *udc, u8 ep_num,
 		return;
 
 	if ((setup->bRequestType & USB_RECIP_MASK) == USB_RECIP_DEVICE) {
+<<<<<<< HEAD
 		status = udc->selfpowered << USB_DEVICE_SELF_POWERED;
+=======
+		status = 1 << USB_DEVICE_SELF_POWERED;
+>>>>>>> v3.4.6
 		status |= udc->remote_wakeup << USB_DEVICE_REMOTE_WAKEUP;
 	} else if ((setup->bRequestType & USB_RECIP_MASK)
 			== USB_RECIP_INTERFACE) {
@@ -1806,6 +1959,7 @@ out:
 	return;
 }
 
+<<<<<<< HEAD
 static int is_set_configuration(struct usb_ctrlrequest *setup)
 {
 	if ((setup->bRequestType & USB_TYPE_MASK) == USB_TYPE_STANDARD)
@@ -1847,6 +2001,8 @@ static const char *desc_type(unsigned type)
 	}
 }
 
+=======
+>>>>>>> v3.4.6
 static void handle_setup_packet(struct mv_udc *udc, u8 ep_num,
 	struct usb_ctrlrequest *setup)
 {
@@ -1854,11 +2010,17 @@ static void handle_setup_packet(struct mv_udc *udc, u8 ep_num,
 
 	nuke(&udc->eps[ep_num * 2 + EP_DIR_OUT], -ESHUTDOWN);
 
+<<<<<<< HEAD
 	dev_dbg(&udc->dev->dev, "%s, \t%s, \t%d\n", reqname(setup->bRequest),
 		(setup->bRequest == USB_REQ_GET_DESCRIPTOR)
 		 ? desc_type(setup->wValue >> 8) : NULL,
 		 setup->wIndex);
 
+=======
+	dev_dbg(&udc->dev->dev, "SETUP %02x.%02x v%04x i%04x l%04x\n",
+			setup->bRequestType, setup->bRequest,
+			setup->wValue, setup->wIndex, setup->wLength);
+>>>>>>> v3.4.6
 	/* We process some stardard setup requests here */
 	if ((setup->bRequestType & USB_TYPE_MASK) == USB_TYPE_STANDARD) {
 		switch (setup->bRequest) {
@@ -1908,6 +2070,7 @@ static void handle_setup_packet(struct mv_udc *udc, u8 ep_num,
 			spin_lock(&udc->lock);
 			udc->ep0_state = WAIT_FOR_OUT_STATUS;
 		}
+<<<<<<< HEAD
 
 		if (is_set_configuration(setup)) {
 			if (udc->charger_type == DEFAULT_CHARGER) {
@@ -1915,6 +2078,8 @@ static void handle_setup_packet(struct mv_udc *udc, u8 ep_num,
 				schedule_delayed_work(&udc->charger_work, 0);
 			}
 		}
+=======
+>>>>>>> v3.4.6
 	}
 }
 
@@ -2239,6 +2404,7 @@ static irqreturn_t mv_udc_irq(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static BLOCKING_NOTIFIER_HEAD(mv_udc_notifier_list);
 
 /* For any user that care about USB udc events, for example the charger*/
@@ -2327,12 +2493,24 @@ static int mv_udc_vbus_notifier_call(struct notifier_block *nb,
 		queue_work(udc->qwork, &udc->vbus_work);
 
 	return 0;
+=======
+static irqreturn_t mv_udc_vbus_irq(int irq, void *dev)
+{
+	struct mv_udc *udc = (struct mv_udc *)dev;
+
+	/* polling VBUS and init phy may cause too much time*/
+	if (udc->qwork)
+		queue_work(udc->qwork, &udc->vbus_work);
+
+	return IRQ_HANDLED;
+>>>>>>> v3.4.6
 }
 
 static void mv_udc_vbus_work(struct work_struct *work)
 {
 	struct mv_udc *udc;
 	unsigned int vbus;
+<<<<<<< HEAD
 	int ret;
 
 	udc = container_of(work, struct mv_udc, vbus_work);
@@ -2342,6 +2520,14 @@ static void mv_udc_vbus_work(struct work_struct *work)
 	ret = pxa_usb_extern_call(udc->pdata->id, vbus, get_vbus, &vbus);
 	if (ret)
 		return;
+=======
+
+	udc = container_of(work, struct mv_udc, vbus_work);
+	if (!udc->pdata->vbus)
+		return;
+
+	vbus = udc->pdata->vbus->poll();
+>>>>>>> v3.4.6
 	dev_info(&udc->dev->dev, "vbus is %d\n", vbus);
 
 	if (vbus == VBUS_HIGH)
@@ -2363,8 +2549,11 @@ static int __devexit mv_udc_remove(struct platform_device *dev)
 	struct mv_udc *udc = the_controller;
 	int clk_i;
 
+<<<<<<< HEAD
 	device_init_wakeup(&dev->dev, 0);
 
+=======
+>>>>>>> v3.4.6
 	usb_del_gadget_udc(&udc->gadget);
 
 	if (udc->qwork) {
@@ -2376,6 +2565,7 @@ static int __devexit mv_udc_remove(struct platform_device *dev)
 	 * If we have transceiver inited,
 	 * then vbus irq will not be requested in udc driver.
 	 */
+<<<<<<< HEAD
 	if (udc->pdata && (udc->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION)
 		&& udc->clock_gating && udc->transceiver == NULL)
 		pxa_usb_unregister_notifier(udc->pdata->id, &udc->notifier);
@@ -2386,6 +2576,11 @@ static int __devexit mv_udc_remove(struct platform_device *dev)
 	}
 	
 	pm_qos_remove_request(&udc->qos_idle);
+=======
+	if (udc->pdata && udc->pdata->vbus
+		&& udc->clock_gating && udc->transceiver == NULL)
+		free_irq(udc->pdata->vbus->irq, &dev->dev);
+>>>>>>> v3.4.6
 
 	/* free memory allocated in probe */
 	if (udc->dtd_pool)
@@ -2601,6 +2796,7 @@ static int __devinit mv_udc_probe(struct platform_device *dev)
 
 	eps_init(udc);
 
+<<<<<<< HEAD
 	udc->qos_idle.name = udc->dev->name;
 	pm_qos_add_request(&udc->qos_idle, PM_QOS_CPUIDLE_BLOCK,
 			PM_QOS_CPUIDLE_BLOCK_DEFAULT_VALUE);
@@ -2623,16 +2819,39 @@ static int __devinit mv_udc_probe(struct platform_device *dev)
 
 	if ((pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION)
 		 && udc->transceiver == NULL) {
+=======
+	/* VBUS detect: we can disable/enable clock on demand.*/
+	if (udc->transceiver)
+		udc->clock_gating = 1;
+	else if (pdata->vbus) {
+		udc->clock_gating = 1;
+		retval = request_threaded_irq(pdata->vbus->irq, NULL,
+				mv_udc_vbus_irq, IRQF_ONESHOT, "vbus", udc);
+		if (retval) {
+			dev_info(&dev->dev,
+				"Can not request irq for VBUS, "
+				"disable clock gating\n");
+			udc->clock_gating = 0;
+		}
+
+>>>>>>> v3.4.6
 		udc->qwork = create_singlethread_workqueue("mv_udc_queue");
 		if (!udc->qwork) {
 			dev_err(&dev->dev, "cannot create workqueue\n");
 			retval = -ENOMEM;
+<<<<<<< HEAD
 			goto err_pm_qos_remove;
 		}
 
 		INIT_WORK(&udc->vbus_work, mv_udc_vbus_work);
 		udc->notifier.notifier_call = mv_udc_vbus_notifier_call;
 		pxa_usb_register_notifier(udc->pdata->id, &udc->notifier);
+=======
+			goto err_unregister;
+		}
+
+		INIT_WORK(&udc->vbus_work, mv_udc_vbus_work);
+>>>>>>> v3.4.6
 	}
 
 	/*
@@ -2647,15 +2866,20 @@ static int __devinit mv_udc_probe(struct platform_device *dev)
 
 	retval = usb_add_gadget_udc(&dev->dev, &udc->gadget);
 	if (retval)
+<<<<<<< HEAD
 		goto err_free_vbus_irq;
 
 	device_init_wakeup(&dev->dev, 1);
+=======
+		goto err_unregister;
+>>>>>>> v3.4.6
 
 	dev_info(&dev->dev, "successful probe UDC device %s clock gating.\n",
 		udc->clock_gating ? "with" : "without");
 
 	return 0;
 
+<<<<<<< HEAD
 err_free_vbus_irq:
 	if (udc->pdata && (udc->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION)
 		&& udc->clock_gating && udc->transceiver == NULL)
@@ -2666,6 +2890,12 @@ err_free_vbus_irq:
 	}
 err_pm_qos_remove:
 	pm_qos_remove_request(&udc->qos_idle);
+=======
+err_unregister:
+	if (udc->pdata && udc->pdata->vbus
+		&& udc->clock_gating && udc->transceiver == NULL)
+		free_irq(pdata->vbus->irq, &dev->dev);
+>>>>>>> v3.4.6
 	device_unregister(&udc->gadget.dev);
 err_free_irq:
 	free_irq(udc->irq, &dev->dev);
@@ -2702,6 +2932,7 @@ static int mv_udc_suspend(struct device *_dev)
 	if (udc->transceiver)
 		return 0;
 
+<<<<<<< HEAD
 	if (udc->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION) {
 		unsigned int vbus = 0;
 		pxa_usb_extern_call(udc->pdata->id, vbus, get_vbus, &vbus);
@@ -2710,6 +2941,13 @@ static int mv_udc_suspend(struct device *_dev)
 			return -EAGAIN;
 		}
 	}
+=======
+	if (udc->pdata->vbus && udc->pdata->vbus->poll)
+		if (udc->pdata->vbus->poll() == VBUS_HIGH) {
+			dev_info(&udc->dev->dev, "USB cable is connected!\n");
+			return -EAGAIN;
+		}
+>>>>>>> v3.4.6
 
 	/*
 	 * only cable is unplugged, udc can suspend.
@@ -2764,15 +3002,21 @@ static void mv_udc_shutdown(struct platform_device *dev)
 	struct mv_udc *udc = the_controller;
 	u32 mode;
 
+<<<<<<< HEAD
 	if (!udc)
 		return;
 
 	mv_udc_enable(udc);
+=======
+>>>>>>> v3.4.6
 	/* reset controller mode to IDLE */
 	mode = readl(&udc->op_regs->usbmode);
 	mode &= ~3;
 	writel(mode, &udc->op_regs->usbmode);
+<<<<<<< HEAD
 	mv_udc_disable(udc);
+=======
+>>>>>>> v3.4.6
 }
 
 static struct platform_driver udc_driver = {

@@ -192,7 +192,10 @@ int __must_check rfkill_register(struct rfkill *rfkill);
  */
 void rfkill_pause_polling(struct rfkill *rfkill);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RFKILL_PM
+=======
+>>>>>>> v3.4.6
 /**
  * rfkill_resume_polling(struct rfkill *rfkill)
  *
@@ -201,11 +204,15 @@ void rfkill_pause_polling(struct rfkill *rfkill);
  * core stops polling anyway
  */
 void rfkill_resume_polling(struct rfkill *rfkill);
+<<<<<<< HEAD
 #else
 static inline void rfkill_resume_polling(struct rfkill *rfkill)
 {
 }
 #endif
+=======
+
+>>>>>>> v3.4.6
 
 /**
  * rfkill_unregister - Unregister a rfkill structure.

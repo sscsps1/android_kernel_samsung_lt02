@@ -288,11 +288,14 @@ enum snd_soc_pcm_subclass {
 	SND_SOC_PCM_CLASS_BE	= 1,
 };
 
+<<<<<<< HEAD
 enum snd_soc_card_subclass {
 	SND_SOC_CARD_CLASS_INIT	= 0,
 	SND_SOC_CARD_CLASS_PCM	= 1,
 };
 
+=======
+>>>>>>> v3.4.6
 int snd_soc_codec_set_sysclk(struct snd_soc_codec *codec, int clk_id,
 			     int source, unsigned int freq, int dir);
 int snd_soc_codec_set_pll(struct snd_soc_codec *codec, int pll_id, int source,
@@ -805,7 +808,10 @@ struct snd_soc_card {
 
 	struct list_head list;
 	struct mutex mutex;
+<<<<<<< HEAD
 	struct mutex dapm_mutex;
+=======
+>>>>>>> v3.4.6
 
 	bool instantiated;
 

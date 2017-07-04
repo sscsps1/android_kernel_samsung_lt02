@@ -3675,6 +3675,7 @@ no_journal:
 	return 0;
 
 cantfind_ext4:
+<<<<<<< HEAD
 
 	/* If you wanna use the flag 'MS_SILENT', call */
 	/* 'print_bh' function within below 'if'. */
@@ -3684,6 +3685,10 @@ cantfind_ext4:
 	if (!silent)
 		ext4_msg(sb, KERN_ERR, "VFS: Can't find ext4 filesystem");
 
+=======
+	if (!silent)
+		ext4_msg(sb, KERN_ERR, "VFS: Can't find ext4 filesystem");
+>>>>>>> v3.4.6
 	goto failed_mount;
 
 failed_mount7:
@@ -4784,6 +4789,7 @@ out:
 
 #endif
 
+<<<<<<< HEAD
 void print_bh(struct super_block *sb, struct buffer_head *bh
 		, int start, int len)
 {
@@ -4832,6 +4838,8 @@ void print_block_data(struct super_block *sb, sector_t blocknr
 }
 
 
+=======
+>>>>>>> v3.4.6
 static struct dentry *ext4_mount(struct file_system_type *fs_type, int flags,
 		       const char *dev_name, void *data)
 {

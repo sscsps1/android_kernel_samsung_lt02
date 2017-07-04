@@ -64,11 +64,14 @@ struct uio_port {
 #define MAX_UIO_PORT_REGIONS	5
 
 struct uio_device;
+<<<<<<< HEAD
 struct uio_listener {
 	struct uio_device *dev;
 	s32 event_count;
 	void *extend;
 };
+=======
+>>>>>>> v3.4.6
 
 /**
  * struct uio_info - UIO device capabilities
@@ -97,6 +100,7 @@ struct uio_info {
 	void			*priv;
 	irqreturn_t (*handler)(int irq, struct uio_info *dev_info);
 	int (*mmap)(struct uio_info *info, struct vm_area_struct *vma);
+<<<<<<< HEAD
 	int (*open)(struct uio_info *info,
 			struct inode *inode, void *file_priv);
 	int (*release)(struct uio_info *info,
@@ -104,6 +108,11 @@ struct uio_info {
 	int (*irqcontrol)(struct uio_info *info, s32 irq_on);
 	int (*ioctl)(struct uio_info *info, unsigned int cmd,
 			unsigned long arg, void *file_priv);
+=======
+	int (*open)(struct uio_info *info, struct inode *inode);
+	int (*release)(struct uio_info *info, struct inode *inode);
+	int (*irqcontrol)(struct uio_info *info, s32 irq_on);
+>>>>>>> v3.4.6
 };
 
 extern int __must_check

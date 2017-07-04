@@ -11,16 +11,23 @@
 #include <mach/hardware.h>
 #include <mach/smemc.h>
 
+<<<<<<< HEAD
 DEFINE_MUTEX(smc_lock);
 
 #if defined(CONFIG_PM) && !defined(CONFIG_PXA95x)
+=======
+#ifdef CONFIG_PM
+>>>>>>> v3.4.6
 static unsigned long msc[2];
 static unsigned long sxcnfg, memclkcfg;
 static unsigned long csadrcfg[4];
 
 static int pxa3xx_smemc_suspend(void)
 {
+<<<<<<< HEAD
 	mutex_lock(&smc_lock);
+=======
+>>>>>>> v3.4.6
 	msc[0] = __raw_readl(MSC0);
 	msc[1] = __raw_readl(MSC1);
 	sxcnfg = __raw_readl(SXCNFG);
@@ -29,14 +36,20 @@ static int pxa3xx_smemc_suspend(void)
 	csadrcfg[1] = __raw_readl(CSADRCFG1);
 	csadrcfg[2] = __raw_readl(CSADRCFG2);
 	csadrcfg[3] = __raw_readl(CSADRCFG3);
+<<<<<<< HEAD
 	mutex_unlock(&smc_lock);
+=======
+>>>>>>> v3.4.6
 
 	return 0;
 }
 
 static void pxa3xx_smemc_resume(void)
 {
+<<<<<<< HEAD
 	mutex_lock(&smc_lock);
+=======
+>>>>>>> v3.4.6
 	__raw_writel(msc[0], MSC0);
 	__raw_writel(msc[1], MSC1);
 	__raw_writel(sxcnfg, SXCNFG);
@@ -45,7 +58,10 @@ static void pxa3xx_smemc_resume(void)
 	__raw_writel(csadrcfg[1], CSADRCFG1);
 	__raw_writel(csadrcfg[2], CSADRCFG2);
 	__raw_writel(csadrcfg[3], CSADRCFG3);
+<<<<<<< HEAD
 	mutex_unlock(&smc_lock);
+=======
+>>>>>>> v3.4.6
 }
 
 static struct syscore_ops smemc_syscore_ops = {
@@ -62,6 +78,7 @@ static int __init smemc_init(void)
 }
 subsys_initcall(smemc_init);
 #endif
+<<<<<<< HEAD
 
 #if (defined(CONFIG_MTD_ONENAND) || defined(CONFIG_MTD_ONENAND_MODULE))
 
@@ -97,3 +114,5 @@ void onenand_sync_clk_cfg(void)
 }
 EXPORT_SYMBOL(onenand_sync_clk_cfg);
 #endif
+=======
+>>>>>>> v3.4.6

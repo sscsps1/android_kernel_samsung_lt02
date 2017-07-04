@@ -10,8 +10,11 @@
 #ifndef __MV_PLATFORM_USB_H
 #define __MV_PLATFORM_USB_H
 
+<<<<<<< HEAD
 #include <linux/notifier.h>
 
+=======
+>>>>>>> v3.4.6
 enum pxa_ehci_type {
 	EHCI_UNDEFINED = 0,
 	PXA_U2OEHCI,	/* pxa 168, 9xx */
@@ -20,6 +23,7 @@ enum pxa_ehci_type {
 	MMP3_FSIC,	/* mmp3 fsic */
 };
 
+<<<<<<< HEAD
 enum usb_port_speed {
 	USB_PORT_SPEED_FULL = 0,	/* full speed: 0x0 */
 	USB_PORT_SPEED_LOW,		/* low speed: 0x1 */
@@ -31,6 +35,11 @@ enum {
 	MV_USB_MODE_OTG,
 	MV_USB_MODE_HOST,
 	MV_USB_MODE_DEVICE,
+=======
+enum {
+	MV_USB_MODE_OTG,
+	MV_USB_MODE_HOST,
+>>>>>>> v3.4.6
 };
 
 enum {
@@ -38,6 +47,7 @@ enum {
 	VBUS_HIGH	= 1 << 0,
 };
 
+<<<<<<< HEAD
 enum charger_type {
 	NULL_CHARGER	= 0,
 	DEFAULT_CHARGER,
@@ -131,6 +141,18 @@ struct mv_usb_platform_data {
 	 */
 	unsigned int		id;
 	unsigned int		extern_attr;
+=======
+struct mv_usb_addon_irq {
+	unsigned int	irq;
+	int		(*poll)(void);
+};
+
+struct mv_usb_platform_data {
+	unsigned int		clknum;
+	char			**clkname;
+	struct mv_usb_addon_irq	*id;	/* Only valid for OTG. ID pin change*/
+	struct mv_usb_addon_irq	*vbus;	/* valid for OTG/UDC. VBUS change*/
+>>>>>>> v3.4.6
 
 	/* only valid for HCD. OTG or Host only*/
 	unsigned int		mode;
@@ -142,6 +164,10 @@ struct mv_usb_platform_data {
 
 	int	(*phy_init)(void __iomem *regbase);
 	void	(*phy_deinit)(void __iomem *regbase);
+<<<<<<< HEAD
+=======
+	int	(*set_vbus)(unsigned int vbus);
+>>>>>>> v3.4.6
 	int     (*private_init)(void __iomem *opregs, void __iomem *phyregs);
 };
 

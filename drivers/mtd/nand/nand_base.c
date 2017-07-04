@@ -2662,12 +2662,15 @@ erase_exit:
 
 	/* Deselect and wake up anyone waiting on the device */
 	nand_release_device(mtd);
+<<<<<<< HEAD
 	if (ret && (chip->options & BBT_RELOCATION_IFBAD)) {
 		chip->block_markbad(mtd, (loff_t)(page & chip->pagemask)
 				<< chip->page_shift);
 		instr->state = MTD_ERASE_DONE;
 		ret = 0;
 	}
+=======
+>>>>>>> v3.4.6
 
 	/* Do call back function */
 	if (!ret)
@@ -2743,7 +2746,10 @@ static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
 	return chip->block_markbad(mtd, ofs);
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_PXA95x_SUSPEND
+=======
+>>>>>>> v3.4.6
 /**
  * nand_suspend - [MTD Interface] Suspend the NAND flash
  * @mtd: MTD device structure
@@ -2769,7 +2775,10 @@ static void nand_resume(struct mtd_info *mtd)
 		pr_err("%s called for a chip which is not in suspended state\n",
 			__func__);
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 
 /* Set default functions */
 static void nand_set_defaults(struct nand_chip *chip, int busw)

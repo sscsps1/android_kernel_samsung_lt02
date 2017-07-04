@@ -38,8 +38,11 @@ MODULE_LICENSE("GPL");
 
 static const char driver_name[] = "mv-otg";
 
+<<<<<<< HEAD
 static int otg_force_host_mode;
 
+=======
+>>>>>>> v3.4.6
 static char *state_string[] = {
 	"undefined",
 	"b_idle",
@@ -60,8 +63,15 @@ static char *state_string[] = {
 static int mv_otg_set_vbus(struct usb_otg *otg, bool on)
 {
 	struct mv_otg *mvotg = container_of(otg->phy, struct mv_otg, phy);
+<<<<<<< HEAD
 
 	return pxa_usb_extern_call(mvotg->pdata->id, vbus, set_vbus, on);
+=======
+	if (mvotg->pdata->set_vbus == NULL)
+		return -ENODEV;
+
+	return mvotg->pdata->set_vbus(on);
+>>>>>>> v3.4.6
 }
 
 static int mv_otg_set_host(struct usb_otg *otg,
@@ -183,14 +193,22 @@ static void mv_otg_init_irq(struct mv_otg *mvotg)
 	mvotg->irq_status = OTGSC_INTSTS_A_SESSION_VALID
 	    | OTGSC_INTSTS_A_VBUS_VALID;
 
+<<<<<<< HEAD
 	if ((mvotg->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION) == 0) {
+=======
+	if (mvotg->pdata->vbus == NULL) {
+>>>>>>> v3.4.6
 		mvotg->irq_en |= OTGSC_INTR_B_SESSION_VALID
 		    | OTGSC_INTR_B_SESSION_END;
 		mvotg->irq_status |= OTGSC_INTSTS_B_SESSION_VALID
 		    | OTGSC_INTSTS_B_SESSION_END;
 	}
 
+<<<<<<< HEAD
 	if ((mvotg->pdata->extern_attr & MV_USB_HAS_IDPIN_DETECTION) == 0) {
+=======
+	if (mvotg->pdata->id == NULL) {
+>>>>>>> v3.4.6
 		mvotg->irq_en |= OTGSC_INTR_USB_ID;
 		mvotg->irq_status |= OTGSC_INTSTS_USB_ID;
 	}
@@ -278,7 +296,10 @@ static int mv_otg_enable_internal(struct mv_otg *mvotg)
 
 static int mv_otg_enable(struct mv_otg *mvotg)
 {
+<<<<<<< HEAD
 	pm_stay_awake(&mvotg->pdev->dev);
+=======
+>>>>>>> v3.4.6
 	if (mvotg->clock_gating)
 		return mv_otg_enable_internal(mvotg);
 
@@ -300,7 +321,10 @@ static void mv_otg_disable(struct mv_otg *mvotg)
 {
 	if (mvotg->clock_gating)
 		mv_otg_disable_internal(mvotg);
+<<<<<<< HEAD
 	pm_relax(&mvotg->pdev->dev);
+=======
+>>>>>>> v3.4.6
 }
 
 static void mv_otg_update_inputs(struct mv_otg *mvotg)
@@ -310,10 +334,15 @@ static void mv_otg_update_inputs(struct mv_otg *mvotg)
 
 	otgsc = readl(&mvotg->op_regs->otgsc);
 
+<<<<<<< HEAD
 	if (mvotg->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION) {
 		unsigned int vbus = 0;
 		pxa_usb_extern_call(mvotg->pdata->id, vbus, get_vbus, &vbus);
 		if (vbus == VBUS_HIGH) {
+=======
+	if (mvotg->pdata->vbus) {
+		if (mvotg->pdata->vbus->poll() == VBUS_HIGH) {
+>>>>>>> v3.4.6
 			otg_ctrl->b_sess_vld = 1;
 			otg_ctrl->b_sess_end = 0;
 		} else {
@@ -325,6 +354,7 @@ static void mv_otg_update_inputs(struct mv_otg *mvotg)
 		otg_ctrl->b_sess_end = !!(otgsc & OTGSC_STS_B_SESSION_END);
 	}
 
+<<<<<<< HEAD
 	if (mvotg->pdata->extern_attr & MV_USB_HAS_IDPIN_DETECTION) {
 		unsigned int id = 0;
 		pxa_usb_extern_call(mvotg->pdata->id, idpin, get_idpin, &id);
@@ -332,15 +362,24 @@ static void mv_otg_update_inputs(struct mv_otg *mvotg)
 	} else {
 		otg_ctrl->id = !!(otgsc & OTGSC_STS_USB_ID);
 	}
+=======
+	if (mvotg->pdata->id)
+		otg_ctrl->id = !!mvotg->pdata->id->poll();
+	else
+		otg_ctrl->id = !!(otgsc & OTGSC_STS_USB_ID);
+>>>>>>> v3.4.6
 
 	if (mvotg->pdata->otg_force_a_bus_req && !otg_ctrl->id)
 		otg_ctrl->a_bus_req = 1;
 
+<<<<<<< HEAD
 	if (otg_force_host_mode) {
 		otg_ctrl->id = 0;
 		otg_ctrl->a_bus_req = 1;
 	}
 
+=======
+>>>>>>> v3.4.6
 	otg_ctrl->a_sess_vld = !!(otgsc & OTGSC_STS_A_SESSION_VALID);
 	otg_ctrl->a_vbus_vld = !!(otgsc & OTGSC_STS_A_VBUS_VALID);
 
@@ -516,7 +555,11 @@ static irqreturn_t mv_otg_irq(int irq, void *dev)
 	 * if we have vbus, then the vbus detection for B-device
 	 * will be done by mv_otg_inputs_irq().
 	 */
+<<<<<<< HEAD
 	if (mvotg->pdata->extern_attr & MV_USB_HAS_VBUS_DETECTION)
+=======
+	if (mvotg->pdata->vbus)
+>>>>>>> v3.4.6
 		if ((otgsc & OTGSC_STS_USB_ID) &&
 		    !(otgsc & OTGSC_INTSTS_USB_ID))
 			return IRQ_NONE;
@@ -529,10 +572,16 @@ static irqreturn_t mv_otg_irq(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int mv_otg_notifier_callback(struct notifier_block *nb,
                                 unsigned long val, void *v)
 {
 	struct mv_otg *mvotg = container_of(nb, struct mv_otg, notifier);
+=======
+static irqreturn_t mv_otg_inputs_irq(int irq, void *dev)
+{
+	struct mv_otg *mvotg = dev;
+>>>>>>> v3.4.6
 
 	/* The clock may disabled at this time */
 	if (!mvotg->active) {
@@ -542,7 +591,11 @@ static int mv_otg_notifier_callback(struct notifier_block *nb,
 
 	mv_otg_run_state_machine(mvotg, 0);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return IRQ_HANDLED;
+>>>>>>> v3.4.6
 }
 
 static ssize_t
@@ -660,6 +713,7 @@ set_a_bus_drop(struct device *dev, struct device_attribute *attr,
 static DEVICE_ATTR(a_bus_drop, S_IRUGO | S_IWUSR,
 		   get_a_bus_drop, set_a_bus_drop);
 
+<<<<<<< HEAD
 static ssize_t
 get_otg_mode(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -696,11 +750,16 @@ set_otg_mode(struct device *dev, struct device_attribute *attr,
 }
 static DEVICE_ATTR(otg_mode, S_IRUGO | S_IWUSR, get_otg_mode, set_otg_mode);
 
+=======
+>>>>>>> v3.4.6
 static struct attribute *inputs_attrs[] = {
 	&dev_attr_a_bus_req.attr,
 	&dev_attr_a_clr_err.attr,
 	&dev_attr_a_bus_drop.attr,
+<<<<<<< HEAD
 	&dev_attr_otg_mode.attr,
+=======
+>>>>>>> v3.4.6
 	NULL,
 };
 
@@ -714,16 +773,26 @@ int mv_otg_remove(struct platform_device *pdev)
 	struct mv_otg *mvotg = platform_get_drvdata(pdev);
 	int clk_i;
 
+<<<<<<< HEAD
 	device_init_wakeup(&pdev->dev, 0);
 
+=======
+>>>>>>> v3.4.6
 	sysfs_remove_group(&mvotg->pdev->dev.kobj, &inputs_attr_group);
 
 	if (mvotg->irq)
 		free_irq(mvotg->irq, mvotg);
 
+<<<<<<< HEAD
 	if (mvotg->pdata->extern_attr
 		& (MV_USB_HAS_VBUS_DETECTION | MV_USB_HAS_IDPIN_DETECTION))
 		pxa_usb_unregister_notifier(mvotg->pdata->id, &mvotg->notifier);
+=======
+	if (mvotg->pdata->vbus)
+		free_irq(mvotg->pdata->vbus->irq, mvotg);
+	if (mvotg->pdata->id)
+		free_irq(mvotg->pdata->id->irq, mvotg);
+>>>>>>> v3.4.6
 
 	if (mvotg->qwork) {
 		flush_workqueue(mvotg->qwork);
@@ -856,6 +925,7 @@ static int mv_otg_probe(struct platform_device *pdev)
 		(struct mv_otg_regs __iomem *) ((unsigned long) mvotg->cap_regs
 			+ (readl(mvotg->cap_regs) & CAPLENGTH_MASK));
 
+<<<<<<< HEAD
 	if (pdata->extern_attr
 		& (MV_USB_HAS_VBUS_DETECTION | MV_USB_HAS_IDPIN_DETECTION)) {
 		mvotg->notifier.notifier_call = mv_otg_notifier_callback;
@@ -866,6 +936,31 @@ static int mv_otg_probe(struct platform_device *pdev)
 		}
 		if (pdata->extern_attr & MV_USB_HAS_IDPIN_DETECTION)
 			pxa_usb_extern_call(mvotg->pdata->id, idpin, init);
+=======
+	if (pdata->id) {
+		retval = request_threaded_irq(pdata->id->irq, NULL,
+					      mv_otg_inputs_irq,
+					      IRQF_ONESHOT, "id", mvotg);
+		if (retval) {
+			dev_info(&pdev->dev,
+				 "Failed to request irq for ID\n");
+			pdata->id = NULL;
+		}
+	}
+
+	if (pdata->vbus) {
+		mvotg->clock_gating = 1;
+		retval = request_threaded_irq(pdata->vbus->irq, NULL,
+					      mv_otg_inputs_irq,
+					      IRQF_ONESHOT, "vbus", mvotg);
+		if (retval) {
+			dev_info(&pdev->dev,
+				 "Failed to request irq for VBUS, "
+				 "disable clock gating\n");
+			mvotg->clock_gating = 0;
+			pdata->vbus = NULL;
+		}
+>>>>>>> v3.4.6
 	}
 
 	if (pdata->disable_otg_clock_gating)
@@ -915,8 +1010,11 @@ static int mv_otg_probe(struct platform_device *pdev)
 		 "successful probe OTG device %s clock gating.\n",
 		 mvotg->clock_gating ? "with" : "without");
 
+<<<<<<< HEAD
 	device_init_wakeup(&pdev->dev, 1);
 
+=======
+>>>>>>> v3.4.6
 	return 0;
 
 err_set_transceiver:
@@ -924,9 +1022,16 @@ err_set_transceiver:
 err_free_irq:
 	free_irq(mvotg->irq, mvotg);
 err_disable_clk:
+<<<<<<< HEAD
 	if (pdata->extern_attr
 		& (MV_USB_HAS_VBUS_DETECTION | MV_USB_HAS_IDPIN_DETECTION))
 		pxa_usb_unregister_notifier(mvotg->pdata->id, &mvotg->notifier);
+=======
+	if (pdata->vbus)
+		free_irq(pdata->vbus->irq, mvotg);
+	if (pdata->id)
+		free_irq(pdata->id->irq, mvotg);
+>>>>>>> v3.4.6
 	mv_otg_disable_internal(mvotg);
 err_unmap_capreg:
 	iounmap(mvotg->cap_regs);
@@ -952,7 +1057,12 @@ static int mv_otg_suspend(struct platform_device *pdev, pm_message_t state)
 	struct mv_otg *mvotg = platform_get_drvdata(pdev);
 
 	if (mvotg->phy.state != OTG_STATE_B_IDLE) {
+<<<<<<< HEAD
 		dev_info(&pdev->dev, "OTG state is not B_IDLE, it is %d!\n",
+=======
+		dev_info(&pdev->dev,
+			 "OTG state is not B_IDLE, it is %d!\n",
+>>>>>>> v3.4.6
 			 mvotg->phy.state);
 		return -EAGAIN;
 	}
@@ -960,8 +1070,11 @@ static int mv_otg_suspend(struct platform_device *pdev, pm_message_t state)
 	if (!mvotg->clock_gating)
 		mv_otg_disable_internal(mvotg);
 
+<<<<<<< HEAD
 	mvotg->phy.state = OTG_STATE_UNDEFINED;
 
+=======
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -970,6 +1083,7 @@ static int mv_otg_resume(struct platform_device *pdev)
 	struct mv_otg *mvotg = platform_get_drvdata(pdev);
 	u32 otgsc;
 
+<<<<<<< HEAD
 	mv_otg_enable_internal(mvotg);
 
 	otgsc = readl(&mvotg->op_regs->otgsc);
@@ -979,6 +1093,19 @@ static int mv_otg_resume(struct platform_device *pdev)
 	if (spin_trylock(&mvotg->wq_lock)) {
 		mv_otg_run_state_machine(mvotg, 0);
 		spin_unlock(&mvotg->wq_lock);
+=======
+	if (!mvotg->clock_gating) {
+		mv_otg_enable_internal(mvotg);
+
+		otgsc = readl(&mvotg->op_regs->otgsc);
+		otgsc |= mvotg->irq_en;
+		writel(otgsc, &mvotg->op_regs->otgsc);
+
+		if (spin_trylock(&mvotg->wq_lock)) {
+			mv_otg_run_state_machine(mvotg, 0);
+			spin_unlock(&mvotg->wq_lock);
+		}
+>>>>>>> v3.4.6
 	}
 	return 0;
 }

@@ -276,7 +276,10 @@ REGULATOR
   devm_regulator_get()
   devm_regulator_put()
   devm_regulator_bulk_get()
+<<<<<<< HEAD
 
 CLOCK
   devm_clk_get()
   devm_clk_put()
+=======
+>>>>>>> v3.4.6

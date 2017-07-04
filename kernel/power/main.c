@@ -16,11 +16,14 @@
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ_LIMIT_USERSPACE
 #include <linux/cpufreq.h>
 #include <linux/cpufreq_limit.h>
 #endif
 
+=======
+>>>>>>> v3.4.6
 #include "power.h"
 
 DEFINE_MUTEX(pm_mutex);
@@ -274,7 +277,12 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
 	return (s - buf);
 }
 
+<<<<<<< HEAD
 static suspend_state_t decode_state(const char *buf, size_t n)
+=======
+static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
+			   const char *buf, size_t n)
+>>>>>>> v3.4.6
 {
 #ifdef CONFIG_SUSPEND
 	suspend_state_t state = PM_SUSPEND_STANDBY;
@@ -282,10 +290,15 @@ static suspend_state_t decode_state(const char *buf, size_t n)
 #endif
 	char *p;
 	int len;
+<<<<<<< HEAD
+=======
+	int error = -EINVAL;
+>>>>>>> v3.4.6
 
 	p = memchr(buf, '\n', n);
 	len = p ? p - buf : n;
 
+<<<<<<< HEAD
 	/* Check hibernation first. */
 	if (len == 4 && !strncmp(buf, "disk", len))
 		return PM_SUSPEND_MAX;
@@ -324,6 +337,24 @@ static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
 
  out:
 	pm_autosleep_unlock();
+=======
+	/* First, check if we are requested to hibernate */
+	if (len == 4 && !strncmp(buf, "disk", len)) {
+		error = hibernate();
+		goto Exit;
+	}
+
+#ifdef CONFIG_SUSPEND
+	for (s = &pm_states[state]; state < PM_SUSPEND_MAX; s++, state++) {
+		if (*s && len == strlen(*s) && !strncmp(buf, *s, len)) {
+			error = pm_suspend(state);
+			break;
+		}
+	}
+#endif
+
+ Exit:
+>>>>>>> v3.4.6
 	return error ? error : n;
 }
 
@@ -364,8 +395,12 @@ static ssize_t wakeup_count_show(struct kobject *kobj,
 {
 	unsigned int val;
 
+<<<<<<< HEAD
 	return pm_get_wakeup_count(&val, true) ?
 		sprintf(buf, "%u\n", val) : -EINTR;
+=======
+	return pm_get_wakeup_count(&val) ? sprintf(buf, "%u\n", val) : -EINTR;
+>>>>>>> v3.4.6
 }
 
 static ssize_t wakeup_count_store(struct kobject *kobj,
@@ -373,6 +408,7 @@ static ssize_t wakeup_count_store(struct kobject *kobj,
 				const char *buf, size_t n)
 {
 	unsigned int val;
+<<<<<<< HEAD
 	int error;
 
 	error = pm_autosleep_lock();
@@ -526,6 +562,19 @@ static ssize_t cpufreq_table_store(struct kobject *kobj,
 power_attr(cpufreq_table);
 #endif
 
+=======
+
+	if (sscanf(buf, "%u", &val) == 1) {
+		if (pm_save_wakeup_count(val))
+			return n;
+	}
+	return -EINVAL;
+}
+
+power_attr(wakeup_count);
+#endif /* CONFIG_PM_SLEEP */
+
+>>>>>>> v3.4.6
 #ifdef CONFIG_PM_TRACE
 int pm_trace_enabled;
 
@@ -577,6 +626,7 @@ static struct attribute * g[] = {
 #ifdef CONFIG_PM_SLEEP
 	&pm_async_attr.attr,
 	&wakeup_count_attr.attr,
+<<<<<<< HEAD
 #ifdef CONFIG_PM_AUTOSLEEP
 	&autosleep_attr.attr,
 #endif
@@ -584,13 +634,18 @@ static struct attribute * g[] = {
 	&wake_lock_attr.attr,
 	&wake_unlock_attr.attr,
 #endif
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_PM_DEBUG
 	&pm_test_attr.attr,
 #endif
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ_LIMIT_USERSPACE
 	&cpufreq_table_attr.attr,
 #endif
+=======
+>>>>>>> v3.4.6
 	NULL,
 };
 
@@ -622,10 +677,14 @@ static int __init pm_init(void)
 	power_kobj = kobject_create_and_add("power", NULL);
 	if (!power_kobj)
 		return -ENOMEM;
+<<<<<<< HEAD
 	error = sysfs_create_group(power_kobj, &attr_group);
 	if (error)
 		return error;
 	return pm_autosleep_init();
+=======
+	return sysfs_create_group(power_kobj, &attr_group);
+>>>>>>> v3.4.6
 }
 
 core_initcall(pm_init);

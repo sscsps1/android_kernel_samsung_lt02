@@ -64,8 +64,11 @@ source "drivers/w1/Kconfig"
 
 source "drivers/power/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/battery/Kconfig"
 
+=======
+>>>>>>> v3.4.6
 source "drivers/hwmon/Kconfig"
 
 source "drivers/thermal/Kconfig"
@@ -98,12 +101,17 @@ source "drivers/memstick/Kconfig"
 
 source "drivers/leds/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/switch/Kconfig"
 
 source "drivers/accessibility/Kconfig"
 
 source "drivers/accessory/Kconfig"
 
+=======
+source "drivers/accessibility/Kconfig"
+
+>>>>>>> v3.4.6
 source "drivers/infiniband/Kconfig"
 
 source "drivers/edac/Kconfig"
@@ -146,9 +154,12 @@ source "drivers/virt/Kconfig"
 
 source "drivers/devfreq/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/sensors/Kconfig"
 
 source "drivers/samsung/Kconfig"
 
 source "drivers/marvell/Kconfig"
+=======
+>>>>>>> v3.4.6
 endmenu

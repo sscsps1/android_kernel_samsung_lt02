@@ -90,7 +90,11 @@ int fat_clusters_flush(struct super_block *sb)
 			fsinfo->free_clusters = cpu_to_le32(sbi->free_clusters);
 		if (sbi->prev_free != -1)
 			fsinfo->next_cluster = cpu_to_le32(sbi->prev_free);
+<<<<<<< HEAD
 		mark_buffer_dirty_sync(bh);
+=======
+		mark_buffer_dirty(bh);
+>>>>>>> v3.4.6
 	}
 	brelse(bh);
 

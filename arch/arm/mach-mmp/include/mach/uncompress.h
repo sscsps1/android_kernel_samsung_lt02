@@ -40,7 +40,11 @@ static inline void arch_decomp_setup(void)
 	/* default to UART2 */
 	UART = (unsigned long *)UART2_BASE;
 
+<<<<<<< HEAD
 	if (machine_is_avengers_lite() || machine_is_yellowstone())
+=======
+	if (machine_is_avengers_lite())
+>>>>>>> v3.4.6
 		UART = (unsigned long *)UART3_BASE;
 }
 

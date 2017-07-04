@@ -2183,6 +2183,7 @@ ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
 		       sdata->name, mgmt->sa, status_code);
 		ieee80211_destroy_assoc_data(sdata, false);
 	} else {
+<<<<<<< HEAD
 		printk(KERN_DEBUG "%s: associated\n", sdata->name);
 
 		if (!ieee80211_assoc_success(sdata, *bss, mgmt, len)) {
@@ -2192,6 +2193,15 @@ ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
 			cfg80211_put_bss(*bss);
 			return RX_MGMT_CFG80211_ASSOC_TIMEOUT;
 		}
+=======
+		if (!ieee80211_assoc_success(sdata, *bss, mgmt, len)) {
+			/* oops -- internal error -- send timeout for now */
+			ieee80211_destroy_assoc_data(sdata, false);
+			cfg80211_put_bss(*bss);
+			return RX_MGMT_CFG80211_ASSOC_TIMEOUT;
+		}
+		printk(KERN_DEBUG "%s: associated\n", sdata->name);
+>>>>>>> v3.4.6
 
 		/*
 		 * destroy assoc_data afterwards, as otherwise an idle

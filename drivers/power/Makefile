@@ -1,15 +1,22 @@
 ccflags-$(CONFIG_POWER_SUPPLY_DEBUG) := -DDEBUG
 
+<<<<<<< HEAD
 #KSND for Using LT02_KidWifi(KOR) Dock
 ifeq ($(findstring lt02kidswifiww, $(TARGET_PRODUCT)), lt02kidswifiww)
 ccflags-y	+= -DUSE_LGT_DOCK
 endif
 
+=======
+>>>>>>> v3.4.6
 power_supply-y				:= power_supply_core.o
 power_supply-$(CONFIG_SYSFS)		+= power_supply_sysfs.o
 power_supply-$(CONFIG_LEDS_TRIGGERS)	+= power_supply_leds.o
 
 obj-$(CONFIG_POWER_SUPPLY)	+= power_supply.o
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 obj-$(CONFIG_PDA_POWER)		+= pda_power.o
 obj-$(CONFIG_APM_POWER)		+= apm_power.o
 obj-$(CONFIG_MAX8925_POWER)	+= max8925_power.o
@@ -48,6 +55,7 @@ obj-$(CONFIG_CHARGER_MANAGER)	+= charger-manager.o
 obj-$(CONFIG_CHARGER_MAX8997)	+= max8997_charger.o
 obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
 obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
+<<<<<<< HEAD
 obj-$(CONFIG_BATTERY_ANDROID)	+= android_battery.o
 obj-$(CONFIG_CHARGER_ISL9226)   += isl9226_charger.o
 obj-$(CONFIG_BATTERY_88PM80X)	+= 88pm80x_battery.o
@@ -61,3 +69,5 @@ obj-$(CONFIG_STC3115_FUELGAUGE) += stc3115_battery.o
 obj-$(CONFIG_MAX17043_FUELGAUGE) += max17043_fuelgauge.o
 obj-$(CONFIG_BQ27425_FUELGAUGE) += bq27425_fuelgauge.o
 
+=======
+>>>>>>> v3.4.6

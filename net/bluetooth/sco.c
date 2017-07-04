@@ -177,7 +177,10 @@ static int sco_connect(struct sock *sk)
 {
 	bdaddr_t *src = &bt_sk(sk)->src;
 	bdaddr_t *dst = &bt_sk(sk)->dst;
+<<<<<<< HEAD
 	__u16 pkt_type = sco_pi(sk)->pkt_type;
+=======
+>>>>>>> v3.4.6
 	struct sco_conn *conn;
 	struct hci_conn *hcon;
 	struct hci_dev  *hdev;
@@ -193,12 +196,19 @@ static int sco_connect(struct sock *sk)
 
 	if (lmp_esco_capable(hdev) && !disable_esco)
 		type = ESCO_LINK;
+<<<<<<< HEAD
 	else {
 		type = SCO_LINK;
 		pkt_type &= SCO_ESCO_MASK;
 	}
 
 	hcon = hci_connect(hdev, type, pkt_type, dst, BT_SECURITY_LOW, HCI_AT_NO_BONDING);
+=======
+	else
+		type = SCO_LINK;
+
+	hcon = hci_connect(hdev, type, dst, BT_SECURITY_LOW, HCI_AT_NO_BONDING);
+>>>>>>> v3.4.6
 	if (IS_ERR(hcon)) {
 		err = PTR_ERR(hcon);
 		goto done;
@@ -373,6 +383,7 @@ static void __sco_sock_close(struct sock *sk)
 	case BT_CONNECTED:
 	case BT_CONFIG:
 		if (sco_pi(sk)->conn) {
+<<<<<<< HEAD
 			/* disable PCM first, then disconnect SCO connection*/
 			struct hci_cp_disable_pcm cp;
 			cp.handle =
@@ -380,6 +391,8 @@ static void __sco_sock_close(struct sock *sk)
 			cp.enable = 0;
 			hci_send_cmd(sco_pi(sk)->conn->hcon->hdev,
 				HCI_OP_DISABLE_PCM, sizeof(cp), &cp);
+=======
+>>>>>>> v3.4.6
 			sk->sk_state = BT_DISCONN;
 			sco_sock_set_timer(sk, SCO_DISCONN_TIMEOUT);
 			hci_conn_put(sco_pi(sk)->conn->hcon);
@@ -472,6 +485,7 @@ static int sco_sock_create(struct net *net, struct socket *sock, int protocol,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 {
 	struct sockaddr_sco sa;
@@ -480,14 +494,27 @@ static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 	int len, err = 0;
 
 	BT_DBG("sk %p %s", sk, batostr(&sa.sco_bdaddr));
+=======
+static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+{
+	struct sockaddr_sco *sa = (struct sockaddr_sco *) addr;
+	struct sock *sk = sock->sk;
+	bdaddr_t *src = &sa->sco_bdaddr;
+	int err = 0;
+
+	BT_DBG("sk %p %s", sk, batostr(&sa->sco_bdaddr));
+>>>>>>> v3.4.6
 
 	if (!addr || addr->sa_family != AF_BLUETOOTH)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	memset(&sa, 0, sizeof(sa));
 	len = min_t(unsigned int, sizeof(sa), alen);
 	memcpy(&sa, addr, len);
 
+=======
+>>>>>>> v3.4.6
 	lock_sock(sk);
 
 	if (sk->sk_state != BT_OPEN) {
@@ -501,8 +528,12 @@ static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 		err = -EADDRINUSE;
 	} else {
 		/* Save source address */
+<<<<<<< HEAD
 		bacpy(&bt_sk(sk)->src, &sa.sco_bdaddr);
 		sco_pi(sk)->pkt_type = sa.sco_pkt_type;
+=======
+		bacpy(&bt_sk(sk)->src, &sa->sco_bdaddr);
+>>>>>>> v3.4.6
 		sk->sk_state = BT_BOUND;
 	}
 
@@ -515,6 +546,7 @@ done:
 
 static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen, int flags)
 {
+<<<<<<< HEAD
 	struct sock *sk = sock->sk;
 	struct sockaddr_sco sa;
 	int len, err = 0;
@@ -543,6 +575,29 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
 	/* Set destination address and psm */
 	bacpy(&bt_sk(sk)->dst, &sa.sco_bdaddr);
 	sco_pi(sk)->pkt_type = sa.sco_pkt_type;
+=======
+	struct sockaddr_sco *sa = (struct sockaddr_sco *) addr;
+	struct sock *sk = sock->sk;
+	int err = 0;
+
+
+	BT_DBG("sk %p", sk);
+
+	if (alen < sizeof(struct sockaddr_sco) ||
+	    addr->sa_family != AF_BLUETOOTH)
+		return -EINVAL;
+
+	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
+		return -EBADFD;
+
+	if (sk->sk_type != SOCK_SEQPACKET)
+		return -EINVAL;
+
+	lock_sock(sk);
+
+	/* Set destination address and psm */
+	bacpy(&bt_sk(sk)->dst, &sa->sco_bdaddr);
+>>>>>>> v3.4.6
 
 	err = sco_connect(sk);
 	if (err)
@@ -649,7 +704,10 @@ static int sco_sock_getname(struct socket *sock, struct sockaddr *addr, int *len
 		bacpy(&sa->sco_bdaddr, &bt_sk(sk)->dst);
 	else
 		bacpy(&sa->sco_bdaddr, &bt_sk(sk)->src);
+<<<<<<< HEAD
 	sa->sco_pkt_type = sco_pi(sk)->pkt_type;
+=======
+>>>>>>> v3.4.6
 
 	return 0;
 }

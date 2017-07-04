@@ -28,6 +28,7 @@
 #include <mach/reset.h>
 #include <mach/smemc.h>
 #include <mach/pxa3xx-regs.h>
+<<<<<<< HEAD
 #if (defined(CONFIG_MTD_ONENAND) || defined(CONFIG_MTD_ONENAND_MODULE))
 #include <mach/part_table.h>
 #endif
@@ -40,6 +41,11 @@
 unsigned int pxa_chip_id;
 EXPORT_SYMBOL(pxa_chip_id);
 
+=======
+
+#include "generic.h"
+
+>>>>>>> v3.4.6
 void clear_reset_status(unsigned int mask)
 {
 	if (cpu_is_pxa2xx())
@@ -92,6 +98,7 @@ static struct map_desc common_io_desc[] __initdata = {
 		.pfn		= __phys_to_pfn(0x40000000),
 		.length		= 0x02000000,
 		.type		= MT_DEVICE
+<<<<<<< HEAD
 	}, {    /* Sys */
 		.virtual	= 0xfb000000,
 		.pfn		= __phys_to_pfn(0x46000000),
@@ -102,6 +109,12 @@ static struct map_desc common_io_desc[] __initdata = {
 		.virtual	= (unsigned long)SMEMC_VIRT,
 		.pfn		= __phys_to_pfn(PXA3XX_SMEMC_BASE),
 		.length		= 0x00200000,
+=======
+	}, {	/* UNCACHED_PHYS_0 */
+		.virtual	= 0xff000000,
+		.pfn		= __phys_to_pfn(0x00000000),
+		.length		= 0x00100000,
+>>>>>>> v3.4.6
 		.type		= MT_DEVICE
 	}
 };
@@ -109,6 +122,7 @@ static struct map_desc common_io_desc[] __initdata = {
 void __init pxa_map_io(void)
 {
 	iotable_init(ARRAY_AND_SIZE(common_io_desc));
+<<<<<<< HEAD
 	if (!cpu_is_pxa2xx() && !cpu_is_pxa3xx() && !cpu_is_pxa93x())
 		pxa_chip_id = __raw_readl(0xfb00ff80);
 }
@@ -176,3 +190,6 @@ void onenand_init(int sync_enable)
 #else
 void onenand_init(int sync_enable) {}
 #endif
+=======
+}
+>>>>>>> v3.4.6

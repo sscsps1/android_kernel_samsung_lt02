@@ -1676,11 +1676,15 @@ int regulatory_hint(struct wiphy *wiphy, const char *alpha2)
 
 	request->alpha2[0] = alpha2[0];
 	request->alpha2[1] = alpha2[1];
+<<<<<<< HEAD
 #if 0 /* workaround #478237 for preventing intersect */
 	request->initiator = NL80211_REGDOM_SET_BY_DRIVER;
 #else
 	request->initiator = NL80211_REGDOM_SET_BY_USER;
 #endif
+=======
+	request->initiator = NL80211_REGDOM_SET_BY_DRIVER;
+>>>>>>> v3.4.6
 
 	queue_regulatory_request(request);
 
@@ -1697,7 +1701,10 @@ void regulatory_hint_11d(struct wiphy *wiphy,
 			 u8 *country_ie,
 			 u8 country_ie_len)
 {
+<<<<<<< HEAD
 #if 0 /* workaround #480241 for ignoring country ie */
+=======
+>>>>>>> v3.4.6
 	char alpha2[2];
 	enum environment_cap env = ENVIRON_ANY;
 	struct regulatory_request *request;
@@ -1750,7 +1757,10 @@ void regulatory_hint_11d(struct wiphy *wiphy,
 
 out:
 	mutex_unlock(&reg_mutex);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 }
 
 static void restore_alpha2(char *alpha2, bool reset_user)
@@ -1938,11 +1948,17 @@ static void restore_regulatory_settings(bool reset_user)
 
 void regulatory_hint_disconnect(void)
 {
+<<<<<<< HEAD
 #if 0 /* workaround #480241 for ignoring country ie */
 	REG_DBG_PRINT("All devices are disconnected, going to "
 		      "restore regulatory settings\n");
 	restore_regulatory_settings(false);
 #endif
+=======
+	REG_DBG_PRINT("All devices are disconnected, going to "
+		      "restore regulatory settings\n");
+	restore_regulatory_settings(false);
+>>>>>>> v3.4.6
 }
 
 static bool freq_is_chan_12_13_14(u16 freq)

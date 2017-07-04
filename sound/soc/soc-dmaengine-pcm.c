@@ -30,7 +30,10 @@
 
 struct dmaengine_pcm_runtime_data {
 	struct dma_chan *dma_chan;
+<<<<<<< HEAD
 	dma_cookie_t cookie;
+=======
+>>>>>>> v3.4.6
 
 	unsigned int pos;
 
@@ -125,12 +128,17 @@ EXPORT_SYMBOL_GPL(snd_hwparams_to_dma_slave_config);
 static void dmaengine_pcm_dma_complete(void *arg)
 {
 	struct snd_pcm_substream *substream = arg;
+<<<<<<< HEAD
 	struct dmaengine_pcm_runtime_data *prtd;
 
 	if (!substream || !substream->runtime || !snd_pcm_running(substream))
 		return;
 
 	prtd = substream_to_prtd(substream);
+=======
+	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
+
+>>>>>>> v3.4.6
 	prtd->pos += snd_pcm_lib_period_bytes(substream);
 	if (prtd->pos >= snd_pcm_lib_buffer_bytes(substream))
 		prtd->pos = 0;
@@ -158,7 +166,11 @@ static int dmaengine_pcm_prepare_and_submit(struct snd_pcm_substream *substream)
 
 	desc->callback = dmaengine_pcm_dma_complete;
 	desc->callback_param = substream;
+<<<<<<< HEAD
 	prtd->cookie = dmaengine_submit(desc);
+=======
+	dmaengine_submit(desc);
+>>>>>>> v3.4.6
 
 	return 0;
 }
@@ -205,6 +217,7 @@ int snd_dmaengine_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
 EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_trigger);
 
 /**
+<<<<<<< HEAD
  * snd_dmaengine_pcm_pointer_no_residue - dmaengine based PCM pointer implementation
  * @substream: PCM substream
  *
@@ -219,6 +232,8 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream 
 EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_pointer_no_residue);
 
 /**
+=======
+>>>>>>> v3.4.6
  * snd_dmaengine_pcm_pointer - dmaengine based PCM pointer implementation
  * @substream: PCM substream
  *
@@ -228,6 +243,7 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_pointer_no_residue);
 snd_pcm_uframes_t snd_dmaengine_pcm_pointer(struct snd_pcm_substream *substream)
 {
 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
+<<<<<<< HEAD
 	struct dma_tx_state state;
 	enum dma_status status;
 	unsigned int buf_size;
@@ -241,6 +257,9 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer(struct snd_pcm_substream *substream)
 	}
 
 	return bytes_to_frames(substream->runtime, pos);
+=======
+	return bytes_to_frames(substream->runtime, prtd->pos);
+>>>>>>> v3.4.6
 }
 EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_pointer);
 

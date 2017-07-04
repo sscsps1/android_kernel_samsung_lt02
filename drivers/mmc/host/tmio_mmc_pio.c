@@ -34,7 +34,11 @@
 #include <linux/io.h>
 #include <linux/irq.h>
 #include <linux/mfd/tmio.h>
+<<<<<<< HEAD
 #include <linux/mmc/slot-gpio.h>
+=======
+#include <linux/mmc/cd-gpio.h>
+>>>>>>> v3.4.6
 #include <linux/mmc/host.h>
 #include <linux/mmc/tmio.h>
 #include <linux/module.h>
@@ -976,7 +980,11 @@ int __devinit tmio_mmc_host_probe(struct tmio_mmc_host **host,
 	tmio_mmc_enable_mmc_irqs(_host, irq_mask);
 
 	if (pdata->flags & TMIO_MMC_USE_GPIO_CD) {
+<<<<<<< HEAD
 		ret = mmc_gpio_request_cd(mmc, pdata->cd_gpio);
+=======
+		ret = mmc_cd_gpio_request(mmc, pdata->cd_gpio);
+>>>>>>> v3.4.6
 		if (ret < 0) {
 			tmio_mmc_host_remove(_host);
 			return ret;
@@ -1008,7 +1016,11 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
 		 * This means we can miss a card-eject, but this is anyway
 		 * possible, because of delayed processing of hotplug events.
 		 */
+<<<<<<< HEAD
 		mmc_gpio_free_cd(mmc);
+=======
+		mmc_cd_gpio_free(mmc);
+>>>>>>> v3.4.6
 
 	if (!host->native_hotplug)
 		pm_runtime_get_sync(&pdev->dev);

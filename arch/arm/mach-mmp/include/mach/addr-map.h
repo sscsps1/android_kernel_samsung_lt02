@@ -31,6 +31,7 @@
 #define SMC_CS1_PHYS_BASE	0x90000000
 #define SMC_CS1_PHYS_SIZE	0x10000000
 
+<<<<<<< HEAD
 #define APMU_VIRT_BASE		(AXI_VIRT_BASE + 0x82800)
 #define APMU_REG(x)		(APMU_VIRT_BASE + (x))
 
@@ -100,4 +101,6 @@
 #define SRAM_VIDEO_SIZE		0x11600
 #endif
 
+=======
+>>>>>>> v3.4.6
 #endif /* __ASM_MACH_ADDR_MAP_H */

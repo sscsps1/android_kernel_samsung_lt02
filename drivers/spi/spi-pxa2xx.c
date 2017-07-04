@@ -34,7 +34,11 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <asm/delay.h>
+<<<<<<< HEAD
 #include <plat/pm.h>
+=======
+
+>>>>>>> v3.4.6
 
 MODULE_AUTHOR("Stephen Street");
 MODULE_DESCRIPTION("PXA2xx SSP SPI Controller");
@@ -47,9 +51,15 @@ MODULE_ALIAS("platform:pxa2xx-spi");
 
 #define DMA_INT_MASK		(DCSR_ENDINTR | DCSR_STARTINTR | DCSR_BUSERR)
 #define RESET_DMA_CHANNEL	(DCSR_NODESC | DMA_INT_MASK)
+<<<<<<< HEAD
 #define IS_DMA_ALIGNED(x)	((((u32)(x)) & 0x3F) == 0)
 #define MAX_DMA_LEN		8191
 #define DMA_ALIGNMENT		64
+=======
+#define IS_DMA_ALIGNED(x)	((((u32)(x)) & 0x07) == 0)
+#define MAX_DMA_LEN		8191
+#define DMA_ALIGNMENT		8
+>>>>>>> v3.4.6
 
 /*
  * for testing SSCR1 changes that require SSP restart, basically
@@ -105,7 +115,10 @@ struct driver_data {
 	/* DMA setup stuff */
 	int rx_channel;
 	int tx_channel;
+<<<<<<< HEAD
 	u32 *alloc_dma_buf;
+=======
+>>>>>>> v3.4.6
 	u32 *null_dma_buf;
 
 	/* SSP register addresses */
@@ -149,8 +162,11 @@ struct driver_data {
 	int (*read)(struct driver_data *drv_data);
 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
 	void (*cs_control)(u32 command);
+<<<<<<< HEAD
 	struct pm_qos_request qos_idle;
 	int constraint_is_set;
+=======
+>>>>>>> v3.4.6
 };
 
 struct chip_data {
@@ -176,6 +192,7 @@ struct chip_data {
 	void (*cs_control)(u32 command);
 };
 
+<<<<<<< HEAD
 static void set_dvfm_constraint(struct driver_data *drv_data)
 {
 	if (drv_data->constraint_is_set == 0) {
@@ -207,6 +224,8 @@ static void deinit_dvfm_constraint(struct driver_data *drv_data)
 	pm_qos_remove_request(&drv_data->qos_idle);
 }
 
+=======
+>>>>>>> v3.4.6
 static void pump_messages(struct work_struct *work);
 
 static void cs_assert(struct driver_data *drv_data)
@@ -262,6 +281,7 @@ static int pxa25x_ssp_comp(struct driver_data *drv_data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int is_pxa988_ssp(struct driver_data *drv_data)
 {
 	if (drv_data->ssp_type == PXA988_SSP)
@@ -270,6 +290,8 @@ static int is_pxa988_ssp(struct driver_data *drv_data)
 }
 
 
+=======
+>>>>>>> v3.4.6
 static int flush(struct driver_data *drv_data)
 {
 	unsigned long limit = loops_per_jiffy << 1;
@@ -545,7 +567,10 @@ static void giveback(struct driver_data *drv_data)
 		msg->complete(msg->context);
 
 	drv_data->cur_chip = NULL;
+<<<<<<< HEAD
 	unset_dvfm_constraint(drv_data);
+=======
+>>>>>>> v3.4.6
 }
 
 static int wait_ssp_rx_stall(void const __iomem *ioaddr)
@@ -853,7 +878,11 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
 			write_SSTO(0, reg);
 		write_SSSR_CS(drv_data, drv_data->clear_sr);
 
+<<<<<<< HEAD
 		dev_err(&drv_data->pdev->dev, "bad message state "\
+=======
+		dev_err(&drv_data->pdev->dev, "bad message state "
+>>>>>>> v3.4.6
 			"in interrupt handler\n");
 
 		/* Never fail */
@@ -1162,6 +1191,7 @@ static void pump_transfers(unsigned long data)
 		DCSR(drv_data->tx_channel) = RESET_DMA_CHANNEL;
 		DSADR(drv_data->tx_channel) = drv_data->tx_dma;
 		DTADR(drv_data->tx_channel) = drv_data->ssdr_physical;
+<<<<<<< HEAD
 		if (!is_pxa988_ssp(drv_data)) {
 			if (drv_data->tx == drv_data->null_dma_buf)
 				/* No source address increment */
@@ -1176,12 +1206,25 @@ static void pump_transfers(unsigned long data)
 							| dma_burst
 							| drv_data->len;
 		} else {
+=======
+		if (drv_data->tx == drv_data->null_dma_buf)
+			/* No source address increment */
+			DCMD(drv_data->tx_channel) = DCMD_FLOWTRG
+							| drv_data->dma_width
+							| dma_burst
+							| drv_data->len;
+		else
+>>>>>>> v3.4.6
 			DCMD(drv_data->tx_channel) = DCMD_INCSRCADDR
 							| DCMD_FLOWTRG
 							| drv_data->dma_width
 							| dma_burst
 							| drv_data->len;
+<<<<<<< HEAD
 		}
+=======
+
+>>>>>>> v3.4.6
 		/* Enable dma end irqs on SSP to detect end of transfer */
 		if (drv_data->ssp_type == PXA25x_SSP)
 			DCMD(drv_data->tx_channel) |= DCMD_ENDIRQEN;
@@ -1219,7 +1262,10 @@ static void pump_transfers(unsigned long data)
 			write_SSTO(chip->timeout, reg);
 	}
 
+<<<<<<< HEAD
 	set_dvfm_constraint(drv_data);	/*disable system to idle while DMA */
+=======
+>>>>>>> v3.4.6
 	cs_assert(drv_data);
 
 	/* after chip select, release the data by enabling service
@@ -1370,7 +1416,11 @@ static int setup(struct spi_device *spi)
 
 		if (drv_data->ssp_type == CE4100_SSP) {
 			if (spi->chip_select > 4) {
+<<<<<<< HEAD
 				dev_err(&spi->dev, "failed setup: "\
+=======
+				dev_err(&spi->dev, "failed setup: "
+>>>>>>> v3.4.6
 				"cs number must not be > 4.\n");
 				kfree(chip);
 				return -EINVAL;
@@ -1400,8 +1450,11 @@ static int setup(struct spi_device *spi)
 			rx_thres = chip_info->rx_threshold;
 		chip->enable_dma = drv_data->master_info->enable_dma;
 		chip->dma_threshold = 0;
+<<<<<<< HEAD
 		if (chip_info->using_gpio_cs == 0 && chip_info->gpio_cs == 0)
 			chip_info->gpio_cs = -1;
+=======
+>>>>>>> v3.4.6
 		if (chip_info->enable_loopback)
 			chip->cr1 = SSCR1_LBM;
 	}
@@ -1417,7 +1470,11 @@ static int setup(struct spi_device *spi)
 		if (set_dma_burst_and_threshold(chip, spi, spi->bits_per_word,
 						&chip->dma_burst_size,
 						&chip->dma_threshold)) {
+<<<<<<< HEAD
 			dev_warn(&spi->dev, "in setup: DMA burst size reduced "\
+=======
+			dev_warn(&spi->dev, "in setup: DMA burst size reduced "
+>>>>>>> v3.4.6
 					"to match bits_per_word\n");
 		}
 	}
@@ -1596,13 +1653,19 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	/* Allocate master with space for drv_data*/
 	master = spi_alloc_master(dev, sizeof(struct driver_data));
+=======
+	/* Allocate master with space for drv_data and null dma buffer */
+	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
+>>>>>>> v3.4.6
 	if (!master) {
 		dev_err(&pdev->dev, "cannot alloc spi_master\n");
 		pxa_ssp_free(ssp);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 
 	drv_data = spi_master_get_devdata(master);
 	/* the null DMA buf should malloc form DMA_ZONE
@@ -1621,11 +1684,17 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
 		status = -ENOMEM;
 		goto out_error_dma_buf;
 	}
+=======
+	drv_data = spi_master_get_devdata(master);
+>>>>>>> v3.4.6
 	drv_data->master = master;
 	drv_data->master_info = platform_info;
 	drv_data->pdev = pdev;
 	drv_data->ssp = ssp;
+<<<<<<< HEAD
 	init_dvfm_constraint(drv_data);
+=======
+>>>>>>> v3.4.6
 
 	master->dev.parent = &pdev->dev;
 	master->dev.of_node = pdev->dev.of_node;
@@ -1640,8 +1709,13 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
 	master->transfer = transfer;
 
 	drv_data->ssp_type = ssp->type;
+<<<<<<< HEAD
 	drv_data->null_dma_buf =
 		(u32 *)ALIGN((u32)drv_data->alloc_dma_buf, DMA_ALIGNMENT);
+=======
+	drv_data->null_dma_buf = (u32 *)ALIGN((u32)(drv_data +
+						sizeof(struct driver_data)), 8);
+>>>>>>> v3.4.6
 
 	drv_data->ioaddr = ssp->mmio_base;
 	drv_data->ssdr_physical = ssp->phys_base + SSDR;
@@ -1749,9 +1823,12 @@ out_error_irq_alloc:
 	free_irq(ssp->irq, drv_data);
 
 out_error_master_alloc:
+<<<<<<< HEAD
 	deinit_dvfm_constraint(drv_data);
 	kfree(drv_data->alloc_dma_buf);
 out_error_dma_buf:
+=======
+>>>>>>> v3.4.6
 	spi_master_put(master);
 	pxa_ssp_free(ssp);
 	return status;
@@ -1778,7 +1855,11 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
 		 * message memory in drv_data->queue, but we can release the
 		 * resources below.  I think the kernel should honor -EBUSY
 		 * returns but... */
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "pxa2xx_spi_remove: workqueue will not "\
+=======
+		dev_err(&pdev->dev, "pxa2xx_spi_remove: workqueue will not "
+>>>>>>> v3.4.6
 			"complete, message memory not freed\n");
 
 	/* Disable the SSP at the peripheral and SOC level */
@@ -1798,8 +1879,12 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
 
 	/* Release SSP */
 	pxa_ssp_free(ssp);
+<<<<<<< HEAD
 	kfree(drv_data->alloc_dma_buf);
 	deinit_dvfm_constraint(drv_data);
+=======
+
+>>>>>>> v3.4.6
 	/* Disconnect from the SPI framework */
 	spi_unregister_master(drv_data->master);
 

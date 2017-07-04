@@ -3218,6 +3218,15 @@ static int bond_master_netdev_event(unsigned long event,
 	switch (event) {
 	case NETDEV_CHANGENAME:
 		return bond_event_changename(event_bond);
+<<<<<<< HEAD
+=======
+	case NETDEV_UNREGISTER:
+		bond_remove_proc_entry(event_bond);
+		break;
+	case NETDEV_REGISTER:
+		bond_create_proc_entry(event_bond);
+		break;
+>>>>>>> v3.4.6
 	default:
 		break;
 	}
@@ -4402,8 +4411,11 @@ static void bond_uninit(struct net_device *bond_dev)
 
 	bond_work_cancel_all(bond);
 
+<<<<<<< HEAD
 	bond_remove_proc_entry(bond);
 
+=======
+>>>>>>> v3.4.6
 	bond_debug_unregister(bond);
 
 	__hw_addr_flush(&bond->mc_list);
@@ -4805,7 +4817,10 @@ static int bond_init(struct net_device *bond_dev)
 
 	bond_set_lockdep_class(bond_dev);
 
+<<<<<<< HEAD
 	bond_create_proc_entry(bond);
+=======
+>>>>>>> v3.4.6
 	list_add_tail(&bond->bond_list, &bn->dev_list);
 
 	bond_prepare_sysfs_group(bond);

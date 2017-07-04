@@ -4,6 +4,7 @@
 
 config SMS_SIANO_MDTV
 	tristate "Siano SMS1xxx based MDTV receiver"
+<<<<<<< HEAD
 	default y
 	---help---
 	Choose Y or M here if you have MDTV receiver with a Siano chipset.
@@ -14,10 +15,22 @@ config SMS_SIANO_MDTV
 	Note: All dependents, if selected, will be part of this module.
 
 	Further documentation on this driver can be found on the WWW at http://www.siano-ms.com/
+=======
+	depends on DVB_CORE && RC_CORE && HAS_DMA
+	---help---
+	  Choose Y or M here if you have MDTV receiver with a Siano chipset.
+
+	  To compile this driver as a module, choose M here
+	  (The module will be called smsmdtv).
+
+	  Further documentation on this driver can be found on the WWW
+	  at http://www.siano-ms.com/
+>>>>>>> v3.4.6
 
 if SMS_SIANO_MDTV
 menu "Siano module components"
 
+<<<<<<< HEAD
 # Kernel sub systems support
 
 config SMS_DVB3_SUBSYS
@@ -72,5 +85,20 @@ config SMS_SPI_PXA310_DRV
 	---help---
 	Choose if you would like to have Siano's support for PXA 310 SPI interface
 
+=======
+# Hardware interfaces support
+
+config SMS_USB_DRV
+	tristate "USB interface support"
+	depends on DVB_CORE && USB
+	---help---
+	  Choose if you would like to have Siano's support for USB interface
+
+config SMS_SDIO_DRV
+	tristate "SDIO interface support"
+	depends on DVB_CORE && MMC
+	---help---
+	  Choose if you would like to have Siano's support for SDIO interface
+>>>>>>> v3.4.6
 endmenu
 endif # SMS_SIANO_MDTV

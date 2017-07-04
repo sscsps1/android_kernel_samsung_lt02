@@ -18,6 +18,7 @@ extern void __init pxa_map_io(void);
 
 extern unsigned int get_clk_frequency_khz(int info);
 
+<<<<<<< HEAD
 /* Flash Types */
 enum {
 	CS0_XIP_FLASH	= 1,
@@ -31,6 +32,8 @@ enum {
 
 extern void pxa95x_handle_irq_intc(struct pt_regs *);
 
+=======
+>>>>>>> v3.4.6
 #define SET_BANK(__nr,__start,__size) \
 	mi->bank[__nr].start = (__start), \
 	mi->bank[__nr].size = (__size)
@@ -61,12 +64,16 @@ extern unsigned pxa3xx_get_clk_frequency_khz(int);
 #define pxa3xx_get_clk_frequency_khz(x)		(0)
 #endif
 
+<<<<<<< HEAD
 extern void pxa95x_mem_reserve(void);
 
+=======
+>>>>>>> v3.4.6
 extern struct syscore_ops pxa_irq_syscore_ops;
 extern struct syscore_ops pxa2xx_mfp_syscore_ops;
 extern struct syscore_ops pxa3xx_mfp_syscore_ops;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MTD_ONENAND_PXA3xx
 #include <plat/pxa3xx_onenand.h>
 extern void __init pxa3xx_set_onenand_info(struct pxa3xx_onenand_platform_data *info);
@@ -75,6 +82,8 @@ void onenand_init(int sync_enable);
 
 void pxa_boot_flash_init(int sync_mode);
 
+=======
+>>>>>>> v3.4.6
 void __init pxa_set_ffuart_info(void *info);
 void __init pxa_set_btuart_info(void *info);
 void __init pxa_set_stuart_info(void *info);

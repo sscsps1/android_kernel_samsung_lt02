@@ -15,6 +15,7 @@
  */
 
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/io.h>
 #include <asm/cacheflush.h>
 #include <asm/cp15.h>
@@ -24,6 +25,12 @@
 #ifdef CONFIG_ARCH_PXA
 #include <mach/hardware.h>
 #endif
+=======
+#include <asm/cacheflush.h>
+#include <asm/cp15.h>
+#include <asm/hardware/cache-tauros2.h>
+
+>>>>>>> v3.4.6
 
 /*
  * When Tauros2 is used on a CPU that supports the v7 hierarchical
@@ -129,8 +136,12 @@ static inline void __init write_extra_features(u32 u)
 	__asm__("mcr p15, 1, %0, c15, c1, 0" : : "r" (u));
 }
 
+<<<<<<< HEAD
 /* disable L2 prefetch */
 static void __init tauros2_disable_prefetch(void)
+=======
+static void __init disable_l2_prefetch(void)
+>>>>>>> v3.4.6
 {
 	u32 u;
 
@@ -140,6 +151,7 @@ static void __init tauros2_disable_prefetch(void)
 	 */
 	u = read_extra_features();
 	if (!(u & 0x01000000)) {
+<<<<<<< HEAD
 		write_extra_features(u | 0x01000000);
 	}
 	printk(KERN_INFO "Tauros2: Disabling L2 prefetch.\n");
@@ -230,6 +242,17 @@ static void __init tauros2_disable_writebuffer_coalescing(void)
 
 static inline int __init cpuid_scheme(void)
 {
+=======
+		printk(KERN_INFO "Tauros2: Disabling L2 prefetch.\n");
+		write_extra_features(u | 0x01000000);
+	}
+}
+
+static inline int __init cpuid_scheme(void)
+{
+	extern int processor_id;
+
+>>>>>>> v3.4.6
 	return !!((processor_id & 0x000f0000) == 0x000f0000);
 }
 
@@ -256,6 +279,7 @@ static inline void __init write_actlr(u32 actlr)
 	__asm__("mcr p15, 0, %0, c1, c0, 1\n" : : "r" (actlr));
 }
 
+<<<<<<< HEAD
 static void enable_extra_feature(void)
 {
 #ifndef CONFIG_CACHE_TAUROS2_PREFETCH_OFF
@@ -301,6 +325,27 @@ void __init tauros2_init(void)
 		if (!(get_cr() & 0x04000000)) {
 			printk(KERN_INFO "Tauros2: Enabling L2 cache.\n");
 			adjust_cr(0x04000000, 0x04000000);
+=======
+void __init tauros2_init(void)
+{
+	extern int processor_id;
+	char *mode;
+
+	disable_l2_prefetch();
+
+#ifdef CONFIG_CPU_32v5
+	if ((processor_id & 0xff0f0000) == 0x56050000) {
+		u32 feat;
+
+		/*
+		 * v5 CPUs with Tauros2 have the L2 cache enable bit
+		 * located in the CPU Extra Features register.
+		 */
+		feat = read_extra_features();
+		if (!(feat & 0x00400000)) {
+			printk(KERN_INFO "Tauros2: Enabling L2 cache.\n");
+			write_extra_features(feat | 0x00400000);
+>>>>>>> v3.4.6
 		}
 
 		mode = "ARMv5";

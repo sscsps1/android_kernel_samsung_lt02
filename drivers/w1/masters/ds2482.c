@@ -18,8 +18,11 @@
 #include <linux/slab.h>
 #include <linux/i2c.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/gpio.h>
 #include <linux/platform_data/ds2482.h>
+=======
+>>>>>>> v3.4.6
 #include <asm/delay.h>
 
 #include "../w1.h"
@@ -86,8 +89,12 @@ static const u8 ds2482_chan_rd[8] =
 static int ds2482_probe(struct i2c_client *client,
 			const struct i2c_device_id *id);
 static int ds2482_remove(struct i2c_client *client);
+<<<<<<< HEAD
 static int ds2482_suspend(struct device *dev);
 static int ds2482_resume(struct device *dev);
+=======
+
+>>>>>>> v3.4.6
 
 /**
  * Driver data (common to all clients)
@@ -97,16 +104,22 @@ static const struct i2c_device_id ds2482_id[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static const struct dev_pm_ops ds2482_pm_ops = {
 	.suspend = ds2482_suspend,
 	.resume = ds2482_resume,
 };
 
+=======
+>>>>>>> v3.4.6
 static struct i2c_driver ds2482_driver = {
 	.driver = {
 		.owner	= THIS_MODULE,
 		.name	= "ds2482",
+<<<<<<< HEAD
 		.pm = &ds2482_pm_ops,
+=======
+>>>>>>> v3.4.6
 	},
 	.probe		= ds2482_probe,
 	.remove		= ds2482_remove,
@@ -128,7 +141,10 @@ struct ds2482_w1_chan {
 struct ds2482_data {
 	struct i2c_client	*client;
 	struct mutex		access_lock;
+<<<<<<< HEAD
 	int			slpz_gpio;
+=======
+>>>>>>> v3.4.6
 
 	/* 1-wire interface(s) */
 	int			w1_count;	/* 1 or 8 */
@@ -417,6 +433,7 @@ static u8 ds2482_w1_reset_bus(void *data)
 	return retval;
 }
 
+<<<<<<< HEAD
 static int ds2482_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -436,12 +453,17 @@ static int ds2482_resume(struct device *dev)
 		gpio_set_value(data->slpz_gpio, 1);
 	return 0;
 }
+=======
+>>>>>>> v3.4.6
 
 static int ds2482_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
 	struct ds2482_data *data;
+<<<<<<< HEAD
 	struct ds2482_platform_data *pdata;
+=======
+>>>>>>> v3.4.6
 	int err = -ENODEV;
 	int temp1;
 	int idx;
@@ -506,6 +528,7 @@ static int ds2482_probe(struct i2c_client *client,
 		}
 	}
 
+<<<<<<< HEAD
 	pdata = client->dev.platform_data;
 	data->slpz_gpio = pdata ? pdata->slpz_gpio : -1;
 
@@ -516,6 +539,8 @@ static int ds2482_probe(struct i2c_client *client,
 			goto exit_w1_remove;
 	}
 
+=======
+>>>>>>> v3.4.6
 	return 0;
 
 exit_w1_remove:
@@ -540,11 +565,14 @@ static int ds2482_remove(struct i2c_client *client)
 			w1_remove_master_device(&data->w1_ch[idx].w1_bm);
 	}
 
+<<<<<<< HEAD
 	if (data->slpz_gpio >= 0) {
 		gpio_set_value(data->slpz_gpio, 0);
 		gpio_free(data->slpz_gpio);
 	}
 
+=======
+>>>>>>> v3.4.6
 	/* Free the memory */
 	kfree(data);
 	return 0;

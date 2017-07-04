@@ -33,6 +33,7 @@
 #include <linux/fs_stack.h>
 #include "ecryptfs_kernel.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 #include <linux/ctype.h>
 #define ECRYPTFS_IOCTL_GET_ATTRIBUTES	_IOR('l', 0x10, __u32)
@@ -41,6 +42,8 @@
 #endif
 
 
+=======
+>>>>>>> v3.4.6
 /**
  * ecryptfs_read_update_atime
  *
@@ -244,6 +247,7 @@ static int ecryptfs_open(struct inode *inode, struct file *file)
 		rc = 0;
 		goto out;
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 	if (crypt_stat->flags & ECRYPTFS_STRUCT_INITIALIZED
 		&& crypt_stat->flags & ECRYPTFS_POLICY_APPLIED
@@ -283,6 +287,8 @@ static int ecryptfs_open(struct inode *inode, struct file *file)
 	}
 	mutex_unlock(&crypt_stat->cs_mutex);
 #endif
+=======
+>>>>>>> v3.4.6
 	mutex_lock(&crypt_stat->cs_mutex);
 	if (!(crypt_stat->flags & ECRYPTFS_POLICY_APPLIED)
 	    || !(crypt_stat->flags & ECRYPTFS_KEY_VALID)) {
@@ -366,6 +372,7 @@ ecryptfs_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct file *lower_file = NULL;
 	long rc = -ENOTTY;
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 	if (cmd == ECRYPTFS_IOCTL_GET_ATTRIBUTES) {
 		u32 __user *user_attr = (u32 __user *)arg;
@@ -404,6 +411,9 @@ ecryptfs_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		return 0;
 	}
 #endif
+=======
+
+>>>>>>> v3.4.6
 	if (ecryptfs_file_to_private(file))
 		lower_file = ecryptfs_file_to_lower(file);
 	if (lower_file && lower_file->f_op && lower_file->f_op->unlocked_ioctl)
@@ -426,6 +436,7 @@ ecryptfs_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 int is_file_name_match(struct ecryptfs_mount_crypt_stat *mcs,
 					struct dentry *fp_dentry)
@@ -508,6 +519,8 @@ int is_file_ext_match(struct ecryptfs_mount_crypt_stat *mcs, char *str)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 const struct file_operations ecryptfs_dir_fops = {
 	.readdir = ecryptfs_readdir,
 	.read = generic_read_dir,

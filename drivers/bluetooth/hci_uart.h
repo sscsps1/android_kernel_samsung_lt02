@@ -45,6 +45,11 @@
 #define HCI_UART_ATH3K	5
 
 #define HCI_UART_RAW_DEVICE	0
+<<<<<<< HEAD
+=======
+#define HCI_UART_RESET_ON_INIT	1
+#define HCI_UART_CREATE_AMP	2
+>>>>>>> v3.4.6
 
 struct hci_uart;
 

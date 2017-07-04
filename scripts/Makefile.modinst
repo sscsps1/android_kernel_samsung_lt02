@@ -26,7 +26,11 @@ ext-mod-dir = $(INSTALL_MOD_DIR)$(subst $(patsubst %/,%,$(KBUILD_EXTMOD)),,$(@D)
 modinst_dir = $(if $(KBUILD_EXTMOD),$(ext-mod-dir),kernel/$(@D))
 
 $(modules):
+<<<<<<< HEAD
 	$(call cmd,modules_install,$(MODLIB))
+=======
+	$(call cmd,modules_install,$(MODLIB)/$(modinst_dir))
+>>>>>>> v3.4.6
 
 
 # Declare the contents of the .PHONY variable as phony.  We keep that

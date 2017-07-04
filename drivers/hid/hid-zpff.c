@@ -25,6 +25,10 @@
 #include <linux/input.h>
 #include <linux/slab.h>
 #include <linux/usb.h>
+<<<<<<< HEAD
+=======
+#include <linux/module.h>
+>>>>>>> v3.4.6
 
 #include "hid-ids.h"
 

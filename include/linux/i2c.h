@@ -378,9 +378,12 @@ struct i2c_adapter {
 
 	/* data fields that are valid for all devices	*/
 	struct rt_mutex bus_lock;
+<<<<<<< HEAD
 	void (*hardware_lock)(void);
 	void (*hardware_unlock)(void);
 	int (*hardware_trylock)(void);
+=======
+>>>>>>> v3.4.6
 
 	int timeout;			/* in jiffies */
 	int retries;

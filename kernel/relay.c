@@ -166,13 +166,21 @@ static struct rchan_buf *relay_create_buf(struct rchan *chan)
 {
 	struct rchan_buf *buf;
 
+<<<<<<< HEAD
 	if (chan->n_subbufs > UINT_MAX / sizeof(size_t))
+=======
+	if (chan->n_subbufs > UINT_MAX / sizeof(size_t *))
+>>>>>>> v3.4.6
 		return NULL;
 
 	buf = kzalloc(sizeof(struct rchan_buf), GFP_KERNEL);
 	if (!buf)
 		return NULL;
+<<<<<<< HEAD
 	buf->padding = kmalloc(chan->n_subbufs * sizeof(size_t), GFP_KERNEL);
+=======
+	buf->padding = kmalloc(chan->n_subbufs * sizeof(size_t *), GFP_KERNEL);
+>>>>>>> v3.4.6
 	if (!buf->padding)
 		goto free_buf;
 

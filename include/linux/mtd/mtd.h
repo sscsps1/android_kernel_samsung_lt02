@@ -237,7 +237,10 @@ struct mtd_info {
 	int subpage_sft;
 
 	void *priv;
+<<<<<<< HEAD
 	void *bbm;
+=======
+>>>>>>> v3.4.6
 
 	struct module *owner;
 	struct device dev;

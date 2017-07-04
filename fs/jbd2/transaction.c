@@ -100,8 +100,11 @@ jbd2_get_transaction(journal_t *journal, transaction_t *transaction)
 	journal->j_running_transaction = transaction;
 	transaction->t_max_wait = 0;
 	transaction->t_start = jiffies;
+<<<<<<< HEAD
 	transaction->t_callbacked = 0;
 	transaction->t_dropped = 0;
+=======
+>>>>>>> v3.4.6
 
 	return transaction;
 }
@@ -211,10 +214,13 @@ repeat:
 		if (!new_transaction)
 			goto alloc_transaction;
 		write_lock(&journal->j_state_lock);
+<<<<<<< HEAD
 		if (journal->j_barrier_count) {
 			write_unlock(&journal->j_state_lock);
 			goto repeat;
 		}
+=======
+>>>>>>> v3.4.6
 		if (!journal->j_running_transaction) {
 			jbd2_get_transaction(journal, new_transaction);
 			new_transaction = NULL;
@@ -1630,7 +1636,11 @@ static void __jbd2_journal_temp_unlink_buffer(struct journal_head *jh)
 	__blist_del_buffer(list, jh);
 	jh->b_jlist = BJ_None;
 	if (test_clear_buffer_jbddirty(bh))
+<<<<<<< HEAD
 		mark_buffer_dirty_sync(bh); /* Expose it to the VM */
+=======
+		mark_buffer_dirty(bh);	/* Expose it to the VM */
+>>>>>>> v3.4.6
 }
 
 /*

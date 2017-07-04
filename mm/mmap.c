@@ -37,9 +37,12 @@
 #include <asm/mmu_context.h>
 
 #include "internal.h"
+<<<<<<< HEAD
 #ifdef CONFIG_SDCARD_FS
 #include "../fs/sdcardfs/sdcardfs.h"
 #endif
+=======
+>>>>>>> v3.4.6
 
 #ifndef arch_mmap_check
 #define arch_mmap_check(addr, len, flags)	(0)

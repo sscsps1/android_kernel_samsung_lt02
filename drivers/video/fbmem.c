@@ -418,7 +418,10 @@ static void fb_rotate_logo(struct fb_info *info, u8 *dst,
 static void fb_do_show_logo(struct fb_info *info, struct fb_image *image,
 			    int rotate, unsigned int num)
 {
+<<<<<<< HEAD
 #ifndef CONFIG_ANDROID
+=======
+>>>>>>> v3.4.6
 	unsigned int x;
 
 	if (rotate == FB_ROTATE_UR) {
@@ -446,6 +449,7 @@ static void fb_do_show_logo(struct fb_info *info, struct fb_image *image,
 			image->dy -= image->height + 8;
 		}
 	}
+<<<<<<< HEAD
 #else
 	/* show the android logo at screen center */
 	image->dx = (info->var.xres - image->width) >> 1;
@@ -468,6 +472,8 @@ static void fb_do_show_logo(struct fb_info *info, struct fb_image *image,
 	}
 	info->fbops->fb_imageblit(info, image);
 #endif
+=======
+>>>>>>> v3.4.6
 }
 
 static int fb_show_logo_line(struct fb_info *info, int rotate,
@@ -527,6 +533,10 @@ static int fb_show_logo_line(struct fb_info *info, int rotate,
 		if (logo_rotate)
 			fb_rotate_logo(info, logo_rotate, &image, rotate);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 	fb_do_show_logo(info, &image, rotate, n);
 
 	kfree(palette);
@@ -1384,12 +1394,22 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 {
 	struct fb_info *info = file_fb_info(file);
 	struct fb_ops *fb;
+<<<<<<< HEAD
 	unsigned long mmio_pgoff;
+=======
+	unsigned long off;
+>>>>>>> v3.4.6
 	unsigned long start;
 	u32 len;
 
 	if (!info)
 		return -ENODEV;
+<<<<<<< HEAD
+=======
+	if (vma->vm_pgoff > (~0UL >> PAGE_SHIFT))
+		return -EINVAL;
+	off = vma->vm_pgoff << PAGE_SHIFT;
+>>>>>>> v3.4.6
 	fb = info->fbops;
 	if (!fb)
 		return -ENODEV;
@@ -1401,6 +1421,7 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 		return res;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Ugh. This can be either the frame buffer mapping, or
 	 * if pgoff points past it, the mmio mapping.
@@ -1419,6 +1440,35 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 	fb_pgprotect(file, vma, start);
 
 	return vm_iomap_memory(vma, start, len);
+=======
+	/* frame buffer memory */
+	start = info->fix.smem_start;
+	len = PAGE_ALIGN((start & ~PAGE_MASK) + info->fix.smem_len);
+	if (off >= len) {
+		/* memory mapped io */
+		off -= len;
+		if (info->var.accel_flags) {
+			mutex_unlock(&info->mm_lock);
+			return -EINVAL;
+		}
+		start = info->fix.mmio_start;
+		len = PAGE_ALIGN((start & ~PAGE_MASK) + info->fix.mmio_len);
+	}
+	mutex_unlock(&info->mm_lock);
+	start &= PAGE_MASK;
+	if ((vma->vm_end - vma->vm_start + off) > len)
+		return -EINVAL;
+	off += start;
+	vma->vm_pgoff = off >> PAGE_SHIFT;
+	/* This is an IO map - tell maydump to skip this VMA */
+	vma->vm_flags |= VM_IO | VM_RESERVED;
+	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+	fb_pgprotect(file, vma, off);
+	if (io_remap_pfn_range(vma, vma->vm_start, off >> PAGE_SHIFT,
+			     vma->vm_end - vma->vm_start, vma->vm_page_prot))
+		return -EAGAIN;
+	return 0;
+>>>>>>> v3.4.6
 }
 
 static int

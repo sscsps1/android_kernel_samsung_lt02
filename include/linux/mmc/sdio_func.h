@@ -23,6 +23,7 @@ struct sdio_func;
 typedef void (sdio_irq_handler_t)(struct sdio_func *);
 
 /*
+<<<<<<< HEAD
  * Structure used to hold embedded SDIO device data from platform layer
  */
 struct sdio_embedded_func {
@@ -31,6 +32,8 @@ struct sdio_embedded_func {
 };
 
 /*
+=======
+>>>>>>> v3.4.6
  * SDIO function CIS tuple (unknown to the core)
  */
 struct sdio_func_tuple {
@@ -40,6 +43,7 @@ struct sdio_func_tuple {
 	unsigned char data[0];
 };
 
+<<<<<<< HEAD
 enum sdio_func_status {
 	func_default_status = 0,	/* default value */
 	func_suspending,
@@ -48,6 +52,8 @@ enum sdio_func_status {
 	func_resumed,
 };
 
+=======
+>>>>>>> v3.4.6
 /*
  * SDIO function devices
  */
@@ -75,7 +81,10 @@ struct sdio_func {
 	const char		**info;		/* info strings */
 
 	struct sdio_func_tuple *tuples;
+<<<<<<< HEAD
 	enum sdio_func_status	func_status;	/* SDIO function driver state */
+=======
+>>>>>>> v3.4.6
 };
 
 #define sdio_func_present(f)	((f)->state & SDIO_STATE_PRESENT)
@@ -147,8 +156,11 @@ extern int sdio_release_irq(struct sdio_func *func);
 extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
 
 extern u8 sdio_readb(struct sdio_func *func, unsigned int addr, int *err_ret);
+<<<<<<< HEAD
 extern u8 sdio_readb_ext(struct sdio_func *func, unsigned int addr, int *err_ret,
 	unsigned in);
+=======
+>>>>>>> v3.4.6
 extern u16 sdio_readw(struct sdio_func *func, unsigned int addr, int *err_ret);
 extern u32 sdio_readl(struct sdio_func *func, unsigned int addr, int *err_ret);
 

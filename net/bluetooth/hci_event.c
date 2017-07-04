@@ -1213,7 +1213,11 @@ static inline void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
 		}
 	} else {
 		if (!conn) {
+<<<<<<< HEAD
 			conn = hci_conn_add(hdev, ACL_LINK, 0, &cp->bdaddr);
+=======
+			conn = hci_conn_add(hdev, ACL_LINK, &cp->bdaddr);
+>>>>>>> v3.4.6
 			if (conn) {
 				conn->out = true;
 				conn->link_mode |= HCI_LM_MASTER;
@@ -1630,7 +1634,11 @@ static void hci_cs_le_create_conn(struct hci_dev *hdev, __u8 status)
 		}
 	} else {
 		if (!conn) {
+<<<<<<< HEAD
 			conn = hci_conn_add(hdev, LE_LINK, 0, &cp->peer_addr);
+=======
+			conn = hci_conn_add(hdev, LE_LINK, &cp->peer_addr);
+>>>>>>> v3.4.6
 			if (conn) {
 				conn->dst_type = cp->peer_addr_type;
 				conn->out = true;
@@ -1733,6 +1741,7 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 
 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
 	if (!conn) {
+<<<<<<< HEAD
 		conn = hci_conn_add(hdev, ev->link_type, 0, &ev->bdaddr);
 		if (!conn) {
 			BT_ERR("No memory for the new connection");
@@ -1740,6 +1749,8 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 		}
 		conn->state = BT_CONNECT;
 
+=======
+>>>>>>> v3.4.6
 		if (ev->link_type != SCO_LINK)
 			goto unlock;
 
@@ -1778,11 +1789,18 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 		}
 
 		/* Set packet type for incoming connection */
+<<<<<<< HEAD
 		if (!conn->out && (conn->type == ACL_LINK)) {
 			struct hci_cp_change_conn_ptype cp;
 			cp.handle = ev->handle;
 			cp.pkt_type = cpu_to_le16(conn->pkt_type
 							& ACL_PTYPE_MASK);
+=======
+		if (!conn->out && hdev->hci_ver < BLUETOOTH_VER_2_0) {
+			struct hci_cp_change_conn_ptype cp;
+			cp.handle = ev->handle;
+			cp.pkt_type = cpu_to_le16(conn->pkt_type);
+>>>>>>> v3.4.6
 			hci_send_cmd(hdev, HCI_OP_CHANGE_CONN_PTYPE, sizeof(cp),
 				     &cp);
 		}
@@ -1802,14 +1820,18 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 	} else if (ev->link_type != ACL_LINK)
 		hci_proto_connect_cfm(conn, ev->status);
 
+<<<<<<< HEAD
 	mod_timer(&hdev->rs_timer, jiffies + msecs_to_jiffies(10*1000));
 
+=======
+>>>>>>> v3.4.6
 unlock:
 	hci_dev_unlock(hdev);
 
 	hci_conn_check_pending(hdev);
 }
 
+<<<<<<< HEAD
 static inline bool is_sco_active(struct hci_dev *hdev)
 {
 	if (hci_conn_hash_lookup_state(hdev, SCO_LINK, BT_CONNECTED) ||
@@ -1819,6 +1841,8 @@ static inline bool is_sco_active(struct hci_dev *hdev)
 	return false;
 }
 
+=======
+>>>>>>> v3.4.6
 static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
 {
 	struct hci_ev_conn_request *ev = (void *) skb->data;
@@ -1843,8 +1867,12 @@ static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *sk
 
 		conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
 		if (!conn) {
+<<<<<<< HEAD
 			/* pkt_type not yet used for incoming connections */
 			conn = hci_conn_add(hdev, ev->link_type, 0, &ev->bdaddr);
+=======
+			conn = hci_conn_add(hdev, ev->link_type, &ev->bdaddr);
+>>>>>>> v3.4.6
 			if (!conn) {
 				BT_ERR("No memory for new connection");
 				hci_dev_unlock(hdev);
@@ -1862,8 +1890,12 @@ static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *sk
 
 			bacpy(&cp.bdaddr, &ev->bdaddr);
 
+<<<<<<< HEAD
 			if (lmp_rswitch_capable(hdev) && ((mask & HCI_LM_MASTER)
 						|| is_sco_active(hdev)))
+=======
+			if (lmp_rswitch_capable(hdev) && (mask & HCI_LM_MASTER))
+>>>>>>> v3.4.6
 				cp.role = 0x00; /* Become master */
 			else
 				cp.role = 0x01; /* Remain slave */
@@ -2950,7 +2982,10 @@ static inline void hci_sync_conn_complete_evt(struct hci_dev *hdev, struct sk_bu
 		hci_conn_add_sysfs(conn);
 		break;
 
+<<<<<<< HEAD
 	case 0x10:	/* Connection Accept Timeout */
+=======
+>>>>>>> v3.4.6
 	case 0x11:	/* Unsupported Feature or Parameter Value */
 	case 0x1c:	/* SCO interval rejected */
 	case 0x1a:	/* Unsupported Remote Feature */
@@ -3296,7 +3331,11 @@ static inline void hci_le_conn_complete_evt(struct hci_dev *hdev, struct sk_buff
 
 	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, &ev->bdaddr);
 	if (!conn) {
+<<<<<<< HEAD
 		conn = hci_conn_add(hdev, LE_LINK, 0, &ev->bdaddr);
+=======
+		conn = hci_conn_add(hdev, LE_LINK, &ev->bdaddr);
+>>>>>>> v3.4.6
 		if (!conn) {
 			BT_ERR("No memory for new connection");
 			hci_dev_unlock(hdev);

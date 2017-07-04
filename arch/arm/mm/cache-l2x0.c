@@ -28,6 +28,7 @@
 
 #define CACHE_LINE_SIZE		32
 
+<<<<<<< HEAD
 void __iomem *l2x0_base;
 static DEFINE_RAW_SPINLOCK(l2x0_lock);
 static u32 l2x0_way_mask;	/* Bitmask of active ways */
@@ -46,6 +47,15 @@ static inline bool is_pl310_rev(int rev)
 
 struct l2x0_regs l2x0_saved_regs;
 u32 l2x0_saved_regs_phys_addr;
+=======
+static void __iomem *l2x0_base;
+static DEFINE_RAW_SPINLOCK(l2x0_lock);
+static u32 l2x0_way_mask;	/* Bitmask of active ways */
+static u32 l2x0_size;
+static unsigned long sync_reg_offset = L2X0_CACHE_SYNC;
+
+struct l2x0_regs l2x0_saved_regs;
+>>>>>>> v3.4.6
 
 struct l2x0_of_data {
 	void (*setup)(const struct device_node *, u32 *, u32 *);
@@ -141,6 +151,7 @@ static void l2x0_cache_sync(void)
 	raw_spin_unlock_irqrestore(&l2x0_lock, flags);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 static void l2x0_for_each_set_way(void __iomem *reg)
 {
@@ -158,6 +169,8 @@ static void l2x0_for_each_set_way(void __iomem *reg)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 static void __l2x0_flush_all(void)
 {
 	debug_writel(0x03);
@@ -171,6 +184,7 @@ static void l2x0_flush_all(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 	if (is_pl310_rev(REV_PL310_R2P0)) {
 		l2x0_for_each_set_way(l2x0_base + L2X0_CLEAN_INV_LINE_IDX);
@@ -178,6 +192,8 @@ static void l2x0_flush_all(void)
 	}
 #endif
 
+=======
+>>>>>>> v3.4.6
 	/* clean all ways */
 	raw_spin_lock_irqsave(&l2x0_lock, flags);
 	__l2x0_flush_all();
@@ -188,6 +204,7 @@ static void l2x0_clean_all(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PL310_ERRATA_727915
 	if (is_pl310_rev(REV_PL310_R2P0)) {
 		l2x0_for_each_set_way(l2x0_base + L2X0_CLEAN_LINE_IDX);
@@ -202,6 +219,13 @@ static void l2x0_clean_all(void)
 	cache_wait_way(l2x0_base + L2X0_CLEAN_WAY, l2x0_way_mask);
 	cache_sync();
 	debug_writel(0x00);
+=======
+	/* clean all ways */
+	raw_spin_lock_irqsave(&l2x0_lock, flags);
+	writel_relaxed(l2x0_way_mask, l2x0_base + L2X0_CLEAN_WAY);
+	cache_wait_way(l2x0_base + L2X0_CLEAN_WAY, l2x0_way_mask);
+	cache_sync();
+>>>>>>> v3.4.6
 	raw_spin_unlock_irqrestore(&l2x0_lock, flags);
 }
 
@@ -353,12 +377,19 @@ static void l2x0_unlock(u32 cache_id)
 void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 {
 	u32 aux;
+<<<<<<< HEAD
 	u32 way_size = 0;
 	u32 prefetch_ctrl = 0;
+=======
+	u32 cache_id;
+	u32 way_size = 0;
+	int ways;
+>>>>>>> v3.4.6
 	const char *type;
 
 	l2x0_base = base;
 
+<<<<<<< HEAD
 	l2x0_cache_id = readl_relaxed(l2x0_base + L2X0_CACHE_ID);
 	aux = readl_relaxed(l2x0_base + L2X0_AUX_CTRL);
 
@@ -369,11 +400,27 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 			l2x0_ways = 16;
 		else
 			l2x0_ways = 8;
+=======
+	cache_id = readl_relaxed(l2x0_base + L2X0_CACHE_ID);
+	aux = readl_relaxed(l2x0_base + L2X0_AUX_CTRL);
+
+	aux &= aux_mask;
+	aux |= aux_val;
+
+	/* Determine the number of ways */
+	switch (cache_id & L2X0_CACHE_ID_PART_MASK) {
+	case L2X0_CACHE_ID_PART_L310:
+		if (aux & (1 << 16))
+			ways = 16;
+		else
+			ways = 8;
+>>>>>>> v3.4.6
 		type = "L310";
 #ifdef CONFIG_PL310_ERRATA_753970
 		/* Unmapped register. */
 		sync_reg_offset = L2X0_DUMMY_REG;
 #endif
+<<<<<<< HEAD
 
 		outer_cache.set_debug = pl310_set_debug;
 
@@ -386,21 +433,36 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 		break;
 	case L2X0_CACHE_ID_PART_L210:
 		l2x0_ways = (aux >> 13) & 0xf;
+=======
+		outer_cache.set_debug = pl310_set_debug;
+		break;
+	case L2X0_CACHE_ID_PART_L210:
+		ways = (aux >> 13) & 0xf;
+>>>>>>> v3.4.6
 		type = "L210";
 		break;
 	default:
 		/* Assume unknown chips have 8 ways */
+<<<<<<< HEAD
 		l2x0_ways = 8;
+=======
+		ways = 8;
+>>>>>>> v3.4.6
 		type = "L2x0 series";
 		break;
 	}
 
+<<<<<<< HEAD
 	l2x0_way_mask = (1 << l2x0_ways) - 1;
+=======
+	l2x0_way_mask = (1 << ways) - 1;
+>>>>>>> v3.4.6
 
 	/*
 	 * L2 cache Size =  Way size * Number of ways
 	 */
 	way_size = (aux & L2X0_AUX_CTRL_WAY_SIZE_MASK) >> 17;
+<<<<<<< HEAD
 	way_size = SZ_1K << (way_size + 3);
 	l2x0_size = l2x0_ways * way_size;
 	l2x0_sets = way_size / CACHE_LINE_SIZE;
@@ -421,6 +483,10 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 		prefetch_ctrl |= 31;
 	writel_relaxed(prefetch_ctrl, l2x0_base + L2X0_PREFETCH_CTRL);
 #endif
+=======
+	way_size = 1 << (way_size + 3);
+	l2x0_size = ways * way_size * SZ_1K;
+>>>>>>> v3.4.6
 
 	/*
 	 * Check if l2x0 controller is already enabled.
@@ -429,19 +495,29 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 	 */
 	if (!(readl_relaxed(l2x0_base + L2X0_CTRL) & 1)) {
 		/* Make sure that I&D is not locked down when starting */
+<<<<<<< HEAD
 		l2x0_unlock(l2x0_cache_id);
 
 		aux &= aux_mask;
 		aux |= aux_val;
+=======
+		l2x0_unlock(cache_id);
+>>>>>>> v3.4.6
 
 		/* l2x0 controller is disabled */
 		writel_relaxed(aux, l2x0_base + L2X0_AUX_CTRL);
 
+<<<<<<< HEAD
+=======
+		l2x0_saved_regs.aux_ctrl = aux;
+
+>>>>>>> v3.4.6
 		l2x0_inv_all();
 
 		/* enable L2X0 */
 		writel_relaxed(1, l2x0_base + L2X0_CTRL);
 	}
+<<<<<<< HEAD
 	/*
 	 * l2x0 controller is enabled at this time
 	 */
@@ -453,6 +529,8 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 	/* Save the value for resuming. */
 	l2x0_saved_regs.aux_ctrl = aux;
 	l2x0_saved_regs_phys_addr = virt_to_phys(&l2x0_saved_regs);
+=======
+>>>>>>> v3.4.6
 
 	outer_cache.inv_range = l2x0_inv_range;
 	outer_cache.clean_range = l2x0_clean_range;
@@ -464,96 +542,13 @@ void __init l2x0_init(void __iomem *base, u32 aux_val, u32 aux_mask)
 
 	printk(KERN_INFO "%s cache controller enabled\n", type);
 	printk(KERN_INFO "l2x0: %d ways, CACHE_ID 0x%08x, AUX_CTRL 0x%08x, Cache size: %d B\n",
+<<<<<<< HEAD
 			l2x0_ways, l2x0_cache_id, aux, l2x0_size);
 }
 
 void pl310_save(void)
-{
-	u32 l2x0_revision = readl_relaxed(l2x0_base + L2X0_CACHE_ID) &
-		L2X0_CACHE_ID_RTL_MASK;
-
-	l2x0_saved_regs.ctrl = readl_relaxed(l2x0_base + L2X0_CTRL);
-	l2x0_saved_regs.tag_latency = readl_relaxed(l2x0_base +
-		L2X0_TAG_LATENCY_CTRL);
-	l2x0_saved_regs.data_latency = readl_relaxed(l2x0_base +
-		L2X0_DATA_LATENCY_CTRL);
-	l2x0_saved_regs.filter_end = readl_relaxed(l2x0_base +
-		L2X0_ADDR_FILTER_END);
-	l2x0_saved_regs.filter_start = readl_relaxed(l2x0_base +
-		L2X0_ADDR_FILTER_START);
-
-	if (l2x0_revision >= L2X0_CACHE_ID_RTL_R2P0) {
-		/*
-		 * From r2p0, there is Prefetch offset/control register
-		 */
-		l2x0_saved_regs.prefetch_ctrl = readl_relaxed(l2x0_base +
-			L2X0_PREFETCH_CTRL);
-		/*
-		 * From r3p0, there is Power control register
-		 */
-		if (l2x0_revision >= L2X0_CACHE_ID_RTL_R3P0)
-			l2x0_saved_regs.pwr_ctrl = readl_relaxed(l2x0_base +
-				L2X0_POWER_CTRL);
-	}
-}
-
-void pl310_suspend(void)
-{
-	pl310_save();
-
-	__cpuc_flush_dcache_area((void *)&l2x0_saved_regs,
-				sizeof(l2x0_saved_regs));
-	outer_clean_range(l2x0_saved_regs_phys_addr,
-			  l2x0_saved_regs_phys_addr + sizeof(l2x0_saved_regs));
-}
-
-void flush_l2x0_lock(void)
-{
-	__cpuc_flush_dcache_area(&l2x0_lock, sizeof(l2x0_lock));
-}
-static void l2x0_resume(void)
-{
-	if (!(readl_relaxed(l2x0_base + L2X0_CTRL) & 1)) {
-		/* restore aux ctrl and enable l2 */
-		l2x0_unlock(readl_relaxed(l2x0_base + L2X0_CACHE_ID));
-
-		writel_relaxed(l2x0_saved_regs.aux_ctrl, l2x0_base +
-			L2X0_AUX_CTRL);
-
-		l2x0_inv_all();
-
-		writel_relaxed(1, l2x0_base + L2X0_CTRL);
-	}
-}
-
-void pl310_resume(void)
-{
-	u32 l2x0_revision;
-
-	if (!(readl_relaxed(l2x0_base + L2X0_CTRL) & 1)) {
-		/* restore pl310 setup */
-		writel_relaxed(l2x0_saved_regs.tag_latency,
-			l2x0_base + L2X0_TAG_LATENCY_CTRL);
-		writel_relaxed(l2x0_saved_regs.data_latency,
-			l2x0_base + L2X0_DATA_LATENCY_CTRL);
-		writel_relaxed(l2x0_saved_regs.filter_end,
-			l2x0_base + L2X0_ADDR_FILTER_END);
-		writel_relaxed(l2x0_saved_regs.filter_start,
-			l2x0_base + L2X0_ADDR_FILTER_START);
-
-		l2x0_revision = readl_relaxed(l2x0_base + L2X0_CACHE_ID) &
-			L2X0_CACHE_ID_RTL_MASK;
-
-		if (l2x0_revision >= L2X0_CACHE_ID_RTL_R2P0) {
-			writel_relaxed(l2x0_saved_regs.prefetch_ctrl,
-				l2x0_base + L2X0_PREFETCH_CTRL);
-			if (l2x0_revision >= L2X0_CACHE_ID_RTL_R3P0)
-				writel_relaxed(l2x0_saved_regs.pwr_ctrl,
-					l2x0_base + L2X0_POWER_CTRL);
-		}
-	}
-
-	l2x0_resume();
+=======
+			ways, cache_id, aux, l2x0_size);
 }
 
 #ifdef CONFIG_OF
@@ -625,6 +620,178 @@ static void __init pl310_of_setup(const struct device_node *np,
 	}
 }
 
+static void __init pl310_save(void)
+>>>>>>> v3.4.6
+{
+	u32 l2x0_revision = readl_relaxed(l2x0_base + L2X0_CACHE_ID) &
+		L2X0_CACHE_ID_RTL_MASK;
+
+<<<<<<< HEAD
+	l2x0_saved_regs.ctrl = readl_relaxed(l2x0_base + L2X0_CTRL);
+=======
+>>>>>>> v3.4.6
+	l2x0_saved_regs.tag_latency = readl_relaxed(l2x0_base +
+		L2X0_TAG_LATENCY_CTRL);
+	l2x0_saved_regs.data_latency = readl_relaxed(l2x0_base +
+		L2X0_DATA_LATENCY_CTRL);
+	l2x0_saved_regs.filter_end = readl_relaxed(l2x0_base +
+		L2X0_ADDR_FILTER_END);
+	l2x0_saved_regs.filter_start = readl_relaxed(l2x0_base +
+		L2X0_ADDR_FILTER_START);
+
+	if (l2x0_revision >= L2X0_CACHE_ID_RTL_R2P0) {
+		/*
+		 * From r2p0, there is Prefetch offset/control register
+		 */
+		l2x0_saved_regs.prefetch_ctrl = readl_relaxed(l2x0_base +
+			L2X0_PREFETCH_CTRL);
+		/*
+		 * From r3p0, there is Power control register
+		 */
+		if (l2x0_revision >= L2X0_CACHE_ID_RTL_R3P0)
+			l2x0_saved_regs.pwr_ctrl = readl_relaxed(l2x0_base +
+				L2X0_POWER_CTRL);
+	}
+}
+
+<<<<<<< HEAD
+void pl310_suspend(void)
+{
+	pl310_save();
+
+	__cpuc_flush_dcache_area((void *)&l2x0_saved_regs,
+				sizeof(l2x0_saved_regs));
+	outer_clean_range(l2x0_saved_regs_phys_addr,
+			  l2x0_saved_regs_phys_addr + sizeof(l2x0_saved_regs));
+}
+
+void flush_l2x0_lock(void)
+{
+	__cpuc_flush_dcache_area(&l2x0_lock, sizeof(l2x0_lock));
+}
+=======
+>>>>>>> v3.4.6
+static void l2x0_resume(void)
+{
+	if (!(readl_relaxed(l2x0_base + L2X0_CTRL) & 1)) {
+		/* restore aux ctrl and enable l2 */
+		l2x0_unlock(readl_relaxed(l2x0_base + L2X0_CACHE_ID));
+
+		writel_relaxed(l2x0_saved_regs.aux_ctrl, l2x0_base +
+			L2X0_AUX_CTRL);
+
+		l2x0_inv_all();
+
+		writel_relaxed(1, l2x0_base + L2X0_CTRL);
+	}
+}
+
+<<<<<<< HEAD
+void pl310_resume(void)
+=======
+static void pl310_resume(void)
+>>>>>>> v3.4.6
+{
+	u32 l2x0_revision;
+
+	if (!(readl_relaxed(l2x0_base + L2X0_CTRL) & 1)) {
+		/* restore pl310 setup */
+		writel_relaxed(l2x0_saved_regs.tag_latency,
+			l2x0_base + L2X0_TAG_LATENCY_CTRL);
+		writel_relaxed(l2x0_saved_regs.data_latency,
+			l2x0_base + L2X0_DATA_LATENCY_CTRL);
+		writel_relaxed(l2x0_saved_regs.filter_end,
+			l2x0_base + L2X0_ADDR_FILTER_END);
+		writel_relaxed(l2x0_saved_regs.filter_start,
+			l2x0_base + L2X0_ADDR_FILTER_START);
+
+		l2x0_revision = readl_relaxed(l2x0_base + L2X0_CACHE_ID) &
+			L2X0_CACHE_ID_RTL_MASK;
+
+		if (l2x0_revision >= L2X0_CACHE_ID_RTL_R2P0) {
+			writel_relaxed(l2x0_saved_regs.prefetch_ctrl,
+				l2x0_base + L2X0_PREFETCH_CTRL);
+			if (l2x0_revision >= L2X0_CACHE_ID_RTL_R3P0)
+				writel_relaxed(l2x0_saved_regs.pwr_ctrl,
+					l2x0_base + L2X0_POWER_CTRL);
+		}
+	}
+
+	l2x0_resume();
+}
+
+<<<<<<< HEAD
+#ifdef CONFIG_OF
+static void __init l2x0_of_setup(const struct device_node *np,
+				 u32 *aux_val, u32 *aux_mask)
+{
+	u32 data[2] = { 0, 0 };
+	u32 tag = 0;
+	u32 dirty = 0;
+	u32 val = 0, mask = 0;
+
+	of_property_read_u32(np, "arm,tag-latency", &tag);
+	if (tag) {
+		mask |= L2X0_AUX_CTRL_TAG_LATENCY_MASK;
+		val |= (tag - 1) << L2X0_AUX_CTRL_TAG_LATENCY_SHIFT;
+	}
+
+	of_property_read_u32_array(np, "arm,data-latency",
+				   data, ARRAY_SIZE(data));
+	if (data[0] && data[1]) {
+		mask |= L2X0_AUX_CTRL_DATA_RD_LATENCY_MASK |
+			L2X0_AUX_CTRL_DATA_WR_LATENCY_MASK;
+		val |= ((data[0] - 1) << L2X0_AUX_CTRL_DATA_RD_LATENCY_SHIFT) |
+		       ((data[1] - 1) << L2X0_AUX_CTRL_DATA_WR_LATENCY_SHIFT);
+	}
+
+	of_property_read_u32(np, "arm,dirty-latency", &dirty);
+	if (dirty) {
+		mask |= L2X0_AUX_CTRL_DIRTY_LATENCY_MASK;
+		val |= (dirty - 1) << L2X0_AUX_CTRL_DIRTY_LATENCY_SHIFT;
+	}
+
+	*aux_val &= ~mask;
+	*aux_val |= val;
+	*aux_mask &= ~mask;
+}
+
+static void __init pl310_of_setup(const struct device_node *np,
+				  u32 *aux_val, u32 *aux_mask)
+{
+	u32 data[3] = { 0, 0, 0 };
+	u32 tag[3] = { 0, 0, 0 };
+	u32 filter[2] = { 0, 0 };
+
+	of_property_read_u32_array(np, "arm,tag-latency", tag, ARRAY_SIZE(tag));
+	if (tag[0] && tag[1] && tag[2])
+		writel_relaxed(
+			((tag[0] - 1) << L2X0_LATENCY_CTRL_RD_SHIFT) |
+			((tag[1] - 1) << L2X0_LATENCY_CTRL_WR_SHIFT) |
+			((tag[2] - 1) << L2X0_LATENCY_CTRL_SETUP_SHIFT),
+			l2x0_base + L2X0_TAG_LATENCY_CTRL);
+
+	of_property_read_u32_array(np, "arm,data-latency",
+				   data, ARRAY_SIZE(data));
+	if (data[0] && data[1] && data[2])
+		writel_relaxed(
+			((data[0] - 1) << L2X0_LATENCY_CTRL_RD_SHIFT) |
+			((data[1] - 1) << L2X0_LATENCY_CTRL_WR_SHIFT) |
+			((data[2] - 1) << L2X0_LATENCY_CTRL_SETUP_SHIFT),
+			l2x0_base + L2X0_DATA_LATENCY_CTRL);
+
+	of_property_read_u32_array(np, "arm,filter-ranges",
+				   filter, ARRAY_SIZE(filter));
+	if (filter[1]) {
+		writel_relaxed(ALIGN(filter[0] + filter[1], SZ_1M),
+			       l2x0_base + L2X0_ADDR_FILTER_END);
+		writel_relaxed((filter[0] & ~(SZ_1M - 1)) | L2X0_ADDR_FILTER_EN,
+			       l2x0_base + L2X0_ADDR_FILTER_START);
+	}
+}
+
+=======
+>>>>>>> v3.4.6
 static const struct l2x0_of_data pl310_data = {
 	pl310_of_setup,
 	pl310_save,

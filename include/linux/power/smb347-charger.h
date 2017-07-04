@@ -110,6 +110,7 @@ struct smb347_charger_platform_data {
 	bool		use_mains;
 	bool		use_usb;
 	bool		use_usb_otg;
+<<<<<<< HEAD
 	bool		disable_automatic_recharge;
 	int		irq_gpio;
 	bool		disable_stat_interrupts;
@@ -118,6 +119,10 @@ struct smb347_charger_platform_data {
 	char		**supplied_to;
 	size_t		num_supplicants;
 	int		en_gpio;
+=======
+	int		irq_gpio;
+	enum smb347_chg_enable enable_control;
+>>>>>>> v3.4.6
 };
 
 #endif /* SMB347_CHARGER_H */

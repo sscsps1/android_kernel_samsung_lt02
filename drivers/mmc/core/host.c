@@ -32,7 +32,10 @@
 static void mmc_host_classdev_release(struct device *dev)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
+<<<<<<< HEAD
 	mutex_destroy(&host->slot.lock);
+=======
+>>>>>>> v3.4.6
 	kfree(host);
 }
 
@@ -313,8 +316,11 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 	if (!host)
 		return NULL;
 
+<<<<<<< HEAD
 	/* scanning will be enabled when we're ready */
 	host->rescan_disable = 1;
+=======
+>>>>>>> v3.4.6
 	spin_lock(&mmc_host_lock);
 	err = idr_get_new(&mmc_host_idr, host, &host->index);
 	spin_unlock(&mmc_host_lock);
@@ -330,6 +336,7 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 
 	mmc_host_clk_init(host);
 
+<<<<<<< HEAD
 	mutex_init(&host->slot.lock);
 	host->slot.cd_irq = -EINVAL;
 
@@ -337,6 +344,10 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 	init_waitqueue_head(&host->wq);
 	wake_lock_init(&host->detect_wake_lock, WAKE_LOCK_SUSPEND,
 		kasprintf(GFP_KERNEL, "%s_detect", mmc_hostname(host)));
+=======
+	spin_lock_init(&host->lock);
+	init_waitqueue_head(&host->wq);
+>>>>>>> v3.4.6
 	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
 #ifdef CONFIG_PM
 	host->pm_notify.notifier_call = mmc_pm_notify;
@@ -389,8 +400,12 @@ int mmc_add_host(struct mmc_host *host)
 	mmc_host_clk_sysfs_init(host);
 
 	mmc_start_host(host);
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		register_pm_notifier(&host->pm_notify);
+=======
+	register_pm_notifier(&host->pm_notify);
+>>>>>>> v3.4.6
 
 	return 0;
 }
@@ -407,9 +422,13 @@ EXPORT_SYMBOL(mmc_add_host);
  */
 void mmc_remove_host(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		unregister_pm_notifier(&host->pm_notify);
 
+=======
+	unregister_pm_notifier(&host->pm_notify);
+>>>>>>> v3.4.6
 	mmc_stop_host(host);
 
 #ifdef CONFIG_DEBUG_FS
@@ -436,7 +455,10 @@ void mmc_free_host(struct mmc_host *host)
 	spin_lock(&mmc_host_lock);
 	idr_remove(&mmc_host_idr, host->index);
 	spin_unlock(&mmc_host_lock);
+<<<<<<< HEAD
 	wake_lock_destroy(&host->detect_wake_lock);
+=======
+>>>>>>> v3.4.6
 
 	put_device(&host->class_dev);
 }

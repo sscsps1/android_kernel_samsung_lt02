@@ -314,6 +314,7 @@ config MTD_SWAP
 	  The driver provides wear leveling by storing erase counter into the
 	  OOB.
 
+<<<<<<< HEAD
 config PXA3XX_BBM
 	bool "Marvell PXA3xx Bad Block Management"
 	depends on MTD && (MTD_ONENAND || MTD_NAND)
@@ -321,6 +322,8 @@ config PXA3XX_BBM
 	  This enable Marvell Bad Block Management for NAND/ONENAND on
 	  PXA3xx.
 
+=======
+>>>>>>> v3.4.6
 source "drivers/mtd/chips/Kconfig"
 
 source "drivers/mtd/maps/Kconfig"

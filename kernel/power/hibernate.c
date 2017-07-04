@@ -25,8 +25,11 @@
 #include <linux/freezer.h>
 #include <linux/gfp.h>
 #include <linux/syscore_ops.h>
+<<<<<<< HEAD
 #include <linux/ctype.h>
 #include <linux/genhd.h>
+=======
+>>>>>>> v3.4.6
 #include <scsi/scsi_scan.h>
 
 #include "power.h"
@@ -724,6 +727,7 @@ static int software_resume(void)
 
 	/* Check if the device is there */
 	swsusp_resume_device = name_to_dev_t(resume_file);
+<<<<<<< HEAD
 
 	/*
 	 * name_to_dev_t is ineffective to verify parition if resume_file is in
@@ -735,6 +739,8 @@ static int software_resume(void)
 			msleep(10);
 	}
 
+=======
+>>>>>>> v3.4.6
 	if (!swsusp_resume_device) {
 		/*
 		 * Some device discovery might still be in progress; we need

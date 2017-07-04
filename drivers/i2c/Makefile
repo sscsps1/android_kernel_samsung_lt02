@@ -7,7 +7,11 @@ obj-$(CONFIG_I2C)		+= i2c-core.o
 obj-$(CONFIG_I2C_SMBUS)		+= i2c-smbus.o
 obj-$(CONFIG_I2C_CHARDEV)	+= i2c-dev.o
 obj-$(CONFIG_I2C_MUX)		+= i2c-mux.o
+<<<<<<< HEAD
 obj-y				+= algos/ busses/ muxes/ chips/
+=======
+obj-y				+= algos/ busses/ muxes/
+>>>>>>> v3.4.6
 
 ccflags-$(CONFIG_I2C_DEBUG_CORE) := -DDEBUG
 CFLAGS_i2c-core.o := -Wno-deprecated-declarations

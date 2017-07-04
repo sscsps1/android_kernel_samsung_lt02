@@ -84,7 +84,10 @@ obj-$(CONFIG_PPS)		+= pps/
 obj-$(CONFIG_PTP_1588_CLOCK)	+= ptp/
 obj-$(CONFIG_W1)		+= w1/
 obj-$(CONFIG_POWER_SUPPLY)	+= power/
+<<<<<<< HEAD
 obj-$(CONFIG_BATTERY_SAMSUNG)	+= battery/
+=======
+>>>>>>> v3.4.6
 obj-$(CONFIG_HWMON)		+= hwmon/
 obj-$(CONFIG_THERMAL)		+= thermal/
 obj-$(CONFIG_WATCHDOG)		+= watchdog/
@@ -101,7 +104,10 @@ obj-$(CONFIG_CPU_IDLE)		+= cpuidle/
 obj-y				+= mmc/
 obj-$(CONFIG_MEMSTICK)		+= memstick/
 obj-y				+= leds/
+<<<<<<< HEAD
 obj-$(CONFIG_SWITCH)		+= switch/
+=======
+>>>>>>> v3.4.6
 obj-$(CONFIG_INFINIBAND)	+= infiniband/
 obj-$(CONFIG_SGI_SN)		+= sn/
 obj-y				+= firmware/
@@ -130,16 +136,22 @@ obj-$(CONFIG_NFC)		+= nfc/
 obj-$(CONFIG_IOMMU_SUPPORT)	+= iommu/
 obj-$(CONFIG_REMOTEPROC)	+= remoteproc/
 obj-$(CONFIG_RPMSG)		+= rpmsg/
+<<<<<<< HEAD
 obj-$(CONFIG_ACCESSORY)		+= accessory/
+=======
+>>>>>>> v3.4.6
 
 # Virtualization drivers
 obj-$(CONFIG_VIRT_DRIVERS)	+= virt/
 obj-$(CONFIG_HYPERV)		+= hv/
 
 obj-$(CONFIG_PM_DEVFREQ)	+= devfreq/
+<<<<<<< HEAD
 obj-$(CONFIG_NEW_SENSORS)       += sensors/
 obj-y				+= samsung/
 obj-y				+= marvell/
 ifeq (1, $(shell if [ -d ./drivers/exfat ]; then echo 1; fi))
 obj-y	+= exfat/
 endif
+=======
+>>>>>>> v3.4.6

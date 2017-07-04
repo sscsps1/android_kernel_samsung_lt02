@@ -69,7 +69,11 @@ static int h4_open(struct hci_uart *hu)
 
 	BT_DBG("hu %p", hu);
 
+<<<<<<< HEAD
 	h4 = kzalloc(sizeof(*h4), GFP_ATOMIC);
+=======
+	h4 = kzalloc(sizeof(*h4), GFP_KERNEL);
+>>>>>>> v3.4.6
 	if (!h4)
 		return -ENOMEM;
 

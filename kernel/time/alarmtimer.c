@@ -46,8 +46,11 @@ static struct alarm_base {
 static ktime_t freezer_delta;
 static DEFINE_SPINLOCK(freezer_delta_lock);
 
+<<<<<<< HEAD
 static struct wakeup_source *ws;
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_RTC_CLASS
 /* rtc timer and device for setting alarm wakeups at suspend */
 static struct rtc_timer		rtctimer;
@@ -61,7 +64,11 @@ static DEFINE_SPINLOCK(rtcdev_lock);
  * If one has not already been chosen, it checks to see if a
  * functional rtc device is available.
  */
+<<<<<<< HEAD
 struct rtc_device *alarmtimer_get_rtcdev(void)
+=======
+static struct rtc_device *alarmtimer_get_rtcdev(void)
+>>>>>>> v3.4.6
 {
 	unsigned long flags;
 	struct rtc_device *ret;
@@ -117,7 +124,11 @@ static void alarmtimer_rtc_interface_remove(void)
 	class_interface_unregister(&alarmtimer_rtc_interface);
 }
 #else
+<<<<<<< HEAD
 struct rtc_device *alarmtimer_get_rtcdev(void)
+=======
+static inline struct rtc_device *alarmtimer_get_rtcdev(void)
+>>>>>>> v3.4.6
 {
 	return NULL;
 }
@@ -252,7 +263,10 @@ static int alarmtimer_suspend(struct device *dev)
 	unsigned long flags;
 	struct rtc_device *rtc;
 	int i;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> v3.4.6
 
 	spin_lock_irqsave(&freezer_delta_lock, flags);
 	min = freezer_delta;
@@ -284,10 +298,13 @@ static int alarmtimer_suspend(struct device *dev)
 
 	/* XXX - Should we enforce a minimum sleep time? */
 	WARN_ON(min.tv64 < NSEC_PER_SEC);
+<<<<<<< HEAD
 	if (ktime_to_ns(min) < 2 * NSEC_PER_SEC) {
 		__pm_wakeup_event(ws, 2 * MSEC_PER_SEC);
 		return -EBUSY;
 	}
+=======
+>>>>>>> v3.4.6
 
 	/* Setup an rtc timer to fire that far in the future */
 	rtc_timer_cancel(rtc, &rtctimer);
@@ -295,10 +312,16 @@ static int alarmtimer_suspend(struct device *dev)
 	now = rtc_tm_to_ktime(tm);
 	now = ktime_add(now, min);
 
+<<<<<<< HEAD
 	ret = rtc_timer_start(rtc, &rtctimer, now, ktime_set(0, 0));
 	if (ret < 0)
 		__pm_wakeup_event(ws, MSEC_PER_SEC);
 	return ret;
+=======
+	rtc_timer_start(rtc, &rtctimer, now, ktime_set(0, 0));
+
+	return 0;
+>>>>>>> v3.4.6
 }
 #else
 static int alarmtimer_suspend(struct device *dev)
@@ -829,7 +852,10 @@ static int __init alarmtimer_init(void)
 		error = PTR_ERR(pdev);
 		goto out_drv;
 	}
+<<<<<<< HEAD
 	ws = wakeup_source_register("alarmtimer");
+=======
+>>>>>>> v3.4.6
 	return 0;
 
 out_drv:

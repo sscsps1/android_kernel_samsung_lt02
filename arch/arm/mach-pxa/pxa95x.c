@@ -18,12 +18,15 @@
 #include <linux/irq.h>
 #include <linux/io.h>
 #include <linux/syscore_ops.h>
+<<<<<<< HEAD
 #include <linux/memblock.h>
 
 #ifdef CONFIG_CACHE_L2X0
 #include <asm/hardware/cache-l2x0.h>
 #endif
 #include <asm/cacheflush.h>
+=======
+>>>>>>> v3.4.6
 
 #include <mach/hardware.h>
 #include <mach/pxa3xx-regs.h>
@@ -36,6 +39,7 @@
 #include "devices.h"
 #include "clock.h"
 
+<<<<<<< HEAD
 static int boot_flash_type;
 int pxa_boot_flash_type_get(void)
 {
@@ -51,6 +55,8 @@ static int __init setup_boot_flash_type(char *p)
 }
 __setup("FLAS=", setup_boot_flash_type);
 
+=======
+>>>>>>> v3.4.6
 static struct mfp_addr_map pxa95x_mfp_addr_map[] __initdata = {
 
 	MFP_ADDR(GPIO0, 0x02e0),
@@ -219,6 +225,7 @@ static struct mfp_addr_map pxa95x_mfp_addr_map[] __initdata = {
 	MFP_ADDR_END,
 };
 
+<<<<<<< HEAD
 static struct mfp_addr_map pxa978_mfp_addr_map[] __initdata = {
 	/*PMIC interrupt pin*/
 	MFP_ADDR(PMIC_INT, 0x204),
@@ -235,14 +242,19 @@ static struct mfp_addr_map pxa978_mfp_addr_map[] __initdata = {
 	MFP_ADDR_END,
 };
 
+=======
+>>>>>>> v3.4.6
 static DEFINE_CK(pxa95x_lcd, LCD, &clk_pxa3xx_hsio_ops);
 static DEFINE_CLK(pxa95x_pout, &clk_pxa3xx_pout_ops, 13000000, 70);
 static DEFINE_PXA3_CKEN(pxa95x_ffuart, FFUART, 14857000, 1);
 static DEFINE_PXA3_CKEN(pxa95x_btuart, BTUART, 14857000, 1);
 static DEFINE_PXA3_CKEN(pxa95x_stuart, STUART, 14857000, 1);
 static DEFINE_PXA3_CKEN(pxa95x_i2c, I2C, 32842000, 0);
+<<<<<<< HEAD
 static DEFINE_PXA3_CKEN(pxa95x_i2c1, I2C2, 32842000, 0);
 static DEFINE_PXA3_CKEN(pxa95x_i2c2, I2C3, 32842000, 0);
+=======
+>>>>>>> v3.4.6
 static DEFINE_PXA3_CKEN(pxa95x_keypad, KEYPAD, 32768, 0);
 static DEFINE_PXA3_CKEN(pxa95x_ssp1, SSP1, 13000000, 0);
 static DEFINE_PXA3_CKEN(pxa95x_ssp2, SSP2, 13000000, 0);
@@ -262,8 +274,11 @@ static struct clk_lookup pxa95x_clkregs[] = {
 	INIT_CLKREG(&clk_pxa95x_stuart, "pxa2xx-uart.2", NULL),
 	INIT_CLKREG(&clk_pxa95x_stuart, "pxa2xx-ir", "UARTCLK"),
 	INIT_CLKREG(&clk_pxa95x_i2c, "pxa2xx-i2c.0", NULL),
+<<<<<<< HEAD
 	INIT_CLKREG(&clk_pxa95x_i2c1, "pxa2xx-i2c.1", NULL),
 	INIT_CLKREG(&clk_pxa95x_i2c2, "pxa2xx-i2c.2", NULL),
+=======
+>>>>>>> v3.4.6
 	INIT_CLKREG(&clk_pxa95x_keypad, "pxa27x-keypad", NULL),
 	INIT_CLKREG(&clk_pxa95x_ssp1, "pxa27x-ssp.0", NULL),
 	INIT_CLKREG(&clk_pxa95x_ssp2, "pxa27x-ssp.1", NULL),
@@ -280,6 +295,7 @@ void __init pxa95x_init_irq(void)
 	pxa_init_irq(96, NULL);
 }
 
+<<<<<<< HEAD
 void pxa_boot_flash_init(int sync_mode)
 {
 	int boot_flash_type;
@@ -309,6 +325,8 @@ void pxa_boot_flash_init(int sync_mode)
 }
 EXPORT_SYMBOL(pxa_boot_flash_init);
 
+=======
+>>>>>>> v3.4.6
 /*
  * device registration specific to PXA93x.
  */
@@ -330,6 +348,7 @@ static struct platform_device *devices[] __initdata = {
 	&pxa27x_device_pwm1,
 };
 
+<<<<<<< HEAD
 #define CP_MEM_MAX_SEGMENTS 2
 unsigned _cp_area_addr[CP_MEM_MAX_SEGMENTS];
 unsigned _cp_area_size[CP_MEM_MAX_SEGMENTS+1]; /* last entry 0 */
@@ -410,6 +429,15 @@ static int __init pxa95x_init(void)
 			mfp_init_addr(pxa978_mfp_addr_map);
 		else
 			mfp_init_addr(pxa95x_mfp_addr_map);
+=======
+static int __init pxa95x_init(void)
+{
+	int ret = 0, i;
+
+	if (cpu_is_pxa95x()) {
+		mfp_init_base(io_p2v(MFPR_BASE));
+		mfp_init_addr(pxa95x_mfp_addr_map);
+>>>>>>> v3.4.6
 
 		reset_status = ARSR;
 
@@ -430,9 +458,12 @@ static int __init pxa95x_init(void)
 		register_syscore_ops(&pxa3xx_clock_syscore_ops);
 
 		ret = platform_add_devices(devices, ARRAY_SIZE(devices));
+<<<<<<< HEAD
 
 		pxa_set_ffuart_info(NULL);
 		pxa_set_stuart_info(NULL);
+=======
+>>>>>>> v3.4.6
 	}
 
 	return ret;

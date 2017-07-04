@@ -2324,6 +2324,7 @@ int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
 }
 EXPORT_SYMBOL(remap_pfn_range);
 
+<<<<<<< HEAD
 /**
  * vm_iomap_memory - remap memory to userspace
  * @vma: user vma to map to
@@ -2371,6 +2372,8 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
 }
 EXPORT_SYMBOL(vm_iomap_memory);
 
+=======
+>>>>>>> v3.4.6
 static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
 				     unsigned long addr, unsigned long end,
 				     pte_fn_t fn, void *data)

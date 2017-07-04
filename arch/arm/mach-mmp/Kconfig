@@ -2,6 +2,19 @@ if ARCH_MMP
 
 menu "Marvell PXA168/910/MMP2 Implmentations"
 
+<<<<<<< HEAD
+=======
+config MACH_MMP_DT
+	bool "Support MMP2 platforms from device tree"
+	select CPU_PXA168
+	select CPU_PXA910
+	select USE_OF
+	help
+	  Include support for Marvell MMP2 based platforms using
+	  the device tree. Needn't select any other machine while
+	  MACH_MMP_DT is enabled.
+
+>>>>>>> v3.4.6
 config MACH_ASPENITE
 	bool "Marvell's PXA168 Aspenite Development Board"
 	select CPU_PXA168
@@ -84,6 +97,7 @@ config MACH_GPLUGD
 	  Say 'Y' here if you want to support the Marvell PXA168-based
 	  GuruPlug Display (gplugD) Board
 
+<<<<<<< HEAD
 config MACH_YELLOWSTONE
 	bool "Marvell's MMP3 YellowStone Development Board"
 	select CPU_MMP3
@@ -192,6 +206,8 @@ config SAMSUNG_PRODUCT_SHIP
 config SEC_DEBUG_LEVEL
 	int "set up debug level"
 	default 1
+=======
+>>>>>>> v3.4.6
 endmenu
 
 config CPU_PXA168
@@ -206,6 +222,7 @@ config CPU_PXA910
 	help
 	  Select code specific to PXA910
 
+<<<<<<< HEAD
 config CPU_PXA988
 	bool
 	select CPU_CA9MP
@@ -220,11 +237,14 @@ config CPU_PXA988
 	  The PXA988 is an SoC with dual-core Cotex-A9 and comunication
 	  processor, code name "Emei".
 
+=======
+>>>>>>> v3.4.6
 config CPU_MMP2
 	bool
 	select CPU_PJ4
 	help
 	  Select code specific to MMP2. MMP2 is ARMv7 compatible.
+<<<<<<< HEAD
 
 config CPU_MMP3
 	bool
@@ -335,4 +355,6 @@ config SEC_THERMISTOR
 	help
 	  Use thermistor driver to check system temperature
 
+=======
+>>>>>>> v3.4.6
 endif

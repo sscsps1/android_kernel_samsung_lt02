@@ -122,7 +122,10 @@ static int mmc_bus_remove(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
+=======
+>>>>>>> v3.4.6
 static int mmc_bus_suspend(struct device *dev)
 {
 	struct mmc_driver *drv = to_mmc_driver(dev->driver);
@@ -144,7 +147,10 @@ static int mmc_bus_resume(struct device *dev)
 		ret = drv->resume(card);
 	return ret;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 
 #ifdef CONFIG_PM_RUNTIME
 
@@ -317,10 +323,13 @@ int mmc_add_card(struct mmc_card *card)
 			(mmc_card_hs200(card) ? "HS200 " : ""),
 			mmc_card_ddr_mode(card) ? "DDR " : "",
 			uhs_bus_speed_mode, type, card->rca);
+<<<<<<< HEAD
 		pr_info("%s: ios: %d hz, %d bit width\n",
 			mmc_hostname(card->host),
 			card->host->ios.clock,
 			1 << card->host->ios.bus_width);
+=======
+>>>>>>> v3.4.6
 	}
 
 #ifdef CONFIG_DEBUG_FS

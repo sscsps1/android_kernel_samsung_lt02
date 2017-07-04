@@ -9,15 +9,21 @@
  */
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/gpio-pxa.h>
+=======
+>>>>>>> v3.4.6
 #include <linux/init.h>
 #include <linux/list.h>
 #include <linux/io.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/dma-mapping.h>
 #include <linux/platform_data/mmp_audio.h>
 #include <linux/mfd/ds1wm.h>
+=======
+>>>>>>> v3.4.6
 
 #include <asm/mach/time.h>
 #include <mach/addr-map.h>
@@ -28,14 +34,20 @@
 #include <mach/dma.h>
 #include <mach/mfp.h>
 #include <mach/devices.h>
+<<<<<<< HEAD
 #include <mach/pm-pxa910.h>
+=======
+>>>>>>> v3.4.6
 
 #include "common.h"
 #include "clock.h"
 
 #define MFPR_VIRT_BASE	(APB_VIRT_BASE + 0x1e000)
+<<<<<<< HEAD
 unsigned char __iomem *dmc_membase;
 EXPORT_SYMBOL(dmc_membase);
+=======
+>>>>>>> v3.4.6
 
 static struct mfp_addr_map pxa910_mfp_addr_map[] __initdata =
 {
@@ -90,6 +102,7 @@ void __init pxa910_init_irq(void)
 	icu_init_irq();
 }
 
+<<<<<<< HEAD
 /* gssp clk ops: gssp is shared between AP and CP */
 static void gssp_clk_enable(struct clk *clk)
 {
@@ -154,6 +167,8 @@ struct clkops lcd_pn1_clk_ops = {
 	.getrate	= lcd_clk_getrate,
 };
 
+=======
+>>>>>>> v3.4.6
 /* APB peripheral clocks */
 static APBC_CLK(uart1, PXA910_UART0, 1, 14745600);
 static APBC_CLK(uart2, PXA910_UART1, 1, 14745600);
@@ -165,6 +180,7 @@ static APBC_CLK(pwm3, PXA910_PWM3, 1, 13000000);
 static APBC_CLK(pwm4, PXA910_PWM4, 1, 13000000);
 static APBC_CLK(gpio, PXA910_GPIO, 0, 13000000);
 static APBC_CLK(rtc, PXA910_RTC, 8, 32768);
+<<<<<<< HEAD
 static APBC_CLK(ssp1, PXA910_SSP1, 4, 3250000);
 static APBC_CLK(ssp2, PXA910_SSP2, 0, 0);
 static APBC_CLK(1wire,  PXA910_ONEWIRE,  0, 26000000);
@@ -183,6 +199,11 @@ static APMU_CLK(sdh1, SDH1, 0x001b, 44500000);
  * the max clock is limited to 50MHz, so this patch cannot be applied.
  */
 static APMU_CLK(sdh2, SDH2, 0x005b, 52000000);
+=======
+
+static APMU_CLK(nand, NAND, 0x19b, 156000000);
+static APMU_CLK(u2o, USB, 0x1b, 480000000);
+>>>>>>> v3.4.6
 
 /* device and clock bindings */
 static struct clk_lookup pxa910_clkregs[] = {
@@ -196,6 +217,7 @@ static struct clk_lookup pxa910_clkregs[] = {
 	INIT_CLKREG(&clk_pwm4, "pxa910-pwm.3", NULL),
 	INIT_CLKREG(&clk_nand, "pxa3xx-nand", NULL),
 	INIT_CLKREG(&clk_gpio, "pxa-gpio", NULL),
+<<<<<<< HEAD
 	INIT_CLKREG(&clk_1wire, NULL, "PXA-W1"),
 	INIT_CLKREG(&clk_u2o, NULL, "U2OCLK"),
 	INIT_CLKREG(&clk_rtc, "sa1100-rtc", NULL),
@@ -208,6 +230,10 @@ static struct clk_lookup pxa910_clkregs[] = {
 	INIT_CLKREG(&clk_sdh0, "sdhci-pxav2.0", "PXA-SDHCLK"),
 	INIT_CLKREG(&clk_sdh1, "sdhci-pxav2.1", "PXA-SDHCLK"),
 	INIT_CLKREG(&clk_sdh2, "sdhci-pxav2.2", "PXA-SDHCLK"),
+=======
+	INIT_CLKREG(&clk_u2o, "pxa-u2o", "U2OCLK"),
+	INIT_CLKREG(&clk_rtc, "sa1100-rtc", NULL),
+>>>>>>> v3.4.6
 };
 
 static int __init pxa910_init(void)
@@ -219,7 +245,10 @@ static int __init pxa910_init(void)
 		clkdev_add_table(ARRAY_AND_SIZE(pxa910_clkregs));
 	}
 
+<<<<<<< HEAD
 	dmc_membase = ioremap(0xb0000000, 0x00001000);
+=======
+>>>>>>> v3.4.6
 	return 0;
 }
 postcore_initcall(pxa910_init);
@@ -264,6 +293,7 @@ PXA910_DEVICE(pwm2, "pxa910-pwm", 1, NONE, 0xd401a400, 0x10);
 PXA910_DEVICE(pwm3, "pxa910-pwm", 2, NONE, 0xd401a800, 0x10);
 PXA910_DEVICE(pwm4, "pxa910-pwm", 3, NONE, 0xd401ac00, 0x10);
 PXA910_DEVICE(nand, "pxa3xx-nand", -1, NAND, 0xd4283000, 0x80, 97, 99);
+<<<<<<< HEAD
 PXA910_DEVICE(cnm, "pxa-cnm", -1, CNM, 0xd420d000, 0x1000);
 PXA910_DEVICE(asram, "asram", 0, NONE, 0xd100a000, 0x15000);
 PXA910_DEVICE(ssp0, "pxa910-ssp", 0, SSP1, 0xd401b000, 0x90, 52, 53);
@@ -276,6 +306,8 @@ PXA910_DEVICE(camera, "mmp-camera", 0, CCIC, 0xd420a000, 0xfff);
 PXA910_DEVICE(sdh0, "sdhci-pxav2", 0, MMC, 0xd4280000, 0x120);
 PXA910_DEVICE(sdh1, "sdhci-pxav2", 1, MMC, 0xd4280800, 0x120);
 PXA910_DEVICE(sdh2, "sdhci-pxav2", 2, MMC, 0xd4281000, 0x120);
+=======
+>>>>>>> v3.4.6
 
 struct resource pxa910_resource_gpio[] = {
 	{
@@ -290,18 +322,24 @@ struct resource pxa910_resource_gpio[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct pxa_gpio_platform_data pxa910_gpio_info __initdata = {
 	.gpio_set_wake = pxa910_set_wake,
 };
 
+=======
+>>>>>>> v3.4.6
 struct platform_device pxa910_device_gpio = {
 	.name		= "pxa-gpio",
 	.id		= -1,
 	.num_resources	= ARRAY_SIZE(pxa910_resource_gpio),
 	.resource	= pxa910_resource_gpio,
+<<<<<<< HEAD
 	.dev            = {
 		.platform_data  = &pxa910_gpio_info,
 	},
+=======
+>>>>>>> v3.4.6
 };
 
 static struct resource pxa910_resource_rtc[] = {
@@ -328,6 +366,7 @@ struct platform_device pxa910_device_rtc = {
 	.num_resources	= ARRAY_SIZE(pxa910_resource_rtc),
 	.resource	= pxa910_resource_rtc,
 };
+<<<<<<< HEAD
 
 static struct resource pxa910_resource_squ[] = {
 	{
@@ -395,3 +434,5 @@ struct platform_device pxa910_device_1wire = {
 	.num_resources	= ARRAY_SIZE(pxa910_resource_1wire),
 	.resource	= pxa910_resource_1wire,
 };
+=======
+>>>>>>> v3.4.6

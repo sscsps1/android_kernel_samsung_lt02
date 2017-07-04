@@ -14,11 +14,15 @@
 #include <linux/of_irq.h>
 #include <linux/of_platform.h>
 #include <asm/mach/arch.h>
+<<<<<<< HEAD
 #include <asm/mach/time.h>
+=======
+>>>>>>> v3.4.6
 #include <mach/irqs.h>
 
 #include "common.h"
 
+<<<<<<< HEAD
 extern void __init mmp_dt_irq_init(void);
 extern void __init mmp_dt_init_timer(void);
 
@@ -27,6 +31,12 @@ static struct sys_timer mmp_dt_timer = {
 };
 
 static const struct of_dev_auxdata pxa168_auxdata_lookup[] __initconst = {
+=======
+extern struct sys_timer pxa168_timer;
+extern void __init icu_init_irq(void);
+
+static const struct of_dev_auxdata mmp_auxdata_lookup[] __initconst = {
+>>>>>>> v3.4.6
 	OF_DEV_AUXDATA("mrvl,mmp-uart", 0xd4017000, "pxa2xx-uart.0", NULL),
 	OF_DEV_AUXDATA("mrvl,mmp-uart", 0xd4018000, "pxa2xx-uart.1", NULL),
 	OF_DEV_AUXDATA("mrvl,mmp-uart", 0xd4026000, "pxa2xx-uart.2", NULL),
@@ -37,6 +47,7 @@ static const struct of_dev_auxdata pxa168_auxdata_lookup[] __initconst = {
 	{}
 };
 
+<<<<<<< HEAD
 static const struct of_dev_auxdata pxa910_auxdata_lookup[] __initconst = {
 	OF_DEV_AUXDATA("mrvl,mmp-uart", 0xd4017000, "pxa2xx-uart.0", NULL),
 	OF_DEV_AUXDATA("mrvl,mmp-uart", 0xd4018000, "pxa2xx-uart.1", NULL),
@@ -63,11 +74,45 @@ static void __init pxa910_dt_init(void)
 static const char *mmp_dt_board_compat[] __initdata = {
 	"mrvl,pxa168-aspenite",
 	"mrvl,pxa910-dkb",
+=======
+static int __init mmp_intc_add_irq_domain(struct device_node *np,
+					   struct device_node *parent)
+{
+	irq_domain_add_simple(np, 0);
+	return 0;
+}
+
+static int __init mmp_gpio_add_irq_domain(struct device_node *np,
+					   struct device_node *parent)
+{
+	irq_domain_add_simple(np, IRQ_GPIO_START);
+	return 0;
+}
+
+static const struct of_device_id mmp_irq_match[] __initconst = {
+	{ .compatible = "mrvl,mmp-intc", .data = mmp_intc_add_irq_domain, },
+	{ .compatible = "mrvl,mmp-gpio", .data = mmp_gpio_add_irq_domain, },
+	{}
+};
+
+static void __init mmp_dt_init(void)
+{
+
+	of_irq_init(mmp_irq_match);
+
+	of_platform_populate(NULL, of_default_bus_match_table,
+			     mmp_auxdata_lookup, NULL);
+}
+
+static const char *pxa168_dt_board_compat[] __initdata = {
+	"mrvl,pxa168-aspenite",
+>>>>>>> v3.4.6
 	NULL,
 };
 
 DT_MACHINE_START(PXA168_DT, "Marvell PXA168 (Device Tree Support)")
 	.map_io		= mmp_map_io,
+<<<<<<< HEAD
 	.init_irq	= mmp_dt_irq_init,
 	.timer		= &mmp_dt_timer,
 	.init_machine	= pxa168_dt_init,
@@ -80,4 +125,10 @@ DT_MACHINE_START(PXA910_DT, "Marvell PXA910 (Device Tree Support)")
 	.timer		= &mmp_dt_timer,
 	.init_machine	= pxa910_dt_init,
 	.dt_compat	= mmp_dt_board_compat,
+=======
+	.init_irq	= icu_init_irq,
+	.timer		= &pxa168_timer,
+	.init_machine	= mmp_dt_init,
+	.dt_compat	= pxa168_dt_board_compat,
+>>>>>>> v3.4.6
 MACHINE_END

@@ -41,6 +41,7 @@ extern int freeze_kernel_threads(void);
 extern void thaw_processes(void);
 extern void thaw_kernel_threads(void);
 
+<<<<<<< HEAD
 /*
  * HACK: prevent sleeping while atomic warnings due to ARM signal handling
  * disabling irqs
@@ -52,6 +53,8 @@ static inline bool try_to_freeze_nowarn(void)
 	return __refrigerator(false);
 }
 
+=======
+>>>>>>> v3.4.6
 static inline bool try_to_freeze(void)
 {
 	might_sleep();
@@ -136,6 +139,7 @@ static inline int freezer_should_skip(struct task_struct *p)
 })
 
 /*
+<<<<<<< HEAD
   * Like schedule_hrtimeout_range(), but should not block the freezer.  Do not
   * call this with locks held.
   */
@@ -150,6 +154,8 @@ static inline int freezable_schedule_hrtimeout_range(ktime_t *expires,
 }
 
 /*
+=======
+>>>>>>> v3.4.6
  * Freezer-friendly wrappers around wait_event_interruptible(),
  * wait_event_killable() and wait_event_interruptible_timeout(), originally
  * defined in <linux/wait.h>
@@ -191,6 +197,7 @@ static inline int freezable_schedule_hrtimeout_range(ktime_t *expires,
 	__retval;							\
 })
 
+<<<<<<< HEAD
 #define wait_event_freezable_exclusive(wq, condition)			\
 ({ 								\
 	int __retval;							\
@@ -200,6 +207,8 @@ static inline int freezable_schedule_hrtimeout_range(ktime_t *expires,
 	__retval;							\
 })
 
+=======
+>>>>>>> v3.4.6
 #else /* !CONFIG_FREEZER */
 static inline bool frozen(struct task_struct *p) { return false; }
 static inline bool freezing(struct task_struct *p) { return false; }
@@ -223,18 +232,24 @@ static inline void set_freezable(void) {}
 #define freezable_schedule_timeout_killable(timeout)			\
 	schedule_timeout_killable(timeout)
 
+<<<<<<< HEAD
 #define freezable_schedule_hrtimeout_range(expires, delta, mode)	\
 	schedule_hrtimeout_range(expires, delta, mode)
 
+=======
+>>>>>>> v3.4.6
 #define wait_event_freezable(wq, condition)				\
 		wait_event_interruptible(wq, condition)
 
 #define wait_event_freezable_timeout(wq, condition, timeout)		\
 		wait_event_interruptible_timeout(wq, condition, timeout)
 
+<<<<<<< HEAD
 #define wait_event_freezable_exclusive(wq, condition)			\
 		wait_event_interruptible_exclusive(wq, condition)
 
+=======
+>>>>>>> v3.4.6
 #define wait_event_freezekillable(wq, condition)		\
 		wait_event_killable(wq, condition)
 

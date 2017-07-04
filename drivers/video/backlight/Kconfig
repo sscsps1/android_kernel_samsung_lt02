@@ -238,6 +238,7 @@ config BACKLIGHT_PWM
 	  If you have a LCD backlight adjustable by PWM, say Y to enable
 	  this driver.
 
+<<<<<<< HEAD
 config BACKLIGHT_TPS61165
 	tristate "TI TPS61165 PWM based Backlight Driver"
 	depends on HAVE_PWM
@@ -245,6 +246,8 @@ config BACKLIGHT_TPS61165
 	  If you have a LCD backlight adjustable by PWM, say Y to enable
 	  this driver.
 
+=======
+>>>>>>> v3.4.6
 config BACKLIGHT_DA903X
 	tristate "Backlight Driver for DA9030/DA9034 using WLED"
 	depends on PMIC_DA903X
@@ -327,6 +330,7 @@ config BACKLIGHT_ADP8870
 	  To compile this driver as a module, choose M here: the module will
 	  be called adp8870_bl.
 
+<<<<<<< HEAD
 config BACKLIGHT_KTD253
 	tristate "Backlight Driver for KTD253 using WLED"
 	depends on BACKLIGHT_CLASS_DEVICE
@@ -351,6 +355,8 @@ config BACKLIGHT_LDIPWM
 	  To compile this driver as a module, choose M here: the module will
 	  be called adp8885_bl.
 
+=======
+>>>>>>> v3.4.6
 config BACKLIGHT_88PM860X
 	tristate "Backlight Driver for 88PM8606 using WLED"
 	depends on MFD_88PM860X

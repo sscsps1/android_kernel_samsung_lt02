@@ -597,6 +597,7 @@ struct transaction_s
 	 */
 	unsigned int t_synchronous_commit:1;
 
+<<<<<<< HEAD
 	/*
 	 * This transaction's callback is invoked [j_list_lock]
 	 */
@@ -607,6 +608,8 @@ struct transaction_s
 	 */
 	unsigned int t_dropped:1;
 
+=======
+>>>>>>> v3.4.6
 	/* Disk flush needs to be sent to fs partition [no locking] */
 	int			t_need_data_flush;
 

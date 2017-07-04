@@ -18,6 +18,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  ****************************************************************/
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 #include <linux/export.h>
 #include <asm/byteorder.h>
 

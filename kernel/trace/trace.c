@@ -1529,13 +1529,21 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
 	cpu = raw_smp_processor_id();
 	data = tr->data[cpu];
 
+<<<<<<< HEAD
 	/* Lockdep uses trace_printk for lock tracing */
 	local_irq_save(flags);
 
+=======
+>>>>>>> v3.4.6
 	disable = atomic_inc_return(&data->disabled);
 	if (unlikely(disable != 1))
 		goto out;
 
+<<<<<<< HEAD
+=======
+	/* Lockdep uses trace_printk for lock tracing */
+	local_irq_save(flags);
+>>>>>>> v3.4.6
 	arch_spin_lock(&trace_buf_lock);
 	len = vbin_printf(trace_buf, TRACE_BUF_SIZE, fmt, args);
 
@@ -1560,10 +1568,17 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
 
 out_unlock:
 	arch_spin_unlock(&trace_buf_lock);
+<<<<<<< HEAD
 
 out:
 	atomic_dec_return(&data->disabled);
 	local_irq_restore(flags);
+=======
+	local_irq_restore(flags);
+
+out:
+	atomic_dec_return(&data->disabled);
+>>>>>>> v3.4.6
 	preempt_enable_notrace();
 	unpause_graph_tracing();
 
@@ -1609,13 +1624,21 @@ int trace_array_vprintk(struct trace_array *tr,
 	cpu = raw_smp_processor_id();
 	data = tr->data[cpu];
 
+<<<<<<< HEAD
 	pause_graph_tracing();
 	raw_local_irq_save(irq_flags);
 
+=======
+>>>>>>> v3.4.6
 	disable = atomic_inc_return(&data->disabled);
 	if (unlikely(disable != 1))
 		goto out;
 
+<<<<<<< HEAD
+=======
+	pause_graph_tracing();
+	raw_local_irq_save(irq_flags);
+>>>>>>> v3.4.6
 	arch_spin_lock(&trace_buf_lock);
 	len = vsnprintf(trace_buf, TRACE_BUF_SIZE, fmt, args);
 
@@ -1637,10 +1660,17 @@ int trace_array_vprintk(struct trace_array *tr,
 
  out_unlock:
 	arch_spin_unlock(&trace_buf_lock);
+<<<<<<< HEAD
  out:
 	atomic_dec_return(&data->disabled);
 	raw_local_irq_restore(irq_flags);
 	unpause_graph_tracing();
+=======
+	raw_local_irq_restore(irq_flags);
+	unpause_graph_tracing();
+ out:
+	atomic_dec_return(&data->disabled);
+>>>>>>> v3.4.6
 	preempt_enable_notrace();
 
 	return len;
@@ -4682,6 +4712,7 @@ static const struct file_operations rb_simple_fops = {
 	.llseek		= default_llseek,
 };
 
+<<<<<<< HEAD
 static ssize_t
 tracing_noncached_read(struct file *filp, char __user *ubuf,
 		size_t cnt, loff_t *ppos)
@@ -4728,6 +4759,8 @@ static const struct file_operations tracing_noncached_fops = {
 	.llseek		= default_llseek,
 };
 
+=======
+>>>>>>> v3.4.6
 static __init int tracer_init_debugfs(void)
 {
 	struct dentry *d_tracer;
@@ -4790,9 +4823,12 @@ static __init int tracer_init_debugfs(void)
 	trace_create_file("tracing_on", 0644, d_tracer,
 			    &global_trace, &rb_simple_fops);
 
+<<<<<<< HEAD
 	trace_create_file("trace_noncached_on", 0644, d_tracer,
 			    NULL, &tracing_noncached_fops);
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_DYNAMIC_FTRACE
 	trace_create_file("dyn_ftrace_total_info", 0444, d_tracer,
 			&ftrace_update_tot_cnt, &tracing_dyn_info_fops);

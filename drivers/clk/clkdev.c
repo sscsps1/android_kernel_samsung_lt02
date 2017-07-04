@@ -89,6 +89,7 @@ void clk_put(struct clk *clk)
 }
 EXPORT_SYMBOL(clk_put);
 
+<<<<<<< HEAD
 static void devm_clk_release(struct device *dev, void *res)
 {
 	clk_put(*(struct clk **)res);
@@ -134,6 +135,8 @@ void devm_clk_put(struct device *dev, struct clk *clk)
 }
 EXPORT_SYMBOL(devm_clk_put);
 
+=======
+>>>>>>> v3.4.6
 void clkdev_add(struct clk_lookup *cl)
 {
 	mutex_lock(&clocks_mutex);

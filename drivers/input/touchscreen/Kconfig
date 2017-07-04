@@ -23,12 +23,15 @@ config TOUCHSCREEN_88PM860X
 	  To compile this driver as a module, choose M here: the
 	  module will be called 88pm860x-ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_FT5306
 	tristate "FT5306 Touchscreen interface support"
 	depends on I2C
 	help
 	  Say Y here if enable support for the FT5306 touchscreen controller.
 
+=======
+>>>>>>> v3.4.6
 config TOUCHSCREEN_ADS7846
 	tristate "ADS7846/TSC2046/AD7873 and AD(S)7843 based touchscreens"
 	depends on SPI_MASTER
@@ -48,6 +51,7 @@ config TOUCHSCREEN_ADS7846
 	  To compile this driver as a module, choose M here: the
 	  module will be called ads7846.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_VNC
        tristate "VNC based touchscreen"
        help
@@ -55,6 +59,8 @@ config TOUCHSCREEN_VNC
         If unsure, say N.
         If sure, say Y.
 
+=======
+>>>>>>> v3.4.6
 config TOUCHSCREEN_AD7877
 	tristate "AD7877 based touchscreens"
 	depends on SPI_MASTER
@@ -464,12 +470,15 @@ config TOUCHSCREEN_TNETV107X
 	  To compile this driver as a module, choose M here: the
 	  module will be called tnetv107x-ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_SYNAPTICS_I2C_RMI
 	tristate "Synaptics i2c touchscreen"
 	depends on I2C
 	help
 	  This enables support for Synaptics RMI over I2C based touchscreens.
 
+=======
+>>>>>>> v3.4.6
 config TOUCHSCREEN_TOUCHRIGHT
 	tristate "Touchright serial touchscreen"
 	select SERIO
@@ -864,6 +873,7 @@ config TOUCHSCREEN_TPS6507X
 	  To compile this driver as a module, choose M here: the
 	  module will be called tps6507x_ts.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_MMS136_TS
 	bool "MELFAS MMS-136 touchscreen driver"
 	depends on I2C
@@ -890,4 +900,6 @@ config TOUCHSCREEN_BT532_TS
 	  Say Y here if you have a ZINITIX BT532 touchscreen.
 
 	  If unsure, say N.
+=======
+>>>>>>> v3.4.6
 endif

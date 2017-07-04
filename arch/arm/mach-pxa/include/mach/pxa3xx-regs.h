@@ -16,6 +16,7 @@
 #include <mach/hardware.h>
 
 /*
+<<<<<<< HEAD
  * Static Chip Selects
  */
 
@@ -25,10 +26,13 @@
 #define PXA95X_CS3_PHYS		(0x14000000)
 
 /*
+=======
+>>>>>>> v3.4.6
  * Oscillator Configuration Register (OSCC)
  */
 #define OSCC           __REG(0x41350000)  /* Oscillator Configuration Register */
 
+<<<<<<< HEAD
 #define OSCC_VCTVSTB_OFFSET (20)
 #define OSCC_VCTVCEN	(1 << 23)
 #define OSCC_VCTVSTB	(1 << OSCC_VCTVSTB_OFFSET)
@@ -44,6 +48,10 @@
 #define DMEMVLR		__REG(0x4135000C)	/* DMC Voltage Level Configuration Register */
 
 #define DMEMVLR_DMCHV_OFFSET (0)
+=======
+#define OSCC_PEN       (1 << 11)       /* 13MHz POUT */
+
+>>>>>>> v3.4.6
 
 /*
  * Service Power Management Unit (MPMU)
@@ -55,6 +63,7 @@
 #define PWER		__REG(0x40F50010)	/* Power Manager Wake-up Enable Register */
 #define PWSR		__REG(0x40F50014)	/* Power Manager Wake-up Status Register */
 #define PECR		__REG(0x40F50018)	/* Power Manager EXT_WAKEUP[1:0] Control Register */
+<<<<<<< HEAD
 #define OVH		__REG(0x40F50020)	/* Overheating Control Register */
 #define VLSCR		__REG(0x40F5005C)	/* Voltage Level Select Control Register */
 #define DCDCSR		__REG(0x40F50080)	/* DC-DC Controller Status Register */
@@ -109,6 +118,12 @@
 #define CORE_OVERHEATING_DETECTED	1
 #define CORE_COLLING_DETECTED		0
 
+=======
+#define DCDCSR		__REG(0x40F50080)	/* DC-DC Controller Status Register */
+#define PVCR		__REG(0x40F50100)	/* Power Manager Voltage Change Control Register */
+#define PCMD(x)		__REG(0x40F50110 + ((x) << 2))
+
+>>>>>>> v3.4.6
 /*
  * Slave Power Management Unit
  */
@@ -126,6 +141,7 @@
 #define AD3R		__REG(0x40f40030)	/* Application Subsystem D3 Configuration */
 #define AD2R		__REG(0x40f40034)	/* Application Subsystem D2 Configuration */
 #define AD1R		__REG(0x40f40038)	/* Application Subsystem D1 Configuration */
+<<<<<<< HEAD
 #define ACGD0ER		__REG(0x40F40040)	/* Application Subsystem CG to D0 state Wakeup Enable Register */
 #define ACGD0SR		__REG(0x40F40044)	/* Application Subsystem CG to D0 state Wakeup Status Register */
 #define ACGD0ER2	__REG(0x40F40048)	/* Application Subsystem CG to D0 state Wakeup Enable Register 2 */
@@ -166,6 +182,9 @@
 #define MMPLL_REFDIV_MASK	(0x1f << 0)	/* MM PLL REFDIV Value Configuration */
 
 #define CLK_EN			(1 << 0)	/* System PLL 416Mhz branch enable*/
+=======
+
+>>>>>>> v3.4.6
 /*
  * Application Subsystem Configuration bits.
  */
@@ -243,6 +262,7 @@
 #define CKENA		__REG(0x4134000C)	/* A Clock Enable Register */
 #define CKENB		__REG(0x41340010)	/* B Clock Enable Register */
 #define AC97_DIV	__REG(0x41340014)	/* AC97 clock divisor value register */
+<<<<<<< HEAD
 #define ACCR1		__REG(0x41340020)	/* Application Subsystem Clock Configuration Register 1 */
 #define CKENC		__REG(0x41340024)	/* C Clock Enable Register */
 #define DDR_CLK_PROFILES __REG(0x41340028)	/* DDR Clock Profiles Register */
@@ -258,12 +278,15 @@
 #define COREPLL_TIMERS	__REG(0x41340064)	/* Core PLL Times Register */
 
 #define DDRPLLR		__REG(0x41350004)	/* DDR PLL Cnfiguration Register */
+=======
+>>>>>>> v3.4.6
 
 #define ACCR_XPDIS		(1 << 31)	/* Core PLL Output Disable */
 #define ACCR_SPDIS		(1 << 30)	/* System PLL Output Disable */
 #define ACCR_D0CS		(1 << 26)	/* D0 Mode Clock Select */
 #define ACCR_PCCE		(1 << 11)	/* Power Mode Change Clock Enable */
 #define ACCR_DDR_D0CS		(1 << 7)	/* DDR SDRAM clock frequency in D0CS (PXA31x only) */
+<<<<<<< HEAD
 #define ACCR_DMCFS_312		(1 << 6)	/* DDR SDRAM clock frequency 312MHz */
 
 #define ACCR_XPDIS_MASK		(0x1 << 31)	/* Core PLL Output Disable */
@@ -343,6 +366,24 @@
 #define VLT_LEVEL_1		1
 #define VLT_LEVEL_2		2
 #define VLT_LEVEL_3		3
+=======
+
+#define ACCR_SMCFS_MASK		(0x7 << 23)	/* Static Memory Controller Frequency Select */
+#define ACCR_SFLFS_MASK		(0x3 << 18)	/* Frequency Select for Internal Memory Controller */
+#define ACCR_XSPCLK_MASK	(0x3 << 16)	/* Core Frequency during Frequency Change */
+#define ACCR_HSS_MASK		(0x3 << 14)	/* System Bus-Clock Frequency Select */
+#define ACCR_DMCFS_MASK		(0x3 << 12)	/* Dynamic Memory Controller Clock Frequency Select */
+#define ACCR_XN_MASK		(0x7 << 8)	/* Core PLL Turbo-Mode-to-Run-Mode Ratio */
+#define ACCR_XL_MASK		(0x1f)		/* Core PLL Run-Mode-to-Oscillator Ratio */
+
+#define ACCR_SMCFS(x)		(((x) & 0x7) << 23)
+#define ACCR_SFLFS(x)		(((x) & 0x3) << 18)
+#define ACCR_XSPCLK(x)		(((x) & 0x3) << 16)
+#define ACCR_HSS(x)		(((x) & 0x3) << 14)
+#define ACCR_DMCFS(x)		(((x) & 0x3) << 12)
+#define ACCR_XN(x)		(((x) & 0x7) << 8)
+#define ACCR_XL(x)		((x) & 0x1f)
+>>>>>>> v3.4.6
 
 /*
  * Clock Enable Bit
@@ -376,8 +417,11 @@
 #define CKEN_MSL0	30	/* < MSL0 clock enable */
 #define CKEN_PWM0	32	/* < PWM[0] clock enable */
 #define CKEN_PWM1	33	/* < PWM[1] clock enable */
+<<<<<<< HEAD
 #define CKEN_HSI	34	/* < HSI clock enable */
 #define CKEN_VMETA	35	/* < VMeta clock enable */
+=======
+>>>>>>> v3.4.6
 #define CKEN_I2C	36	/* < I2C clock enable */
 #define CKEN_INTC	38	/* < Interrupt controller clock enable */
 #define CKEN_GPIO	39	/* < GPIO clock enable */
@@ -385,6 +429,7 @@
 #define CKEN_HSIO2	41	/* < HSIO2 clock enable */
 #define CKEN_MINI_IM	48	/* < Mini-IM */
 #define CKEN_MINI_LCD	49	/* < Mini LCD */
+<<<<<<< HEAD
 #define CKEN_ABU	59	/* < ABU clock enable */
 #define CKEN_HSIO	61	/* < System Bus (HSIO) clock enable */
 #define CKEN_CSI_TX	64	/* < CSI TX Escape clock enable */
@@ -414,6 +459,8 @@
 #define CKEN_GC_2X	93	/* < Graphics 2x clock enable */
 #define CKEN_DSI_TX1	94	/* < DSI TX1 Escape clock enable */
 #define CKEN_DSI_TX2	95	/* < DSI TX2 Escape clock enable */
+=======
+>>>>>>> v3.4.6
 
 #define CKEN_MMC3	5	/* < MMC3 Clock Enable */
 #define CKEN_MVED	43	/* < MVED clock enable */
@@ -422,6 +469,7 @@
 #define CKEN_PXA300_GCU		42	/* Graphics controller clock enable */
 #define CKEN_PXA320_GCU		7	/* Graphics controller clock enable */
 
+<<<<<<< HEAD
 #define CKEN_PWM4	0	/* < PWMCCR4 offset  */
 #define CKEN_PWM5	4	/* < PWMCCR4 offset  */
 #define CKEN_PWM6	8	/* < PWMCCR4 offset  */
@@ -442,4 +490,6 @@
 #define GEN_REG3_SPLGEN_MASK	(1 << 19)
 
 
+=======
+>>>>>>> v3.4.6
 #endif /* __ASM_ARCH_PXA3XX_REGS_H */

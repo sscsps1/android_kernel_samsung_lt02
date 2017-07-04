@@ -35,6 +35,7 @@
 #include <linux/mm.h>
 #include <linux/oom.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
 #include <linux/swap.h>
 #include <linux/rcupdate.h>
 #include <linux/notifier.h>
@@ -74,6 +75,13 @@ static uint32_t oom_count = 0;
 #endif
 
 static uint32_t lowmem_debug_level = 1;
+=======
+#include <linux/rcupdate.h>
+#include <linux/profile.h>
+#include <linux/notifier.h>
+
+static uint32_t lowmem_debug_level = 2;
+>>>>>>> v3.4.6
 static int lowmem_adj[6] = {
 	0,
 	1,
@@ -89,6 +97,7 @@ static int lowmem_minfree[6] = {
 };
 static int lowmem_minfree_size = 4;
 
+<<<<<<< HEAD
 static unsigned int offlining;
 #ifdef ENHANCED_LMK_ROUTINE
 static struct task_struct *lowmem_deathpending[LOWMEM_DEATHPENDING_DEPTH] = {
@@ -97,6 +106,8 @@ static struct task_struct *lowmem_deathpending[LOWMEM_DEATHPENDING_DEPTH] = {
 #else
 static struct task_struct *lowmem_deathpending;
 #endif
+=======
+>>>>>>> v3.4.6
 static unsigned long lowmem_deathpending_timeout;
 
 #define lowmem_print(level, x...)			\
@@ -105,6 +116,7 @@ static unsigned long lowmem_deathpending_timeout;
 			printk(x);			\
 	} while (0)
 
+<<<<<<< HEAD
 #if defined(CONFIG_SEC_OOM_KILLER)
 static void dump_tasks_info(void)
 {
@@ -176,10 +188,17 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 #else
 	struct task_struct *selected = NULL;
 #endif
+=======
+static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
+{
+	struct task_struct *tsk;
+	struct task_struct *selected = NULL;
+>>>>>>> v3.4.6
 	int rem = 0;
 	int tasksize;
 	int i;
 	int min_score_adj = OOM_SCORE_ADJ_MAX + 1;
+<<<<<<< HEAD
 #ifdef ENHANCED_LMK_ROUTINE
 	int selected_tasksize[LOWMEM_DEATHPENDING_DEPTH] = {0,};
 	int selected_oom_score_adj[LOWMEM_DEATHPENDING_DEPTH] = {OOM_ADJUST_MAX,};
@@ -227,6 +246,14 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		time_before_eq(jiffies, lowmem_deathpending_timeout))
 		return 0;
 #endif
+=======
+	int selected_tasksize = 0;
+	int selected_oom_score_adj;
+	int array_size = ARRAY_SIZE(lowmem_adj);
+	int other_free = global_page_state(NR_FREE_PAGES);
+	int other_file = global_page_state(NR_FILE_PAGES) -
+						global_page_state(NR_SHMEM);
+>>>>>>> v3.4.6
 
 	if (lowmem_adj_size < array_size)
 		array_size = lowmem_adj_size;
@@ -252,6 +279,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 			     sc->nr_to_scan, sc->gfp_mask, rem);
 		return rem;
 	}
+<<<<<<< HEAD
 
 #ifdef ENHANCED_LMK_ROUTINE
 	for (i = 0; i < LOWMEM_DEATHPENDING_DEPTH; i++)
@@ -267,6 +295,14 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 #ifdef ENHANCED_LMK_ROUTINE
 		int is_exist_oom_task = 0;
 #endif
+=======
+	selected_oom_score_adj = min_score_adj;
+
+	rcu_read_lock();
+	for_each_process(tsk) {
+		struct task_struct *p;
+		int oom_score_adj;
+>>>>>>> v3.4.6
 
 		if (tsk->flags & PF_KTHREAD)
 			continue;
@@ -275,6 +311,15 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		if (!p)
 			continue;
 
+<<<<<<< HEAD
+=======
+		if (test_tsk_thread_flag(p, TIF_MEMDIE) &&
+		    time_before_eq(jiffies, lowmem_deathpending_timeout)) {
+			task_unlock(p);
+			rcu_read_unlock();
+			return 0;
+		}
+>>>>>>> v3.4.6
 		oom_score_adj = p->signal->oom_score_adj;
 		if (oom_score_adj < min_score_adj) {
 			task_unlock(p);
@@ -284,6 +329,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		task_unlock(p);
 		if (tasksize <= 0)
 			continue;
+<<<<<<< HEAD
 
 #ifdef ENHANCED_LMK_ROUTINE
 		if (all_selected_oom < LOWMEM_DEATHPENDING_DEPTH) {
@@ -323,6 +369,8 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 				p->pid, p->comm, oom_score_adj, tasksize);
 		}
 #else
+=======
+>>>>>>> v3.4.6
 		if (selected) {
 			if (oom_score_adj < selected_oom_score_adj)
 				continue;
@@ -335,6 +383,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		selected_oom_score_adj = oom_score_adj;
 		lowmem_print(2, "select %d (%s), adj %d, size %d, to kill\n",
 			     p->pid, p->comm, oom_score_adj, tasksize);
+<<<<<<< HEAD
 #endif
 	}
 #ifdef ENHANCED_LMK_ROUTINE
@@ -355,6 +404,9 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		}
 	}
 #else
+=======
+	}
+>>>>>>> v3.4.6
 	if (selected) {
 		lowmem_print(1, "send sigkill to %d (%s), adj %d, size %d\n",
 			     selected->pid, selected->comm,
@@ -363,6 +415,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		send_sig(SIGKILL, selected, 0);
 		set_tsk_thread_flag(selected, TIF_MEMDIE);
 		rem -= selected_tasksize;
+<<<<<<< HEAD
 #ifdef LMK_COUNT_READ
 		lmk_count++;
 #endif
@@ -551,6 +604,15 @@ static struct notifier_block android_oom_notifier = {
 };
 #endif /* CONFIG_SEC_OOM_KILLER */
 
+=======
+	}
+	lowmem_print(4, "lowmem_shrink %lu, %x, return %d\n",
+		     sc->nr_to_scan, sc->gfp_mask, rem);
+	rcu_read_unlock();
+	return rem;
+}
+
+>>>>>>> v3.4.6
 static struct shrinker lowmem_shrinker = {
 	.shrink = lowmem_shrink,
 	.seeks = DEFAULT_SEEKS * 16
@@ -558,18 +620,23 @@ static struct shrinker lowmem_shrinker = {
 
 static int __init lowmem_init(void)
 {
+<<<<<<< HEAD
 	task_free_register(&task_nb);
 	register_shrinker(&lowmem_shrinker);
 #ifdef CONFIG_SEC_OOM_KILLER
 	register_oom_notifier(&android_oom_notifier);
 #endif
 
+=======
+	register_shrinker(&lowmem_shrinker);
+>>>>>>> v3.4.6
 	return 0;
 }
 
 static void __exit lowmem_exit(void)
 {
 	unregister_shrinker(&lowmem_shrinker);
+<<<<<<< HEAD
 	task_free_unregister(&task_nb);
 }
 
@@ -661,15 +728,29 @@ __MODULE_PARM_TYPE(adj, "array of int");
 module_param_array_named(adj, lowmem_adj, int, &lowmem_adj_size,
 			 S_IRUGO | S_IWUSR);
 #endif
+=======
+}
+
+module_param_named(cost, lowmem_shrinker.seeks, int, S_IRUGO | S_IWUSR);
+module_param_array_named(adj, lowmem_adj, int, &lowmem_adj_size,
+			 S_IRUGO | S_IWUSR);
+>>>>>>> v3.4.6
 module_param_array_named(minfree, lowmem_minfree, uint, &lowmem_minfree_size,
 			 S_IRUGO | S_IWUSR);
 module_param_named(debug_level, lowmem_debug_level, uint, S_IRUGO | S_IWUSR);
 
+<<<<<<< HEAD
 #ifdef LMK_COUNT_READ
 module_param_named(lmkcount, lmk_count, uint, S_IRUGO);
 #endif
 
+=======
+>>>>>>> v3.4.6
 module_init(lowmem_init);
 module_exit(lowmem_exit);
 
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6

@@ -53,7 +53,10 @@
 #include <asm/uaccess.h>
 #include <asm/io.h>
 #include <asm/unistd.h>
+<<<<<<< HEAD
 #include <linux/mfd/88pm80x.h>
+=======
+>>>>>>> v3.4.6
 
 #ifndef SET_UNALIGN_CTL
 # define SET_UNALIGN_CTL(a,b)	(-EINVAL)
@@ -124,6 +127,7 @@ EXPORT_SYMBOL(cad_pid);
 
 void (*pm_power_off_prepare)(void);
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 int sec_check_execpath(struct mm_struct *mm, char *denypath);
 #if defined CONFIG_SEC_RESTRICT_ROOTING_LOG
@@ -172,6 +176,8 @@ out:
 }
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 /*
  * Returns true if current's euid is same as p's uid or euid,
  * or has CAP_SYS_NICE to p's user_ns.
@@ -403,8 +409,11 @@ int unregister_reboot_notifier(struct notifier_block *nb)
 }
 EXPORT_SYMBOL(unregister_reboot_notifier);
 
+<<<<<<< HEAD
 
 #define PM800_USER_DATA3 0xEA
+=======
+>>>>>>> v3.4.6
 /**
  *	kernel_restart - reboot the system
  *	@cmd: pointer to buffer containing command to execute for restart
@@ -415,6 +424,7 @@ EXPORT_SYMBOL(unregister_reboot_notifier);
  */
 void kernel_restart(char *cmd)
 {
+<<<<<<< HEAD
 
 	int suddlmod_number =0;
 	unsigned char pmic_download_register = 0;
@@ -494,6 +504,9 @@ void kernel_restart(char *cmd)
 		
 #endif		
 
+=======
+	kernel_restart_prepare(cmd);
+>>>>>>> v3.4.6
 	if (!cmd)
 		printk(KERN_EMERG "Restarting system.\n");
 	else
@@ -686,6 +699,7 @@ SYSCALL_DEFINE2(setregid, gid_t, rgid, gid_t, egid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(rgid == 0 || egid == 0)
 	{
@@ -694,6 +708,8 @@ SYSCALL_DEFINE2(setregid, gid_t, rgid, gid_t, egid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -741,6 +757,7 @@ SYSCALL_DEFINE1(setgid, gid_t, gid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(gid == 0)
 	{
@@ -749,6 +766,8 @@ SYSCALL_DEFINE1(setgid, gid_t, gid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -819,6 +838,7 @@ SYSCALL_DEFINE2(setreuid, uid_t, ruid, uid_t, euid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(ruid == 0 || euid == 0)
 	{
@@ -827,6 +847,8 @@ SYSCALL_DEFINE2(setreuid, uid_t, ruid, uid_t, euid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -888,6 +910,7 @@ SYSCALL_DEFINE1(setuid, uid_t, uid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(uid == 0)
 	{
@@ -896,6 +919,8 @@ SYSCALL_DEFINE1(setuid, uid_t, uid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -937,6 +962,7 @@ SYSCALL_DEFINE3(setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(ruid == 0 || euid == 0 || suid == 0)
 	{
@@ -945,6 +971,8 @@ SYSCALL_DEFINE3(setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -1010,6 +1038,7 @@ SYSCALL_DEFINE3(setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
 	struct cred *new;
 	int retval;
 
+<<<<<<< HEAD
 #if defined CONFIG_SEC_RESTRICT_SETUID
 	if(rgid == 0 || egid == 0 || sgid == 0)
 	{
@@ -1018,6 +1047,8 @@ SYSCALL_DEFINE3(setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
 	}
 #endif // End of CONFIG_SEC_RESTRICT_SETUID
 
+=======
+>>>>>>> v3.4.6
 	new = prepare_creds();
 	if (!new)
 		return -ENOMEM;
@@ -1356,6 +1387,7 @@ DECLARE_RWSEM(uts_sem);
  * Work around broken programs that cannot handle "Linux 3.0".
  * Instead we map 3.x to 2.6.40+x, so e.g. 3.0 would be 2.6.40
  */
+<<<<<<< HEAD
 static int override_release(char __user *release, size_t len)
 {
 	int ret = 0;
@@ -1366,6 +1398,17 @@ static int override_release(char __user *release, size_t len)
 		int ndots = 0;
 		unsigned v;
 		size_t copy;
+=======
+static int override_release(char __user *release, int len)
+{
+	int ret = 0;
+	char buf[65];
+
+	if (current->personality & UNAME26) {
+		char *rest = UTS_RELEASE;
+		int ndots = 0;
+		unsigned v;
+>>>>>>> v3.4.6
 
 		while (*rest) {
 			if (*rest == '.' && ++ndots >= 3)
@@ -1375,9 +1418,14 @@ static int override_release(char __user *release, size_t len)
 			rest++;
 		}
 		v = ((LINUX_VERSION_CODE >> 8) & 0xff) + 40;
+<<<<<<< HEAD
 		copy = min(sizeof(buf), max_t(size_t, 1, len));
 		copy = scnprintf(buf, copy, "2.6.%u%s", v, rest);
 		ret = copy_to_user(release, buf, copy + 1);
+=======
+		snprintf(buf, len, "2.6.%u%s", v, rest);
+		ret = copy_to_user(release, buf, len);
+>>>>>>> v3.4.6
 	}
 	return ret;
 }
@@ -2217,7 +2265,11 @@ int orderly_poweroff(bool force)
 
 	call_usermodehelper_setfns(info, NULL, argv_cleanup, NULL);
 
+<<<<<<< HEAD
 	ret = call_usermodehelper_exec(info, UMH_WAIT_PROC);
+=======
+	ret = call_usermodehelper_exec(info, UMH_NO_WAIT);
+>>>>>>> v3.4.6
 
   out:
 	if (ret && force) {

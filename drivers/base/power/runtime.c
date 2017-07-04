@@ -147,8 +147,11 @@ static int rpm_check_suspend_allowed(struct device *dev)
 	    || (dev->power.request_pending
 			&& dev->power.request == RPM_REQ_RESUME))
 		retval = -EAGAIN;
+<<<<<<< HEAD
 	else if (__dev_pm_qos_read_value(dev) < 0)
 		retval = -EPERM;
+=======
+>>>>>>> v3.4.6
 	else if (dev->power.runtime_status == RPM_SUSPENDED)
 		retval = 1;
 
@@ -196,9 +199,12 @@ static int rpm_idle(struct device *dev, int rpmflags)
 {
 	int (*callback)(struct device *);
 	int retval;
+<<<<<<< HEAD
 	
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("galcore rt suspend 1\n");
+=======
+>>>>>>> v3.4.6
 
 	trace_rpm_idle(dev, rpmflags);
 	retval = rpm_check_suspend_allowed(dev);
@@ -287,6 +293,50 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
 	return retval != -EACCES ? retval : -EIO;
 }
 
+<<<<<<< HEAD
+=======
+struct rpm_qos_data {
+	ktime_t time_now;
+	s64 constraint_ns;
+};
+
+/**
+ * rpm_update_qos_constraint - Update a given PM QoS constraint data.
+ * @dev: Device whose timing data to use.
+ * @data: PM QoS constraint data to update.
+ *
+ * Use the suspend timing data of @dev to update PM QoS constraint data pointed
+ * to by @data.
+ */
+static int rpm_update_qos_constraint(struct device *dev, void *data)
+{
+	struct rpm_qos_data *qos = data;
+	unsigned long flags;
+	s64 delta_ns;
+	int ret = 0;
+
+	spin_lock_irqsave(&dev->power.lock, flags);
+
+	if (dev->power.max_time_suspended_ns < 0)
+		goto out;
+
+	delta_ns = dev->power.max_time_suspended_ns -
+		ktime_to_ns(ktime_sub(qos->time_now, dev->power.suspend_time));
+	if (delta_ns <= 0) {
+		ret = -EBUSY;
+		goto out;
+	}
+
+	if (qos->constraint_ns > delta_ns || qos->constraint_ns == 0)
+		qos->constraint_ns = delta_ns;
+
+ out:
+	spin_unlock_irqrestore(&dev->power.lock, flags);
+
+	return ret;
+}
+
+>>>>>>> v3.4.6
 /**
  * rpm_suspend - Carry out runtime suspend of given device.
  * @dev: Device to suspend.
@@ -313,6 +363,10 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 {
 	int (*callback)(struct device *);
 	struct device *parent = NULL;
+<<<<<<< HEAD
+=======
+	struct rpm_qos_data qos;
+>>>>>>> v3.4.6
 	int retval;
 
 	trace_rpm_suspend(dev, rpmflags);
@@ -358,8 +412,11 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 
 	/* Other scheduled or pending requests need to be canceled. */
 	pm_runtime_cancel_pending(dev);
+<<<<<<< HEAD
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("galcore rt suspend 2\n");
+=======
+>>>>>>> v3.4.6
 
 	if (dev->power.runtime_status == RPM_SUSPENDING) {
 		DEFINE_WAIT(wait);
@@ -395,6 +452,10 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 		goto repeat;
 	}
 
+<<<<<<< HEAD
+=======
+	dev->power.deferred_resume = false;
+>>>>>>> v3.4.6
 	if (dev->power.no_callbacks)
 		goto no_callback;	/* Assume success. */
 
@@ -409,8 +470,43 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	__update_runtime_status(dev, RPM_SUSPENDING);
 
+=======
+	qos.constraint_ns = __dev_pm_qos_read_value(dev);
+	if (qos.constraint_ns < 0) {
+		/* Negative constraint means "never suspend". */
+		retval = -EPERM;
+		goto out;
+	}
+	qos.constraint_ns *= NSEC_PER_USEC;
+	qos.time_now = ktime_get();
+
+	__update_runtime_status(dev, RPM_SUSPENDING);
+
+	if (!dev->power.ignore_children) {
+		if (dev->power.irq_safe)
+			spin_unlock(&dev->power.lock);
+		else
+			spin_unlock_irq(&dev->power.lock);
+
+		retval = device_for_each_child(dev, &qos,
+					       rpm_update_qos_constraint);
+
+		if (dev->power.irq_safe)
+			spin_lock(&dev->power.lock);
+		else
+			spin_lock_irq(&dev->power.lock);
+
+		if (retval)
+			goto fail;
+	}
+
+	dev->power.suspend_time = qos.time_now;
+	dev->power.max_time_suspended_ns = qos.constraint_ns ? : -1;
+
+>>>>>>> v3.4.6
 	if (dev->pm_domain)
 		callback = dev->pm_domain->ops.runtime_suspend;
 	else if (dev->type && dev->type->pm)
@@ -424,6 +520,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 
 	if (!callback && dev->driver && dev->driver->pm)
 		callback = dev->driver->pm->runtime_suspend;
+<<<<<<< HEAD
 	
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("galcore rt suspend 3\n");
@@ -436,6 +533,12 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 		goto fail;
 	
 	
+=======
+
+	retval = rpm_callback(callback, dev);
+	if (retval)
+		goto fail;
+>>>>>>> v3.4.6
 
  no_callback:
 	__update_runtime_status(dev, RPM_SUSPENDED);
@@ -448,7 +551,10 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 	wake_up_all(&dev->power.wait_queue);
 
 	if (dev->power.deferred_resume) {
+<<<<<<< HEAD
 		dev->power.deferred_resume = false;
+=======
+>>>>>>> v3.4.6
 		rpm_resume(dev, 0);
 		retval = -EAGAIN;
 		goto out;
@@ -466,16 +572,25 @@ static int rpm_suspend(struct device *dev, int rpmflags)
 	}
 
  out:
+<<<<<<< HEAD
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("galcore rt suspend 5,ret=0x%x\n", retval);
+=======
+>>>>>>> v3.4.6
 	trace_rpm_return_int(dev, _THIS_IP_, retval);
 
 	return retval;
 
  fail:
+<<<<<<< HEAD
 
 
 	__update_runtime_status(dev, RPM_ACTIVE);
+=======
+	__update_runtime_status(dev, RPM_ACTIVE);
+	dev->power.suspend_time = ktime_set(0, 0);
+	dev->power.max_time_suspended_ns = -1;
+>>>>>>> v3.4.6
 	dev->power.deferred_resume = false;
 	wake_up_all(&dev->power.wait_queue);
 
@@ -526,9 +641,12 @@ static int rpm_resume(struct device *dev, int rpmflags)
  repeat:
 	if (dev->power.runtime_error)
 		retval = -EINVAL;
+<<<<<<< HEAD
 	else if (dev->power.disable_depth == 1 && dev->power.is_suspended
 	    && dev->power.runtime_status == RPM_ACTIVE)
 		retval = 1;
+=======
+>>>>>>> v3.4.6
 	else if (dev->power.disable_depth > 0)
 		retval = -EACCES;
 	if (retval)
@@ -600,7 +718,10 @@ static int rpm_resume(struct device *dev, int rpmflags)
 		    || dev->parent->power.runtime_status == RPM_ACTIVE) {
 			atomic_inc(&dev->parent->power.child_count);
 			spin_unlock(&dev->parent->power.lock);
+<<<<<<< HEAD
 			retval = 1;
+=======
+>>>>>>> v3.4.6
 			goto no_callback;	/* Assume success. */
 		}
 		spin_unlock(&dev->parent->power.lock);
@@ -653,6 +774,12 @@ static int rpm_resume(struct device *dev, int rpmflags)
 	if (dev->power.no_callbacks)
 		goto no_callback;	/* Assume success. */
 
+<<<<<<< HEAD
+=======
+	dev->power.suspend_time = ktime_set(0, 0);
+	dev->power.max_time_suspended_ns = -1;
+
+>>>>>>> v3.4.6
 	__update_runtime_status(dev, RPM_RESUMING);
 
 	if (dev->pm_domain)
@@ -681,7 +808,11 @@ static int rpm_resume(struct device *dev, int rpmflags)
 	}
 	wake_up_all(&dev->power.wait_queue);
 
+<<<<<<< HEAD
 	if (retval >= 0)
+=======
+	if (!retval)
+>>>>>>> v3.4.6
 		rpm_idle(dev, RPM_ASYNC);
 
  out:
@@ -1155,6 +1286,7 @@ EXPORT_SYMBOL_GPL(pm_runtime_forbid);
  */
 void pm_runtime_allow(struct device *dev)
 {
+<<<<<<< HEAD
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("%s rt pre-acquired dev_pwr_lock\n", dev_name(dev));
 	spin_lock_irq(&dev->power.lock);
@@ -1165,14 +1297,22 @@ void pm_runtime_allow(struct device *dev)
 			printk("gc rt suspend 0\n");
 		goto out;
 	}
+=======
+	spin_lock_irq(&dev->power.lock);
+	if (dev->power.runtime_auto)
+		goto out;
+>>>>>>> v3.4.6
 
 	dev->power.runtime_auto = true;
 	if (atomic_dec_and_test(&dev->power.usage_count))
 		rpm_idle(dev, RPM_AUTO);
 
  out:
+<<<<<<< HEAD
 	if (!strcmp("galcore", dev_name(dev)))
 		printk("%s rt suspend end, status %d\n",dev_name(dev), dev->power.runtime_status);
+=======
+>>>>>>> v3.4.6
 	spin_unlock_irq(&dev->power.lock);
 }
 EXPORT_SYMBOL_GPL(pm_runtime_allow);
@@ -1324,6 +1464,12 @@ void pm_runtime_init(struct device *dev)
 	setup_timer(&dev->power.suspend_timer, pm_suspend_timer_fn,
 			(unsigned long)dev);
 
+<<<<<<< HEAD
+=======
+	dev->power.suspend_time = ktime_set(0, 0);
+	dev->power.max_time_suspended_ns = -1;
+
+>>>>>>> v3.4.6
 	init_waitqueue_head(&dev->power.wait_queue);
 }
 
@@ -1341,3 +1487,31 @@ void pm_runtime_remove(struct device *dev)
 	if (dev->power.irq_safe && dev->parent)
 		pm_runtime_put_sync(dev->parent);
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * pm_runtime_update_max_time_suspended - Update device's suspend time data.
+ * @dev: Device to handle.
+ * @delta_ns: Value to subtract from the device's max_time_suspended_ns field.
+ *
+ * Update the device's power.max_time_suspended_ns field by subtracting
+ * @delta_ns from it.  The resulting value of power.max_time_suspended_ns is
+ * never negative.
+ */
+void pm_runtime_update_max_time_suspended(struct device *dev, s64 delta_ns)
+{
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->power.lock, flags);
+
+	if (delta_ns > 0 && dev->power.max_time_suspended_ns > 0) {
+		if (dev->power.max_time_suspended_ns > delta_ns)
+			dev->power.max_time_suspended_ns -= delta_ns;
+		else
+			dev->power.max_time_suspended_ns = 0;
+	}
+
+	spin_unlock_irqrestore(&dev->power.lock, flags);
+}
+>>>>>>> v3.4.6

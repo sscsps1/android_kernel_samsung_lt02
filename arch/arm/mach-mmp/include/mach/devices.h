@@ -38,6 +38,7 @@ struct pxa_device_desc pxa910_device_##_name __initdata = {		\
 	.dma		= { _dma },					\
 };
 
+<<<<<<< HEAD
 #define PXA988_DEVICE(_name, _drv, _id, _irq, _start, _size, _dma...)	\
 struct pxa_device_desc pxa988_device_##_name __initdata = {		\
 	.dev_name	= "pxa988-" #_name,				\
@@ -49,6 +50,8 @@ struct pxa_device_desc pxa988_device_##_name __initdata = {		\
 	.dma		= { _dma },					\
 }
 
+=======
+>>>>>>> v3.4.6
 #define MMP2_DEVICE(_name, _drv, _id, _irq, _start, _size, _dma...)	\
 struct pxa_device_desc mmp2_device_##_name __initdata = {		\
 	.dev_name	= "mmp2-" #_name,				\
@@ -60,6 +63,7 @@ struct pxa_device_desc mmp2_device_##_name __initdata = {		\
 	.dma		= { _dma },					\
 }
 
+<<<<<<< HEAD
 #define MMP3_DEVICE(_name, _drv, _id, _irq, _start, _size, _dma...)	\
 struct pxa_device_desc mmp3_device_##_name __initdata = {		\
 	.dev_name	= "mmp3-" #_name,				\
@@ -75,4 +79,7 @@ extern int pxa_register_device(struct pxa_device_desc *, void *, size_t);
 extern int pxa_usb_phy_init(void __iomem *phy_reg);
 extern void pxa_usb_phy_deinit(void __iomem *phy_reg);
 
+=======
+extern int pxa_register_device(struct pxa_device_desc *, void *, size_t);
+>>>>>>> v3.4.6
 #endif /* __MACH_DEVICE_H */

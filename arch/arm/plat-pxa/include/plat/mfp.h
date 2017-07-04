@@ -216,6 +216,7 @@ enum {
 	MFP_PIN_GPIO190,
 	MFP_PIN_GPIO191,
 
+<<<<<<< HEAD
 	MFP_PIN_RF_MFP0 = MFP_PIN_GPIO133,
 	MFP_PIN_RF_MFP1,
 	MFP_PIN_RF_MFP2,
@@ -289,6 +290,8 @@ enum {
 	MFP_PIN_MEM_MFP38,
 	MFP_PIN_MEM_MFP39,
 
+=======
+>>>>>>> v3.4.6
 	MFP_PIN_GPIO255 = 255,
 
 	MFP_PIN_GPIO0_2,
@@ -381,9 +384,12 @@ enum {
 	MFP_PIN_MMC1_CD,
 	MFP_PIN_MMC1_WP,
 
+<<<<<<< HEAD
 	/* additional pins on PXA910 */
 	MFP_PIN_VCXOREQ,
 
+=======
+>>>>>>> v3.4.6
 	/* additional pins on PXA930 */
 	MFP_PIN_GSIM_UIO,
 	MFP_PIN_GSIM_UCLK,
@@ -399,6 +405,7 @@ enum {
 	MFP_PIN_TWSI4_SDA,
 	MFP_PIN_CLK_REQ,
 
+<<<<<<< HEAD
 	/* additional pins on PXA988 */
 	MFP_PIN_ANT_SW4,
 	MFP_PIN_VCXO_OUT,
@@ -412,6 +419,8 @@ enum {
 	MFP_PIN_SLAVE_RESET_OUT,
 #endif
 
+=======
+>>>>>>> v3.4.6
 	MFP_PIN_MAX,
 };
 
@@ -512,10 +521,13 @@ typedef unsigned long mfp_cfg_t;
 	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DS_MASK | MFP_LPM_STATE_MASK)) |\
 	 (MFP_PIN(MFP_PIN_##pin) | MFP_##af | MFP_##drv | MFP_LPM_##lpm))
 
+<<<<<<< HEAD
 #define MFP_CFG_ALL(pin, af, drv, lpm, pull)    \
 	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DS_MASK | MFP_LPM_STATE_MASK | MFP_PULL_MASK)) |\
 	 (MFP_PIN(MFP_PIN_##pin) | MFP_##af | MFP_##drv | MFP_LPM_##lpm | MFP_##pull))
 
+=======
+>>>>>>> v3.4.6
 #if defined(CONFIG_PXA3xx) || defined(CONFIG_PXA95x) || defined(CONFIG_ARCH_MMP)
 /*
  * each MFP pin will have a MFPR register, since the offset of the
@@ -563,7 +575,10 @@ void mfp_write(int mfp, unsigned long mfpr_val);
 void mfp_config(unsigned long *mfp_cfgs, int num);
 void mfp_config_run(void);
 void mfp_config_lpm(void);
+<<<<<<< HEAD
 void mfp_config_edge(int mfp, unsigned long edge);
+=======
+>>>>>>> v3.4.6
 #endif /* CONFIG_PXA3xx || CONFIG_PXA95x || CONFIG_ARCH_MMP */
 
 #endif /* __ASM_PLAT_MFP_H */

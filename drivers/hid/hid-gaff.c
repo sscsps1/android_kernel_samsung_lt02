@@ -31,6 +31,10 @@
 #include <linux/slab.h>
 #include <linux/usb.h>
 #include <linux/hid.h>
+<<<<<<< HEAD
+=======
+#include <linux/module.h>
+>>>>>>> v3.4.6
 #include "hid-ids.h"
 
 #ifdef CONFIG_GREENASIA_FF

@@ -57,4 +57,7 @@ obj-$(CONFIG_ANDROID)		+= android/
 obj-$(CONFIG_PHONE)		+= telephony/
 obj-$(CONFIG_RAMSTER)		+= ramster/
 obj-$(CONFIG_USB_WPAN_HCD)	+= ozwpan/
+<<<<<<< HEAD
 obj-$(CONFIG_SEC_IRLED)		+= sec_irled/
+=======
+>>>>>>> v3.4.6

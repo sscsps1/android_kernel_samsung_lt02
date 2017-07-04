@@ -13,7 +13,10 @@
 #define __LINUX_MFD_88PM860X_H
 
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <../drivers/staging/android/switch/switch.h>
+=======
+>>>>>>> v3.4.6
 
 #define MFD_NAME_SIZE		(40)
 
@@ -189,16 +192,22 @@ enum {
 #define PM8607_GROUP6			(0x32)
 #define PM8607_SUPPLIES_EN21		(0x33)
 #define PM8607_SUPPLIES_EN22		(0x34)
+<<<<<<< HEAD
 #define PM8607_LP_CONFIG1		(0x35)
 #define PM8607_LP_CONFIG2		(0x36)
 #define PM8607_LP_CONFIG3		(0x39)
+=======
+>>>>>>> v3.4.6
 
 /* Vibrator Control Registers */
 #define PM8607_VIBRATOR_SET		(0x28)
 #define PM8607_VIBRATOR_PWM		(0x29)
 
+<<<<<<< HEAD
 #define PM8607_MISC2			(0x42)
 
+=======
+>>>>>>> v3.4.6
 /* GPADC Registers */
 #define PM8607_GP_BIAS1			(0x4F)
 #define PM8607_MEAS_EN1			(0x50)
@@ -378,11 +387,14 @@ struct pm860x_power_pdata {
 	unsigned	fast_charge;	/* charge current */
 };
 
+<<<<<<< HEAD
 struct pm860x_headset_pdata {
 	int		headset_flag;
 	struct gpio_switch_platform_data	headset_data[2];
 };
 
+=======
+>>>>>>> v3.4.6
 struct pm860x_platform_data {
 	struct pm860x_backlight_pdata	*backlight;
 	struct pm860x_led_pdata		*led;
@@ -390,7 +402,10 @@ struct pm860x_platform_data {
 	struct pm860x_touch_pdata	*touch;
 	struct pm860x_power_pdata	*power;
 	struct regulator_init_data	*regulator;
+<<<<<<< HEAD
 	struct pm860x_headset_pdata		*headset;
+=======
+>>>>>>> v3.4.6
 
 	unsigned short	companion_addr;	/* I2C address of companion chip */
 	int		i2c_port;	/* Controlled by GI2C or PI2C */
@@ -399,8 +414,11 @@ struct pm860x_platform_data {
 	int		num_leds;
 	int		num_backlights;
 	int		num_regulators;
+<<<<<<< HEAD
 	int		(*fixup)(struct pm860x_chip *,
 			struct pm860x_platform_data *);
+=======
+>>>>>>> v3.4.6
 };
 
 extern int pm8606_osc_enable(struct pm860x_chip *, unsigned short);

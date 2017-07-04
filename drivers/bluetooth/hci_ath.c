@@ -112,7 +112,11 @@ static int ath_open(struct hci_uart *hu)
 
 	BT_DBG("hu %p", hu);
 
+<<<<<<< HEAD
 	ath = kzalloc(sizeof(*ath), GFP_ATOMIC);
+=======
+	ath = kzalloc(sizeof(*ath), GFP_KERNEL);
+>>>>>>> v3.4.6
 	if (!ath)
 		return -ENOMEM;
 

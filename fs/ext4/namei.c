@@ -1032,6 +1032,7 @@ static struct dentry *ext4_lookup(struct inode *dir, struct dentry *dentry, stru
 	inode = NULL;
 	if (bh) {
 		__u32 ino = le32_to_cpu(de->inode);
+<<<<<<< HEAD
 		if (!ext4_valid_inum(dir->i_sb, ino)) {
 			printk(KERN_ERR "Name of directory entry has bad"
 				"inode# : %s\n", de->name);
@@ -1043,6 +1044,13 @@ static struct dentry *ext4_lookup(struct inode *dir, struct dentry *dentry, stru
 		}
                 brelse(bh);
 
+=======
+		brelse(bh);
+		if (!ext4_valid_inum(dir->i_sb, ino)) {
+			EXT4_ERROR_INODE(dir, "bad inode number: %u", ino);
+			return ERR_PTR(-EIO);
+		}
+>>>>>>> v3.4.6
 		if (unlikely(ino == dir->i_ino)) {
 			EXT4_ERROR_INODE(dir, "'%.*s' linked to parent dir",
 					 dentry->d_name.len,
@@ -1052,8 +1060,13 @@ static struct dentry *ext4_lookup(struct inode *dir, struct dentry *dentry, stru
 		inode = ext4_iget(dir->i_sb, ino);
 		if (inode == ERR_PTR(-ESTALE)) {
 			EXT4_ERROR_INODE(dir,
+<<<<<<< HEAD
 			 "deleted inode referenced: %u  at parent inode : %lu",
 					 ino, dir->i_ino);
+=======
+					 "deleted inode referenced: %u",
+					 ino);
+>>>>>>> v3.4.6
 			return ERR_PTR(-EIO);
 		}
 	}

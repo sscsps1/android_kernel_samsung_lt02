@@ -360,12 +360,23 @@ repeat:
 					struct kthread_work, node);
 		list_del_init(&work->node);
 	}
+<<<<<<< HEAD
 	worker->current_work = work;
+=======
+>>>>>>> v3.4.6
 	spin_unlock_irq(&worker->lock);
 
 	if (work) {
 		__set_current_state(TASK_RUNNING);
 		work->func(work);
+<<<<<<< HEAD
+=======
+		smp_wmb();	/* wmb worker-b0 paired with flush-b1 */
+		work->done_seq = work->queue_seq;
+		smp_mb();	/* mb worker-b1 paired with flush-b0 */
+		if (atomic_read(&work->flushing))
+			wake_up_all(&work->done);
+>>>>>>> v3.4.6
 	} else if (!freezing(current))
 		schedule();
 
@@ -374,6 +385,7 @@ repeat:
 }
 EXPORT_SYMBOL_GPL(kthread_worker_fn);
 
+<<<<<<< HEAD
 /* insert @work before @pos in @worker */
 static void insert_kthread_work(struct kthread_worker *worker,
 			       struct kthread_work *work,
@@ -387,6 +399,8 @@ static void insert_kthread_work(struct kthread_worker *worker,
 		wake_up_process(worker->task);
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * queue_kthread_work - queue a kthread_work
  * @worker: target kthread_worker
@@ -404,7 +418,14 @@ bool queue_kthread_work(struct kthread_worker *worker,
 
 	spin_lock_irqsave(&worker->lock, flags);
 	if (list_empty(&work->node)) {
+<<<<<<< HEAD
 		insert_kthread_work(worker, work, &worker->work_list);
+=======
+		list_add_tail(&work->node, &worker->work_list);
+		work->queue_seq++;
+		if (likely(worker->task))
+			wake_up_process(worker->task);
+>>>>>>> v3.4.6
 		ret = true;
 	}
 	spin_unlock_irqrestore(&worker->lock, flags);
@@ -412,6 +433,7 @@ bool queue_kthread_work(struct kthread_worker *worker,
 }
 EXPORT_SYMBOL_GPL(queue_kthread_work);
 
+<<<<<<< HEAD
 struct kthread_flush_work {
 	struct kthread_work	work;
 	struct completion	done;
@@ -424,6 +446,8 @@ static void kthread_flush_work_fn(struct kthread_work *work)
 	complete(&fwork->done);
 }
 
+=======
+>>>>>>> v3.4.6
 /**
  * flush_kthread_work - flush a kthread_work
  * @work: work to flush
@@ -432,6 +456,7 @@ static void kthread_flush_work_fn(struct kthread_work *work)
  */
 void flush_kthread_work(struct kthread_work *work)
 {
+<<<<<<< HEAD
 	struct kthread_flush_work fwork = {
 		KTHREAD_WORK_INIT(fwork.work, kthread_flush_work_fn),
 		COMPLETION_INITIALIZER_ONSTACK(fwork.done),
@@ -464,6 +489,42 @@ retry:
 }
 EXPORT_SYMBOL_GPL(flush_kthread_work);
 
+=======
+	int seq = work->queue_seq;
+
+	atomic_inc(&work->flushing);
+
+	/*
+	 * mb flush-b0 paired with worker-b1, to make sure either
+	 * worker sees the above increment or we see done_seq update.
+	 */
+	smp_mb__after_atomic_inc();
+
+	/* A - B <= 0 tests whether B is in front of A regardless of overflow */
+	wait_event(work->done, seq - work->done_seq <= 0);
+	atomic_dec(&work->flushing);
+
+	/*
+	 * rmb flush-b1 paired with worker-b0, to make sure our caller
+	 * sees every change made by work->func().
+	 */
+	smp_mb__after_atomic_dec();
+}
+EXPORT_SYMBOL_GPL(flush_kthread_work);
+
+struct kthread_flush_work {
+	struct kthread_work	work;
+	struct completion	done;
+};
+
+static void kthread_flush_work_fn(struct kthread_work *work)
+{
+	struct kthread_flush_work *fwork =
+		container_of(work, struct kthread_flush_work, work);
+	complete(&fwork->done);
+}
+
+>>>>>>> v3.4.6
 /**
  * flush_kthread_worker - flush all current works on a kthread_worker
  * @worker: worker to flush

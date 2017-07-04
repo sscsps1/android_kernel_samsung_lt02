@@ -36,6 +36,7 @@ static struct map_desc standard_io_desc[] __initdata = {
 		.virtual	= (unsigned long)AXI_VIRT_BASE,
 		.length		= AXI_PHYS_SIZE,
 		.type		= MT_DEVICE,
+<<<<<<< HEAD
 #ifdef PERI_PHYS_BASE
 	}, {
 		.pfn		= __phys_to_pfn(PERI_PHYS_BASE),
@@ -62,6 +63,8 @@ static struct map_desc standard_io_desc[] __initdata = {
 		.length		= AUD_PHYS_SIZE2,
 		.type		= MT_DEVICE,
 #endif
+=======
+>>>>>>> v3.4.6
 	},
 };
 

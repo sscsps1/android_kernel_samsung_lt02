@@ -11,23 +11,33 @@
  *  it under the terms of the GNU General Public License version 2 as
  *  published by the Free Software Foundation.
  */
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> v3.4.6
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/gpio.h>
 #include <linux/gpio-pxa.h>
 #include <linux/init.h>
 #include <linux/irq.h>
+<<<<<<< HEAD
 #include <linux/irqdomain.h>
 #include <linux/io.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+=======
+#include <linux/io.h>
+>>>>>>> v3.4.6
 #include <linux/platform_device.h>
 #include <linux/syscore_ops.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <asm/mach/irq.h>
 
+=======
+>>>>>>> v3.4.6
 #include <mach/irqs.h>
 
 /*
@@ -62,10 +72,13 @@
 
 int pxa_last_gpio;
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 static struct irq_domain *domain;
 #endif
 
+=======
+>>>>>>> v3.4.6
 struct pxa_gpio_chip {
 	struct gpio_chip chip;
 	void __iomem	*regbase;
@@ -91,6 +104,10 @@ enum {
 	PXA3XX_GPIO,
 	PXA93X_GPIO,
 	MMP_GPIO = 0x10,
+<<<<<<< HEAD
+=======
+	MMP2_GPIO,
+>>>>>>> v3.4.6
 };
 
 static DEFINE_SPINLOCK(gpio_lock);
@@ -270,10 +287,14 @@ static int pxa_gpio_direction_output(struct gpio_chip *chip,
 
 static int pxa_gpio_get(struct gpio_chip *chip, unsigned offset)
 {
+<<<<<<< HEAD
 	u32 gplr = __raw_readl(gpio_chip_base(chip) + GPLR_OFFSET);
 	u32 mask = 1 << offset;
 
 	return (gplr & mask) != 0;
+=======
+	return readl_relaxed(gpio_chip_base(chip) + GPLR_OFFSET) & (1 << offset);
+>>>>>>> v3.4.6
 }
 
 static void pxa_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
@@ -282,6 +303,7 @@ static void pxa_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 				(value ? GPSR_OFFSET : GPCR_OFFSET));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 #include <linux/seq_file.h>
 static void pxa_gpio_dbg_show_one(struct seq_file *s,
@@ -336,6 +358,8 @@ static void  pxa_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 static int __devinit pxa_init_gpio_chip(int gpio_end,
 					int (*set_wake)(unsigned int, unsigned int))
 {
@@ -363,7 +387,10 @@ static int __devinit pxa_init_gpio_chip(int gpio_end,
 		c->get = pxa_gpio_get;
 		c->set = pxa_gpio_set;
 		c->to_irq = pxa_gpio_to_irq;
+<<<<<<< HEAD
 		c->dbg_show = pxa_gpio_dbg_show;
+=======
+>>>>>>> v3.4.6
 
 		/* number of GPIOs on last bank may be less than 32 */
 		c->ngpio = (gpio + 31 > gpio_end) ? (gpio_end - gpio + 1) : 32;
@@ -439,9 +466,12 @@ static void pxa_gpio_demux_handler(unsigned int irq, struct irq_desc *desc)
 	struct pxa_gpio_chip *c;
 	int loop, gpio, gpio_base, n;
 	unsigned long gedr;
+<<<<<<< HEAD
 	struct irq_chip *chip = irq_desc_get_chip(desc);
 
 	chained_irq_enter(chip, desc);
+=======
+>>>>>>> v3.4.6
 
 	do {
 		loop = 0;
@@ -461,8 +491,11 @@ static void pxa_gpio_demux_handler(unsigned int irq, struct irq_desc *desc)
 			}
 		}
 	} while (loop);
+<<<<<<< HEAD
 
 	chained_irq_exit(chip, desc);
+=======
+>>>>>>> v3.4.6
 }
 
 static void pxa_ack_muxed_gpio(struct irq_data *d)
@@ -542,21 +575,30 @@ static int pxa_gpio_nums(void)
 #endif /* CONFIG_ARCH_PXA */
 
 #ifdef CONFIG_ARCH_MMP
+<<<<<<< HEAD
 	if (cpu_is_pxa168() || cpu_is_pxa910() ||
 	    cpu_is_pxa988() || cpu_is_pxa986()) {
+=======
+	if (cpu_is_pxa168() || cpu_is_pxa910()) {
+>>>>>>> v3.4.6
 		count = 127;
 		gpio_type = MMP_GPIO;
 	} else if (cpu_is_mmp2()) {
 		count = 191;
+<<<<<<< HEAD
 		gpio_type = MMP_GPIO;
 	} else if (cpu_is_mmp3()) {
 		count = 191;
 		gpio_type = MMP_GPIO;
+=======
+		gpio_type = MMP2_GPIO;
+>>>>>>> v3.4.6
 	}
 #endif /* CONFIG_ARCH_MMP */
 	return count;
 }
 
+<<<<<<< HEAD
 static struct of_device_id pxa_gpio_dt_ids[] = {
 	{ .compatible = "mrvl,pxa-gpio" },
 	{ .compatible = "mrvl,mmp-gpio", .data = (void *)MMP_GPIO },
@@ -623,12 +665,15 @@ err:
 #define pxa_gpio_probe_dt(pdev)		(-1)
 #endif
 
+=======
+>>>>>>> v3.4.6
 static int __devinit pxa_gpio_probe(struct platform_device *pdev)
 {
 	struct pxa_gpio_chip *c;
 	struct resource *res;
 	struct clk *clk;
 	struct pxa_gpio_platform_data *info;
+<<<<<<< HEAD
 	int gpio, irq, ret, use_of = 0;
 	int irq0 = 0, irq1 = 0, irq_mux, gpio_offset = 0;
 
@@ -646,6 +691,12 @@ static int __devinit pxa_gpio_probe(struct platform_device *pdev)
 	}
 	else
 		use_of = 1;
+=======
+	int gpio, irq, ret;
+	int irq0 = 0, irq1 = 0, irq_mux, gpio_offset = 0;
+
+	pxa_last_gpio = pxa_gpio_nums();
+>>>>>>> v3.4.6
 	if (!pxa_last_gpio)
 		return -EINVAL;
 
@@ -700,6 +751,7 @@ static int __devinit pxa_gpio_probe(struct platform_device *pdev)
 			writel_relaxed(~0, c->regbase + ED_MASK_OFFSET);
 	}
 
+<<<<<<< HEAD
 	if (!use_of) {
 #ifdef CONFIG_ARCH_PXA
 		irq = gpio_to_irq(0);
@@ -721,6 +773,27 @@ static int __devinit pxa_gpio_probe(struct platform_device *pdev)
 						 handle_edge_irq);
 			set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
 		}
+=======
+#ifdef CONFIG_ARCH_PXA
+	irq = gpio_to_irq(0);
+	irq_set_chip_and_handler(irq, &pxa_muxed_gpio_chip,
+				 handle_edge_irq);
+	set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
+	irq_set_chained_handler(IRQ_GPIO0, pxa_gpio_demux_handler);
+
+	irq = gpio_to_irq(1);
+	irq_set_chip_and_handler(irq, &pxa_muxed_gpio_chip,
+				 handle_edge_irq);
+	set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
+	irq_set_chained_handler(IRQ_GPIO1, pxa_gpio_demux_handler);
+#endif
+
+	for (irq  = gpio_to_irq(gpio_offset);
+		irq <= gpio_to_irq(pxa_last_gpio); irq++) {
+		irq_set_chip_and_handler(irq, &pxa_muxed_gpio_chip,
+					 handle_edge_irq);
+		set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
+>>>>>>> v3.4.6
 	}
 
 	irq_set_chained_handler(irq_mux, pxa_gpio_demux_handler);
@@ -731,7 +804,10 @@ static struct platform_driver pxa_gpio_driver = {
 	.probe		= pxa_gpio_probe,
 	.driver		= {
 		.name	= "pxa-gpio",
+<<<<<<< HEAD
 		.of_match_table = pxa_gpio_dt_ids,
+=======
+>>>>>>> v3.4.6
 	},
 };
 
@@ -740,6 +816,7 @@ static int __init pxa_gpio_init(void)
 	return platform_driver_register(&pxa_gpio_driver);
 }
 postcore_initcall(pxa_gpio_init);
+<<<<<<< HEAD
 #ifdef CONFIG_SEC_GPIO_DVS
 int pxa_direction_get(unsigned int *gpdr)
 {
@@ -754,6 +831,8 @@ int pxa_direction_get(unsigned int *gpdr)
 	return 0;
 }
 #endif
+=======
+>>>>>>> v3.4.6
 
 #ifdef CONFIG_PM
 static int pxa_gpio_suspend(void)
@@ -797,3 +876,13 @@ struct syscore_ops pxa_gpio_syscore_ops = {
 	.suspend	= pxa_gpio_suspend,
 	.resume		= pxa_gpio_resume,
 };
+<<<<<<< HEAD
+=======
+
+static int __init pxa_gpio_sysinit(void)
+{
+	register_syscore_ops(&pxa_gpio_syscore_ops);
+	return 0;
+}
+postcore_initcall(pxa_gpio_sysinit);
+>>>>>>> v3.4.6

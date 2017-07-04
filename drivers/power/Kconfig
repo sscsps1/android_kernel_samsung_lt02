@@ -8,6 +8,7 @@ menuconfig POWER_SUPPLY
 
 if POWER_SUPPLY
 
+<<<<<<< HEAD
 config BATTERY_SAMSUNG
 	tristate "samsung battery driver"
 	help
@@ -16,6 +17,8 @@ config BATTERY_SAMSUNG
 	 To see battery-related functions,
 	 refer to sec_charging_common.h
 
+=======
+>>>>>>> v3.4.6
 config POWER_SUPPLY_DEBUG
 	bool "Power supply debug"
 	help
@@ -70,6 +73,7 @@ config TEST_POWER
 	help
 	  This driver is used for testing. It's safe to say M here.
 
+<<<<<<< HEAD
 config BATTERY_88PM80X
 	tristate "Marvell 88PM80x battery driver"
 	depends on MFD_88PM800
@@ -161,6 +165,8 @@ config BQ24157_CHARGER
 	help
 	 BQ24157_CHARGER
 
+=======
+>>>>>>> v3.4.6
 config BATTERY_DS2760
 	tristate "DS2760 battery driver (HP iPAQ & others)"
 	depends on W1 && W1_SLAVE_DS2760
@@ -289,6 +295,7 @@ config BATTERY_MAX17042
 	  multi-function devices that include fuel gauages that are compatible
 	  with MAX17042.
 
+<<<<<<< HEAD
 config BATTERY_ANDROID
 	tristate "Battery driver for Android"
 	help
@@ -299,6 +306,8 @@ config BATTERY_ANDROID
 	  battery file glue logic for battery/case temperature sensors,
 	  etc.
 
+=======
+>>>>>>> v3.4.6
 config BATTERY_Z2
 	tristate "Z2 battery driver"
 	depends on I2C && MACH_ZIPIT2
@@ -416,6 +425,7 @@ config AB8500_BATTERY_THERM_ON_BATCTRL
 	help
 	  Say Y to enable battery temperature measurements using
 	  thermistor connected on BATCTRL ADC.
+<<<<<<< HEAD
 
 config CHARGER_ISL9226
 	tristate "ISL9226 batter charger support"
@@ -423,4 +433,6 @@ config CHARGER_ISL9226
 	help
 	  Say Y to include support for ISL9226 charger driver.
 
+=======
+>>>>>>> v3.4.6
 endif # POWER_SUPPLY

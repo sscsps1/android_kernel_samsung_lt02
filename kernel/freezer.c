@@ -110,6 +110,7 @@ bool freeze_task(struct task_struct *p)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	/*
 	* This check can race with freezer_do_not_count, but worst case that
 	* will result in an extra wakeup being sent to the task.  It does not
@@ -122,6 +123,8 @@ bool freeze_task(struct task_struct *p)
 	if (freezer_should_skip(p))
 		return false;
 
+=======
+>>>>>>> v3.4.6
 	spin_lock_irqsave(&freezer_lock, flags);
 	if (!freezing(p) || frozen(p)) {
 		spin_unlock_irqrestore(&freezer_lock, flags);

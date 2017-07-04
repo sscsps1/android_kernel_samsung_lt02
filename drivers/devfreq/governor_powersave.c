@@ -10,7 +10,10 @@
  */
 
 #include <linux/devfreq.h>
+<<<<<<< HEAD
 #include "governor.h"
+=======
+>>>>>>> v3.4.6
 
 static int devfreq_powersave_func(struct devfreq *df,
 				  unsigned long *freq)
@@ -23,6 +26,7 @@ static int devfreq_powersave_func(struct devfreq *df,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int powersave_init(struct devfreq *devfreq)
 {
 	return update_devfreq(devfreq);
@@ -31,6 +35,10 @@ static int powersave_init(struct devfreq *devfreq)
 const struct devfreq_governor devfreq_powersave = {
 	.name = "powersave",
 	.init = powersave_init,
+=======
+const struct devfreq_governor devfreq_powersave = {
+	.name = "powersave",
+>>>>>>> v3.4.6
 	.get_target_freq = devfreq_powersave_func,
 	.no_central_polling = true,
 };

@@ -2111,6 +2111,7 @@ unsigned long nr_running(void)
 	return sum;
 }
 
+<<<<<<< HEAD
 unsigned long get_cpu_nr_running(unsigned int cpu)
 {
 	if (cpu < num_possible_cpus())
@@ -2119,6 +2120,8 @@ unsigned long get_cpu_nr_running(unsigned int cpu)
 		return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 unsigned long nr_uninterruptible(void)
 {
 	unsigned long i, sum = 0;
@@ -2169,6 +2172,7 @@ unsigned long this_cpu_load(void)
 	return this->cpu_load[0];
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_RUNTIME_COMPCACHE
 unsigned long this_cpu_loadx(int i)
 {
@@ -2176,12 +2180,80 @@ unsigned long this_cpu_loadx(int i)
 	return this->cpu_load[i];
 }
 #endif /* CONFIG_RUNTIME_COMPCACHE */
+=======
+
+/*
+ * Global load-average calculations
+ *
+ * We take a distributed and async approach to calculating the global load-avg
+ * in order to minimize overhead.
+ *
+ * The global load average is an exponentially decaying average of nr_running +
+ * nr_uninterruptible.
+ *
+ * Once every LOAD_FREQ:
+ *
+ *   nr_active = 0;
+ *   for_each_possible_cpu(cpu)
+ *   	nr_active += cpu_of(cpu)->nr_running + cpu_of(cpu)->nr_uninterruptible;
+ *
+ *   avenrun[n] = avenrun[0] * exp_n + nr_active * (1 - exp_n)
+ *
+ * Due to a number of reasons the above turns in the mess below:
+ *
+ *  - for_each_possible_cpu() is prohibitively expensive on machines with
+ *    serious number of cpus, therefore we need to take a distributed approach
+ *    to calculating nr_active.
+ *
+ *        \Sum_i x_i(t) = \Sum_i x_i(t) - x_i(t_0) | x_i(t_0) := 0
+ *                      = \Sum_i { \Sum_j=1 x_i(t_j) - x_i(t_j-1) }
+ *
+ *    So assuming nr_active := 0 when we start out -- true per definition, we
+ *    can simply take per-cpu deltas and fold those into a global accumulate
+ *    to obtain the same result. See calc_load_fold_active().
+ *
+ *    Furthermore, in order to avoid synchronizing all per-cpu delta folding
+ *    across the machine, we assume 10 ticks is sufficient time for every
+ *    cpu to have completed this task.
+ *
+ *    This places an upper-bound on the IRQ-off latency of the machine. Then
+ *    again, being late doesn't loose the delta, just wrecks the sample.
+ *
+ *  - cpu_rq()->nr_uninterruptible isn't accurately tracked per-cpu because
+ *    this would add another cross-cpu cacheline miss and atomic operation
+ *    to the wakeup path. Instead we increment on whatever cpu the task ran
+ *    when it went into uninterruptible state and decrement on whatever cpu
+ *    did the wakeup. This means that only the sum of nr_uninterruptible over
+ *    all cpus yields the correct result.
+ *
+ *  This covers the NO_HZ=n code, for extra head-aches, see the comment below.
+ */
+>>>>>>> v3.4.6
 
 /* Variables and functions for calc_load */
 static atomic_long_t calc_load_tasks;
 static unsigned long calc_load_update;
 unsigned long avenrun[3];
+<<<<<<< HEAD
 EXPORT_SYMBOL(avenrun);
+=======
+EXPORT_SYMBOL(avenrun); /* should be removed */
+
+/**
+ * get_avenrun - get the load average array
+ * @loads:	pointer to dest load array
+ * @offset:	offset to add
+ * @shift:	shift count to shift the result left
+ *
+ * These values are estimates at best, so no need for locking.
+ */
+void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
+{
+	loads[0] = (avenrun[0] + offset) << shift;
+	loads[1] = (avenrun[1] + offset) << shift;
+	loads[2] = (avenrun[2] + offset) << shift;
+}
+>>>>>>> v3.4.6
 
 static long calc_load_fold_active(struct rq *this_rq)
 {
@@ -2198,6 +2270,12 @@ static long calc_load_fold_active(struct rq *this_rq)
 	return delta;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * a1 = a0 * e + a * (1 - e)
+ */
+>>>>>>> v3.4.6
 static unsigned long
 calc_load(unsigned long load, unsigned long exp, unsigned long active)
 {
@@ -2209,6 +2287,7 @@ calc_load(unsigned long load, unsigned long exp, unsigned long active)
 
 #ifdef CONFIG_NO_HZ
 /*
+<<<<<<< HEAD
  * For NO_HZ we delay the active fold to the next LOAD_FREQ update.
  *
  * When making the ILB scale, we should try to pull this in as well.
@@ -2233,6 +2312,120 @@ static long calc_load_fold_idle(void)
 	 */
 	if (atomic_long_read(&calc_load_tasks_idle))
 		delta = atomic_long_xchg(&calc_load_tasks_idle, 0);
+=======
+ * Handle NO_HZ for the global load-average.
+ *
+ * Since the above described distributed algorithm to compute the global
+ * load-average relies on per-cpu sampling from the tick, it is affected by
+ * NO_HZ.
+ *
+ * The basic idea is to fold the nr_active delta into a global idle-delta upon
+ * entering NO_HZ state such that we can include this as an 'extra' cpu delta
+ * when we read the global state.
+ *
+ * Obviously reality has to ruin such a delightfully simple scheme:
+ *
+ *  - When we go NO_HZ idle during the window, we can negate our sample
+ *    contribution, causing under-accounting.
+ *
+ *    We avoid this by keeping two idle-delta counters and flipping them
+ *    when the window starts, thus separating old and new NO_HZ load.
+ *
+ *    The only trick is the slight shift in index flip for read vs write.
+ *
+ *        0s            5s            10s           15s
+ *          +10           +10           +10           +10
+ *        |-|-----------|-|-----------|-|-----------|-|
+ *    r:0 0 1           1 0           0 1           1 0
+ *    w:0 1 1           0 0           1 1           0 0
+ *
+ *    This ensures we'll fold the old idle contribution in this window while
+ *    accumlating the new one.
+ *
+ *  - When we wake up from NO_HZ idle during the window, we push up our
+ *    contribution, since we effectively move our sample point to a known
+ *    busy state.
+ *
+ *    This is solved by pushing the window forward, and thus skipping the
+ *    sample, for this cpu (effectively using the idle-delta for this cpu which
+ *    was in effect at the time the window opened). This also solves the issue
+ *    of having to deal with a cpu having been in NOHZ idle for multiple
+ *    LOAD_FREQ intervals.
+ *
+ * When making the ILB scale, we should try to pull this in as well.
+ */
+static atomic_long_t calc_load_idle[2];
+static int calc_load_idx;
+
+static inline int calc_load_write_idx(void)
+{
+	int idx = calc_load_idx;
+
+	/*
+	 * See calc_global_nohz(), if we observe the new index, we also
+	 * need to observe the new update time.
+	 */
+	smp_rmb();
+
+	/*
+	 * If the folding window started, make sure we start writing in the
+	 * next idle-delta.
+	 */
+	if (!time_before(jiffies, calc_load_update))
+		idx++;
+
+	return idx & 1;
+}
+
+static inline int calc_load_read_idx(void)
+{
+	return calc_load_idx & 1;
+}
+
+void calc_load_enter_idle(void)
+{
+	struct rq *this_rq = this_rq();
+	long delta;
+
+	/*
+	 * We're going into NOHZ mode, if there's any pending delta, fold it
+	 * into the pending idle delta.
+	 */
+	delta = calc_load_fold_active(this_rq);
+	if (delta) {
+		int idx = calc_load_write_idx();
+		atomic_long_add(delta, &calc_load_idle[idx]);
+	}
+}
+
+void calc_load_exit_idle(void)
+{
+	struct rq *this_rq = this_rq();
+
+	/*
+	 * If we're still before the sample window, we're done.
+	 */
+	if (time_before(jiffies, this_rq->calc_load_update))
+		return;
+
+	/*
+	 * We woke inside or after the sample window, this means we're already
+	 * accounted through the nohz accounting, so skip the entire deal and
+	 * sync up for the next window.
+	 */
+	this_rq->calc_load_update = calc_load_update;
+	if (time_before(jiffies, this_rq->calc_load_update + 10))
+		this_rq->calc_load_update += LOAD_FREQ;
+}
+
+static long calc_load_fold_idle(void)
+{
+	int idx = calc_load_read_idx();
+	long delta = 0;
+
+	if (atomic_long_read(&calc_load_idle[idx]))
+		delta = atomic_long_xchg(&calc_load_idle[idx], 0);
+>>>>>>> v3.4.6
 
 	return delta;
 }
@@ -2318,6 +2511,7 @@ static void calc_global_nohz(void)
 {
 	long delta, active, n;
 
+<<<<<<< HEAD
 	/*
 	 * If we crossed a calc_load_update boundary, make sure to fold
 	 * any pending idle changes, the respective CPUs might have
@@ -2378,6 +2572,41 @@ void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
 	loads[1] = (avenrun[1] + offset) << shift;
 	loads[2] = (avenrun[2] + offset) << shift;
 }
+=======
+	if (!time_before(jiffies, calc_load_update + 10)) {
+		/*
+		 * Catch-up, fold however many we are behind still
+		 */
+		delta = jiffies - calc_load_update - 10;
+		n = 1 + (delta / LOAD_FREQ);
+
+		active = atomic_long_read(&calc_load_tasks);
+		active = active > 0 ? active * FIXED_1 : 0;
+
+		avenrun[0] = calc_load_n(avenrun[0], EXP_1, active, n);
+		avenrun[1] = calc_load_n(avenrun[1], EXP_5, active, n);
+		avenrun[2] = calc_load_n(avenrun[2], EXP_15, active, n);
+
+		calc_load_update += n * LOAD_FREQ;
+	}
+
+	/*
+	 * Flip the idle index...
+	 *
+	 * Make sure we first write the new time then flip the index, so that
+	 * calc_load_write_idx() will see the new time when it reads the new
+	 * index, this avoids a double flip messing things up.
+	 */
+	smp_wmb();
+	calc_load_idx++;
+}
+#else /* !CONFIG_NO_HZ */
+
+static inline long calc_load_fold_idle(void) { return 0; }
+static inline void calc_global_nohz(void) { }
+
+#endif /* CONFIG_NO_HZ */
+>>>>>>> v3.4.6
 
 /*
  * calc_load - update the avenrun load estimates 10 ticks after the
@@ -2385,11 +2614,25 @@ void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
  */
 void calc_global_load(unsigned long ticks)
 {
+<<<<<<< HEAD
 	long active;
+=======
+	long active, delta;
+>>>>>>> v3.4.6
 
 	if (time_before(jiffies, calc_load_update + 10))
 		return;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Fold the 'old' idle-delta to include all NO_HZ cpus.
+	 */
+	delta = calc_load_fold_idle();
+	if (delta)
+		atomic_long_add(delta, &calc_load_tasks);
+
+>>>>>>> v3.4.6
 	active = atomic_long_read(&calc_load_tasks);
 	active = active > 0 ? active * FIXED_1 : 0;
 
@@ -2400,12 +2643,16 @@ void calc_global_load(unsigned long ticks)
 	calc_load_update += LOAD_FREQ;
 
 	/*
+<<<<<<< HEAD
 	 * Account one period with whatever state we found before
 	 * folding in the nohz state and ageing the entire idle period.
 	 *
 	 * This avoids loosing a sample when we go idle between 
 	 * calc_load_account_active() (10 ticks ago) and now and thus
 	 * under-accounting.
+=======
+	 * In case we idled for multiple LOAD_FREQ intervals, catch up in bulk.
+>>>>>>> v3.4.6
 	 */
 	calc_global_nohz();
 }
@@ -2422,7 +2669,10 @@ static void calc_load_account_active(struct rq *this_rq)
 		return;
 
 	delta  = calc_load_fold_active(this_rq);
+<<<<<<< HEAD
 	delta += calc_load_fold_idle();
+=======
+>>>>>>> v3.4.6
 	if (delta)
 		atomic_long_add(delta, &calc_load_tasks);
 
@@ -2430,6 +2680,13 @@ static void calc_load_account_active(struct rq *this_rq)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * End of global load-average stuff
+ */
+
+/*
+>>>>>>> v3.4.6
  * The exact cpuload at various idx values, calculated at every tick would be
  * load = (2^idx - 1) / 2^idx * load + 1 / 2^idx * cur_load
  *
@@ -7087,6 +7344,7 @@ static inline int preempt_count_equals(int preempt_offset)
 	return (nested == preempt_offset);
 }
 
+<<<<<<< HEAD
 static int __might_sleep_init_called;
 int __init __might_sleep_init(void)
 {
@@ -7095,16 +7353,22 @@ int __init __might_sleep_init(void)
 }
 early_initcall(__might_sleep_init);
 
+=======
+>>>>>>> v3.4.6
 void __might_sleep(const char *file, int line, int preempt_offset)
 {
 	static unsigned long prev_jiffy;	/* ratelimiting */
 
 	rcu_sleep_check(); /* WARN_ON_ONCE() by default, no rate limit reqd. */
 	if ((preempt_count_equals(preempt_offset) && !irqs_disabled()) ||
+<<<<<<< HEAD
 	    oops_in_progress)
 		return;
 	if (system_state != SYSTEM_RUNNING &&
 	    (!__might_sleep_init_called || system_state != SYSTEM_BOOTING))
+=======
+	    system_state != SYSTEM_RUNNING || oops_in_progress)
+>>>>>>> v3.4.6
 		return;
 	if (time_before(jiffies, prev_jiffy + HZ) && prev_jiffy)
 		return;
@@ -7657,6 +7921,7 @@ static void cpu_cgroup_destroy(struct cgroup *cgrp)
 	sched_destroy_group(tg);
 }
 
+<<<<<<< HEAD
 static int
 cpu_cgroup_allow_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)
 {
@@ -7674,6 +7939,8 @@ cpu_cgroup_allow_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)
 	return 0;
 }
 
+=======
+>>>>>>> v3.4.6
 static int cpu_cgroup_can_attach(struct cgroup *cgrp,
 				 struct cgroup_taskset *tset)
 {
@@ -8035,7 +8302,10 @@ struct cgroup_subsys cpu_cgroup_subsys = {
 	.destroy	= cpu_cgroup_destroy,
 	.can_attach	= cpu_cgroup_can_attach,
 	.attach		= cpu_cgroup_attach,
+<<<<<<< HEAD
 	.allow_attach	= cpu_cgroup_allow_attach,
+=======
+>>>>>>> v3.4.6
 	.exit		= cpu_cgroup_exit,
 	.populate	= cpu_cgroup_populate,
 	.subsys_id	= cpu_cgroup_subsys_id,

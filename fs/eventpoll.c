@@ -33,7 +33,10 @@
 #include <linux/bitops.h>
 #include <linux/mutex.h>
 #include <linux/anon_inodes.h>
+<<<<<<< HEAD
 #include <linux/device.h>
+=======
+>>>>>>> v3.4.6
 #include <asm/uaccess.h>
 #include <asm/io.h>
 #include <asm/mman.h>
@@ -88,7 +91,11 @@
  */
 
 /* Epoll private bits inside the event mask */
+<<<<<<< HEAD
 #define EP_PRIVATE_BITS (EPOLLWAKEUP | EPOLLONESHOT | EPOLLET)
+=======
+#define EP_PRIVATE_BITS (EPOLLONESHOT | EPOLLET)
+>>>>>>> v3.4.6
 
 /* Maximum number of nesting allowed inside epoll sets */
 #define EP_MAX_NESTS 4
@@ -155,9 +162,12 @@ struct epitem {
 	/* List header used to link this item to the "struct file" items list */
 	struct list_head fllink;
 
+<<<<<<< HEAD
 	/* wakeup_source used when EPOLLWAKEUP is set */
 	struct wakeup_source *ws;
 
+=======
+>>>>>>> v3.4.6
 	/* The structure that describe the interested events and the source fd */
 	struct epoll_event event;
 };
@@ -198,9 +208,12 @@ struct eventpoll {
 	 */
 	struct epitem *ovflist;
 
+<<<<<<< HEAD
 	/* wakeup_source used when ep_scan_ready_list is running */
 	struct wakeup_source *ws;
 
+=======
+>>>>>>> v3.4.6
 	/* The user that created the eventpoll descriptor */
 	struct user_struct *user;
 
@@ -595,10 +608,15 @@ static int ep_scan_ready_list(struct eventpoll *ep,
 		 * queued into ->ovflist but the "txlist" might already
 		 * contain them, and the list_splice() below takes care of them.
 		 */
+<<<<<<< HEAD
 		if (!ep_is_linked(&epi->rdllink)) {
 			list_add_tail(&epi->rdllink, &ep->rdllist);
 			__pm_stay_awake(epi->ws);
 		}
+=======
+		if (!ep_is_linked(&epi->rdllink))
+			list_add_tail(&epi->rdllink, &ep->rdllist);
+>>>>>>> v3.4.6
 	}
 	/*
 	 * We need to set back ep->ovflist to EP_UNACTIVE_PTR, so that after
@@ -611,7 +629,10 @@ static int ep_scan_ready_list(struct eventpoll *ep,
 	 * Quickly re-inject items left on "txlist".
 	 */
 	list_splice(&txlist, &ep->rdllist);
+<<<<<<< HEAD
 	__pm_relax(ep->ws);
+=======
+>>>>>>> v3.4.6
 
 	if (!list_empty(&ep->rdllist)) {
 		/*
@@ -666,8 +687,11 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
 		list_del_init(&epi->rdllink);
 	spin_unlock_irqrestore(&ep->lock, flags);
 
+<<<<<<< HEAD
 	wakeup_source_unregister(epi->ws);
 
+=======
+>>>>>>> v3.4.6
 	/* At this point it is safe to free the eventpoll item */
 	kmem_cache_free(epi_cache, epi);
 
@@ -718,7 +742,10 @@ static void ep_free(struct eventpoll *ep)
 	mutex_unlock(&epmutex);
 	mutex_destroy(&ep->mtx);
 	free_uid(ep->user);
+<<<<<<< HEAD
 	wakeup_source_unregister(ep->ws);
+=======
+>>>>>>> v3.4.6
 	kfree(ep);
 }
 
@@ -750,7 +777,10 @@ static int ep_read_events_proc(struct eventpoll *ep, struct list_head *head,
 			 * callback, but it's not actually ready, as far as
 			 * caller requested events goes. We can remove it here.
 			 */
+<<<<<<< HEAD
 			__pm_relax(epi->ws);
+=======
+>>>>>>> v3.4.6
 			list_del_init(&epi->rdllink);
 		}
 	}
@@ -941,6 +971,7 @@ static int ep_poll_callback(wait_queue_t *wait, unsigned mode, int sync, void *k
 		if (epi->next == EP_UNACTIVE_PTR) {
 			epi->next = ep->ovflist;
 			ep->ovflist = epi;
+<<<<<<< HEAD
 			if (epi->ws) {
 				/*
 				 * Activate ep->ws since epi->ws may get
@@ -949,15 +980,22 @@ static int ep_poll_callback(wait_queue_t *wait, unsigned mode, int sync, void *k
 				__pm_stay_awake(ep->ws);
 			}
 
+=======
+>>>>>>> v3.4.6
 		}
 		goto out_unlock;
 	}
 
 	/* If this file is already in the ready list we exit soon */
+<<<<<<< HEAD
 	if (!ep_is_linked(&epi->rdllink)) {
 		list_add_tail(&epi->rdllink, &ep->rdllist);
 		__pm_stay_awake(epi->ws);
 	}
+=======
+	if (!ep_is_linked(&epi->rdllink))
+		list_add_tail(&epi->rdllink, &ep->rdllist);
+>>>>>>> v3.4.6
 
 	/*
 	 * Wake up ( if active ) both the eventpoll wait list and the ->poll()
@@ -1115,6 +1153,7 @@ static int reverse_path_check(void)
 	return error;
 }
 
+<<<<<<< HEAD
 static int ep_create_wakeup_source(struct epitem *epi)
 {
 	const char *name;
@@ -1139,6 +1178,8 @@ static void ep_destroy_wakeup_source(struct epitem *epi)
 	epi->ws = NULL;
 }
 
+=======
+>>>>>>> v3.4.6
 /*
  * Must be called with "mtx" held.
  */
@@ -1166,6 +1207,7 @@ static int ep_insert(struct eventpoll *ep, struct epoll_event *event,
 	epi->event = *event;
 	epi->nwait = 0;
 	epi->next = EP_UNACTIVE_PTR;
+<<<<<<< HEAD
 	if (epi->event.events & EPOLLWAKEUP) {
 		error = ep_create_wakeup_source(epi);
 		if (error)
@@ -1173,6 +1215,8 @@ static int ep_insert(struct eventpoll *ep, struct epoll_event *event,
 	} else {
 		epi->ws = NULL;
 	}
+=======
+>>>>>>> v3.4.6
 
 	/* Initialize the poll table using the queue callback */
 	epq.epi = epi;
@@ -1219,7 +1263,10 @@ static int ep_insert(struct eventpoll *ep, struct epoll_event *event,
 	/* If the file is already "ready" we drop it inside the ready list */
 	if ((revents & event->events) && !ep_is_linked(&epi->rdllink)) {
 		list_add_tail(&epi->rdllink, &ep->rdllist);
+<<<<<<< HEAD
 		__pm_stay_awake(epi->ws);
+=======
+>>>>>>> v3.4.6
 
 		/* Notify waiting tasks that events are available */
 		if (waitqueue_active(&ep->wq))
@@ -1260,9 +1307,12 @@ error_unregister:
 		list_del_init(&epi->rdllink);
 	spin_unlock_irqrestore(&ep->lock, flags);
 
+<<<<<<< HEAD
 	wakeup_source_unregister(epi->ws);
 
 error_create_wakeup_source:
+=======
+>>>>>>> v3.4.6
 	kmem_cache_free(epi_cache, epi);
 
 	return error;
@@ -1288,12 +1338,15 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi, struct epoll_even
 	epi->event.events = event->events;
 	pt._key = event->events;
 	epi->event.data = event->data; /* protected by mtx */
+<<<<<<< HEAD
 	if (epi->event.events & EPOLLWAKEUP) {
 		if (!epi->ws)
 			ep_create_wakeup_source(epi);
 	} else if (epi->ws) {
 		ep_destroy_wakeup_source(epi);
 	}
+=======
+>>>>>>> v3.4.6
 
 	/*
 	 * Get current event bits. We can safely use the file* here because
@@ -1309,7 +1362,10 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi, struct epoll_even
 		spin_lock_irq(&ep->lock);
 		if (!ep_is_linked(&epi->rdllink)) {
 			list_add_tail(&epi->rdllink, &ep->rdllist);
+<<<<<<< HEAD
 			__pm_stay_awake(epi->ws);
+=======
+>>>>>>> v3.4.6
 
 			/* Notify waiting tasks that events are available */
 			if (waitqueue_active(&ep->wq))
@@ -1348,6 +1404,7 @@ static int ep_send_events_proc(struct eventpoll *ep, struct list_head *head,
 	     !list_empty(head) && eventcnt < esed->maxevents;) {
 		epi = list_first_entry(head, struct epitem, rdllink);
 
+<<<<<<< HEAD
 		/*
 		 * Activate ep->ws before deactivating epi->ws to prevent
 		 * triggering auto-suspend here (in case we reactive epi->ws
@@ -1360,6 +1417,8 @@ static int ep_send_events_proc(struct eventpoll *ep, struct list_head *head,
 		if (epi->ws && epi->ws->active)
 			__pm_stay_awake(ep->ws);
 		__pm_relax(epi->ws);
+=======
+>>>>>>> v3.4.6
 		list_del_init(&epi->rdllink);
 
 		pt._key = epi->event.events;
@@ -1376,7 +1435,10 @@ static int ep_send_events_proc(struct eventpoll *ep, struct list_head *head,
 			if (__put_user(revents, &uevent->events) ||
 			    __put_user(epi->event.data, &uevent->data)) {
 				list_add(&epi->rdllink, head);
+<<<<<<< HEAD
 				__pm_stay_awake(epi->ws);
+=======
+>>>>>>> v3.4.6
 				return eventcnt ? eventcnt : -EFAULT;
 			}
 			eventcnt++;
@@ -1396,7 +1458,10 @@ static int ep_send_events_proc(struct eventpoll *ep, struct list_head *head,
 				 * poll callback will queue them in ep->ovflist.
 				 */
 				list_add_tail(&epi->rdllink, &ep->rdllist);
+<<<<<<< HEAD
 				__pm_stay_awake(epi->ws);
+=======
+>>>>>>> v3.4.6
 			}
 		}
 	}
@@ -1709,10 +1774,13 @@ SYSCALL_DEFINE4(epoll_ctl, int, epfd, int, op, int, fd,
 	if (!tfile->f_op || !tfile->f_op->poll)
 		goto error_tgt_fput;
 
+<<<<<<< HEAD
 	/* Check if EPOLLWAKEUP is allowed */
 	if ((epds.events & EPOLLWAKEUP) && !capable(CAP_EPOLLWAKEUP))
 		epds.events &= ~EPOLLWAKEUP;
 
+=======
+>>>>>>> v3.4.6
 	/*
 	 * We have to check that the file structure underneath the file descriptor
 	 * the user passed to us _is_ an eventpoll file. And also we do not permit

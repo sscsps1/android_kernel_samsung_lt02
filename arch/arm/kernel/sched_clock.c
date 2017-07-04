@@ -21,8 +21,11 @@ struct clock_data {
 	u32 epoch_cyc_copy;
 	u32 mult;
 	u32 shift;
+<<<<<<< HEAD
 	bool suspended;
 	bool needs_suspend;
+=======
+>>>>>>> v3.4.6
 };
 
 static void sched_clock_poll(unsigned long wrap_ticks);
@@ -51,9 +54,12 @@ static unsigned long long cyc_to_sched_clock(u32 cyc, u32 mask)
 	u64 epoch_ns;
 	u32 epoch_cyc;
 
+<<<<<<< HEAD
 	if (cd.suspended)
 		return cd.epoch_ns;
 
+=======
+>>>>>>> v3.4.6
 	/*
 	 * Load the epoch_cyc and epoch_ns atomically.  We do this by
 	 * ensuring that we always write epoch_cyc, epoch_ns and
@@ -103,6 +109,7 @@ static void sched_clock_poll(unsigned long wrap_ticks)
 	update_sched_clock();
 }
 
+<<<<<<< HEAD
 void __init setup_sched_clock_needs_suspend(u32 (*read)(void), int bits,
 		unsigned long rate)
 {
@@ -110,6 +117,8 @@ void __init setup_sched_clock_needs_suspend(u32 (*read)(void), int bits,
 	cd.needs_suspend = true;
 }
 
+=======
+>>>>>>> v3.4.6
 void __init setup_sched_clock(u32 (*read)(void), int bits, unsigned long rate)
 {
 	unsigned long r, w;
@@ -181,6 +190,7 @@ void __init sched_clock_postinit(void)
 static int sched_clock_suspend(void)
 {
 	sched_clock_poll(sched_clock_timer.data);
+<<<<<<< HEAD
 	if (cd.needs_suspend)
 		cd.suspended = true;
 	return 0;
@@ -198,6 +208,13 @@ static void sched_clock_resume(void)
 static struct syscore_ops sched_clock_ops = {
 	.suspend = sched_clock_suspend,
 	.resume = sched_clock_resume,
+=======
+	return 0;
+}
+
+static struct syscore_ops sched_clock_ops = {
+	.suspend = sched_clock_suspend,
+>>>>>>> v3.4.6
 };
 
 static int __init sched_clock_syscore_init(void)

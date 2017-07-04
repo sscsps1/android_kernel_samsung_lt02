@@ -15,7 +15,10 @@
 #include <linux/platform_device.h>
 #include <linux/mfd/88pm860x.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
+=======
+>>>>>>> v3.4.6
 #include <linux/delay.h>
 #include <sound/core.h>
 #include <sound/pcm.h>
@@ -28,9 +31,15 @@
 
 #include "88pm860x-codec.h"
 
+<<<<<<< HEAD
 #define IRQ_NUM			1
 
 #define MAX_NAME_LEN		20
+=======
+#define MAX_NAME_LEN		20
+#define REG_CACHE_SIZE		0x40
+#define REG_CACHE_BASE		0xb0
+>>>>>>> v3.4.6
 
 /* Status Register 1 (0x01) */
 #define REG_STATUS_1		0x01
@@ -126,11 +135,25 @@
 	.num_kcontrols = 0, .event = wevent, \
 	.event_flags = SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD, }
 
+<<<<<<< HEAD
+=======
+struct pm860x_det {
+	struct snd_soc_jack	*hp_jack;
+	struct snd_soc_jack	*mic_jack;
+	int			hp_det;
+	int			mic_det;
+	int			hook_det;
+	int			hs_shrt;
+	int			lo_shrt;
+};
+
+>>>>>>> v3.4.6
 struct pm860x_priv {
 	unsigned int		sysclk;
 	unsigned int		pcmclk;
 	unsigned int		dir;
 	unsigned int		filter;
+<<<<<<< HEAD
 	unsigned int		playback_samplerate;
 	unsigned int		capture_samplerate;
 	struct snd_soc_codec	*codec;
@@ -140,6 +163,15 @@ struct pm860x_priv {
 
 	int			irq[IRQ_NUM];
 	unsigned char		name[IRQ_NUM][MAX_NAME_LEN];
+=======
+	struct snd_soc_codec	*codec;
+	struct i2c_client	*i2c;
+	struct pm860x_chip	*chip;
+	struct pm860x_det	det;
+
+	int			irq[4];
+	unsigned char		name[4][MAX_NAME_LEN];
+>>>>>>> v3.4.6
 };
 
 /* -9450dB to 0dB in 150dB steps ( mute instead of -9450dB) */
@@ -269,7 +301,10 @@ static int pm860x_volatile(unsigned int reg)
 	BUG_ON(reg >= REG_CACHE_SIZE);
 
 	switch (reg) {
+<<<<<<< HEAD
 	case PM860X_EAR_CTRL_2:
+=======
+>>>>>>> v3.4.6
 	case PM860X_AUDIO_SUPPLIES_2:
 		return 1;
 	}
@@ -280,11 +315,15 @@ static int pm860x_volatile(unsigned int reg)
 static unsigned int pm860x_read_reg_cache(struct snd_soc_codec *codec,
 					  unsigned int reg)
 {
+<<<<<<< HEAD
 	int offset;
+=======
+>>>>>>> v3.4.6
 	unsigned char *cache = codec->reg_cache;
 
 	BUG_ON(reg >= REG_CACHE_SIZE);
 
+<<<<<<< HEAD
 	if (!pm860x_volatile(reg))
 		return cache[reg];
 
@@ -296,11 +335,20 @@ static unsigned int pm860x_read_reg_cache(struct snd_soc_codec *codec,
 		return -EIO;
 
 	return pm860x_reg_read(codec->control_data, reg + offset);
+=======
+	if (pm860x_volatile(reg))
+		return cache[reg];
+
+	reg += REG_CACHE_BASE;
+
+	return pm860x_reg_read(codec->control_data, reg);
+>>>>>>> v3.4.6
 }
 
 static int pm860x_write_reg_cache(struct snd_soc_codec *codec,
 				  unsigned int reg, unsigned int value)
 {
+<<<<<<< HEAD
 	int offset;
 	unsigned char *cache = codec->reg_cache;
 	struct pm860x_priv *pm860x_audio = snd_soc_codec_get_drvdata(codec);
@@ -356,6 +404,18 @@ static int pm860x_write_reg_cache(struct snd_soc_codec *codec,
 	}
 
 	return pm860x_reg_write(codec->control_data, reg + offset, value);
+=======
+	unsigned char *cache = codec->reg_cache;
+
+	BUG_ON(reg >= REG_CACHE_SIZE);
+
+	if (!pm860x_volatile(reg))
+		cache[reg] = (unsigned char)value;
+
+	reg += REG_CACHE_BASE;
+
+	return pm860x_reg_write(codec->control_data, reg, value);
+>>>>>>> v3.4.6
 }
 
 static int snd_soc_get_volsw_2r_st(struct snd_kcontrol *kcontrol,
@@ -616,6 +676,7 @@ static const struct snd_kcontrol_new pm860x_snd_controls[] = {
 	SOC_ENUM("Earpiece Amplifier Current", pm860x_ear_pa_enum),
 };
 
+<<<<<<< HEAD
 static const struct snd_kcontrol_new pm860x_audio_controls[] = {
 	/* MIsc Register for audio clock configuration */
 	SOC_SINGLE("PM860X_MISC1", MISC1, 0, 0xff, 0),
@@ -699,6 +760,8 @@ static const struct snd_kcontrol_new pm860x_audio_controls[] = {
 	SOC_SINGLE("PM860X_PLL_ADJ_2", PM860X_PLL_ADJ_2, 0, 0xff, 0),
 };
 
+=======
+>>>>>>> v3.4.6
 /*
  * DAPM Controls
  */
@@ -901,11 +964,20 @@ static const struct snd_soc_dapm_widget pm860x_dapm_widgets[] = {
 
 
 	SND_SOC_DAPM_AIF_IN("I2S DIN", "I2S Playback", 0,
+<<<<<<< HEAD
 			    PM860X_DAC_EN_2, 0, 0),
 	SND_SOC_DAPM_AIF_IN("I2S DIN1", "I2S Playback", 0,
 			    PM860X_DAC_EN_2, 0, 0),
 	SND_SOC_DAPM_AIF_OUT("I2S DOUT", "I2S Capture", 0,
 			     PM860X_I2S_IFACE_3, 5, 1),
+=======
+			    SND_SOC_NOPM, 0, 0),
+	SND_SOC_DAPM_AIF_IN("I2S DIN1", "I2S Playback", 0,
+			    SND_SOC_NOPM, 0, 0),
+	SND_SOC_DAPM_AIF_OUT("I2S DOUT", "I2S Capture", 0,
+			     PM860X_I2S_IFACE_3, 5, 1),
+	SND_SOC_DAPM_SUPPLY("I2S CLK", PM860X_DAC_EN_2, 0, 0, NULL, 0),
+>>>>>>> v3.4.6
 	SND_SOC_DAPM_MUX("I2S Mic Mux", SND_SOC_NOPM, 0, 0, &i2s_mic_mux),
 	SND_SOC_DAPM_MUX("ADC Left Mux", SND_SOC_NOPM, 0, 0, &adcl_mux),
 	SND_SOC_DAPM_MUX("ADC Right Mux", SND_SOC_NOPM, 0, 0, &adcr_mux),
@@ -988,7 +1060,11 @@ static const struct snd_soc_dapm_widget pm860x_dapm_widgets[] = {
 	PM860X_DAPM_OUTPUT("RSYNC", pm860x_rsync_event),
 };
 
+<<<<<<< HEAD
 static const struct snd_soc_dapm_route audio_map[] = {
+=======
+static const struct snd_soc_dapm_route pm860x_dapm_routes[] = {
+>>>>>>> v3.4.6
 	/* supply */
 	{"Left DAC", NULL, "VCODEC"},
 	{"Right DAC", NULL, "VCODEC"},
@@ -997,6 +1073,14 @@ static const struct snd_soc_dapm_route audio_map[] = {
 	{"Left ADC", NULL, "Left ADC MOD"},
 	{"Right ADC", NULL, "Right ADC MOD"},
 
+<<<<<<< HEAD
+=======
+	/* I2S Clock */
+	{"I2S DIN", NULL, "I2S CLK"},
+	{"I2S DIN1", NULL, "I2S CLK"},
+	{"I2S DOUT", NULL, "I2S CLK"},
+
+>>>>>>> v3.4.6
 	/* PCM/AIF1 Inputs */
 	{"PCM SDO", NULL, "ADC Left Mux"},
 	{"PCM SDO", NULL, "ADCR EC Mux"},
@@ -1087,8 +1171,11 @@ static const struct snd_soc_dapm_route audio_map[] = {
  */
 static int pm860x_digital_mute(struct snd_soc_dai *codec_dai, int mute)
 {
+<<<<<<< HEAD
 	/* don't implement digital mute as FM may be active */
 #if 0
+=======
+>>>>>>> v3.4.6
 	struct snd_soc_codec *codec = codec_dai->codec;
 	int data = 0, mask = MUTE_LEFT | MUTE_RIGHT;
 
@@ -1097,7 +1184,10 @@ static int pm860x_digital_mute(struct snd_soc_dai *codec_dai, int mute)
 	snd_soc_update_bits(codec, PM860X_DAC_OFFSET, mask, data);
 	snd_soc_update_bits(codec, PM860X_EAR_CTRL_2,
 			    RSYNC_CHANGE, RSYNC_CHANGE);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -1139,10 +1229,15 @@ static int pm860x_pcm_hw_params(struct snd_pcm_substream *substream,
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	/* don't set HW sample rate, and leave it to audio server */
 #if 0
 	snd_soc_update_bits(codec, PM860X_PCM_RATE, 0x0f, inf);
 #endif
+=======
+	snd_soc_update_bits(codec, PM860X_PCM_RATE, 0x0f, inf);
+
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -1248,10 +1343,15 @@ static int pm860x_i2s_hw_params(struct snd_pcm_substream *substream,
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	/* don't set HW sample rate, and leave it to audio server */
 #if 0
 	snd_soc_update_bits(codec, PM860X_I2S_IFACE_4, 0xf, inf);
 #endif
+=======
+	snd_soc_update_bits(codec, PM860X_I2S_IFACE_4, 0xf, inf);
+
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -1341,10 +1441,15 @@ static const struct snd_soc_dai_ops pm860x_i2s_dai_ops = {
 	.set_sysclk	= pm860x_set_dai_sysclk,
 };
 
+<<<<<<< HEAD
 #define PM860X_TX_RATES	(SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |	\
 			 SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_48000)
 #define PM860X_RX_RATES	(SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |	\
 			 SNDRV_PCM_RATE_32000)
+=======
+#define PM860X_RATES	(SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |	\
+			 SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_48000)
+>>>>>>> v3.4.6
 
 static struct snd_soc_dai_driver pm860x_dai[] = {
 	{
@@ -1355,7 +1460,11 @@ static struct snd_soc_dai_driver pm860x_dai[] = {
 			.stream_name	= "PCM Playback",
 			.channels_min	= 2,
 			.channels_max	= 2,
+<<<<<<< HEAD
 			.rates		= PM860X_RX_RATES,
+=======
+			.rates		= PM860X_RATES,
+>>>>>>> v3.4.6
 			.formats	= SNDRV_PCM_FORMAT_S16_LE | \
 					  SNDRV_PCM_FORMAT_S18_3LE,
 		},
@@ -1363,7 +1472,11 @@ static struct snd_soc_dai_driver pm860x_dai[] = {
 			.stream_name	= "PCM Capture",
 			.channels_min	= 2,
 			.channels_max	= 2,
+<<<<<<< HEAD
 			.rates		= PM860X_TX_RATES,
+=======
+			.rates		= PM860X_RATES,
+>>>>>>> v3.4.6
 			.formats	= SNDRV_PCM_FORMAT_S16_LE | \
 					  SNDRV_PCM_FORMAT_S18_3LE,
 		},
@@ -1392,6 +1505,7 @@ static struct snd_soc_dai_driver pm860x_dai[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int pm860x_audio_suspend(struct snd_soc_codec *codec)
 {
 	struct pm860x_priv *pm860x_audio = snd_soc_codec_get_drvdata(codec);
@@ -1549,17 +1663,120 @@ static irqreturn_t pm860x_short_handler(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
+=======
+static irqreturn_t pm860x_codec_handler(int irq, void *data)
+{
+	struct pm860x_priv *pm860x = data;
+	int status, shrt, report = 0, mic_report = 0;
+	int mask;
+
+	status = pm860x_reg_read(pm860x->i2c, REG_STATUS_1);
+	shrt = pm860x_reg_read(pm860x->i2c, REG_SHORTS);
+	mask = pm860x->det.hs_shrt | pm860x->det.hook_det | pm860x->det.lo_shrt
+		| pm860x->det.hp_det;
+
+#ifndef CONFIG_SND_SOC_88PM860X_MODULE
+	if (status & (HEADSET_STATUS | MIC_STATUS | SHORT_HS1 | SHORT_HS2 |
+		      SHORT_LO1 | SHORT_LO2))
+		trace_snd_soc_jack_irq(dev_name(pm860x->codec->dev));
+#endif
+
+	if ((pm860x->det.hp_det & SND_JACK_HEADPHONE)
+		&& (status & HEADSET_STATUS))
+		report |= SND_JACK_HEADPHONE;
+
+	if ((pm860x->det.mic_det & SND_JACK_MICROPHONE)
+		&& (status & MIC_STATUS))
+		mic_report |= SND_JACK_MICROPHONE;
+
+	if (pm860x->det.hs_shrt && (shrt & (SHORT_HS1 | SHORT_HS2)))
+		report |= pm860x->det.hs_shrt;
+
+	if (pm860x->det.hook_det && (status & HOOK_STATUS))
+		report |= pm860x->det.hook_det;
+
+	if (pm860x->det.lo_shrt && (shrt & (SHORT_LO1 | SHORT_LO2)))
+		report |= pm860x->det.lo_shrt;
+
+	if (report)
+		snd_soc_jack_report(pm860x->det.hp_jack, report, mask);
+	if (mic_report)
+		snd_soc_jack_report(pm860x->det.mic_jack, SND_JACK_MICROPHONE,
+				    SND_JACK_MICROPHONE);
+
+	dev_dbg(pm860x->codec->dev, "headphone report:0x%x, mask:%x\n",
+		report, mask);
+	dev_dbg(pm860x->codec->dev, "microphone report:0x%x\n", mic_report);
+	return IRQ_HANDLED;
+}
+
+int pm860x_hs_jack_detect(struct snd_soc_codec *codec,
+			  struct snd_soc_jack *jack,
+			  int det, int hook, int hs_shrt, int lo_shrt)
+{
+	struct pm860x_priv *pm860x = snd_soc_codec_get_drvdata(codec);
+	int data;
+
+	pm860x->det.hp_jack = jack;
+	pm860x->det.hp_det = det;
+	pm860x->det.hook_det = hook;
+	pm860x->det.hs_shrt = hs_shrt;
+	pm860x->det.lo_shrt = lo_shrt;
+
+	if (det & SND_JACK_HEADPHONE)
+		pm860x_set_bits(codec->control_data, REG_HS_DET,
+				EN_HS_DET, EN_HS_DET);
+	/* headset short detect */
+	if (hs_shrt) {
+		data = CLR_SHORT_HS2 | CLR_SHORT_HS1;
+		pm860x_set_bits(codec->control_data, REG_SHORTS, data, data);
+	}
+	/* Lineout short detect */
+	if (lo_shrt) {
+		data = CLR_SHORT_LO2 | CLR_SHORT_LO1;
+		pm860x_set_bits(codec->control_data, REG_SHORTS, data, data);
+	}
+
+	/* sync status */
+	pm860x_codec_handler(0, pm860x);
+	return 0;
+}
+EXPORT_SYMBOL_GPL(pm860x_hs_jack_detect);
+
+int pm860x_mic_jack_detect(struct snd_soc_codec *codec,
+			   struct snd_soc_jack *jack, int det)
+{
+	struct pm860x_priv *pm860x = snd_soc_codec_get_drvdata(codec);
+
+	pm860x->det.mic_jack = jack;
+	pm860x->det.mic_det = det;
+
+	if (det & SND_JACK_MICROPHONE)
+		pm860x_set_bits(codec->control_data, REG_MIC_DET,
+				MICDET_MASK, MICDET_MASK);
+
+	/* sync status */
+	pm860x_codec_handler(0, pm860x);
+	return 0;
+}
+EXPORT_SYMBOL_GPL(pm860x_mic_jack_detect);
+>>>>>>> v3.4.6
 
 static int pm860x_probe(struct snd_soc_codec *codec)
 {
 	struct pm860x_priv *pm860x = snd_soc_codec_get_drvdata(codec);
+<<<<<<< HEAD
 	struct snd_soc_dapm_context *dapm = &codec->dapm;
 	int ret;
+=======
+	int i, ret;
+>>>>>>> v3.4.6
 
 	pm860x->codec = codec;
 
 	codec->control_data = pm860x->i2c;
 
+<<<<<<< HEAD
 	pm860x_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
 
 	ret = pm860x_bulk_read(codec->control_data, PM860X_MISC_BASE,
@@ -1573,12 +1790,29 @@ static int pm860x_probe(struct snd_soc_codec *codec)
 	ret = pm860x_bulk_read(codec->control_data, PM860X_AUDIO_BASE,
 			       REG_AUDIO_SIZE,
 			       codec->reg_cache + REG_MISC_SIZE);
+=======
+	for (i = 0; i < 4; i++) {
+		ret = request_threaded_irq(pm860x->irq[i], NULL,
+					   pm860x_codec_handler, IRQF_ONESHOT,
+					   pm860x->name[i], pm860x);
+		if (ret < 0) {
+			dev_err(codec->dev, "Failed to request IRQ!\n");
+			goto out;
+		}
+	}
+
+	pm860x_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
+
+	ret = pm860x_bulk_read(codec->control_data, REG_CACHE_BASE,
+			       REG_CACHE_SIZE, codec->reg_cache);
+>>>>>>> v3.4.6
 	if (ret < 0) {
 		dev_err(codec->dev, "Failed to fill register cache: %d\n",
 			ret);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/* add below snd ctls to keep align with audio server */
 	snd_soc_add_codec_controls(codec, pm860x_audio_controls,
 			     ARRAY_SIZE(pm860x_audio_controls));
@@ -1590,6 +1824,13 @@ static int pm860x_probe(struct snd_soc_codec *codec)
 	return 0;
 
 out:
+=======
+	return 0;
+
+out:
+	while (--i >= 0)
+		free_irq(pm860x->irq[i], pm860x);
+>>>>>>> v3.4.6
 	return ret;
 }
 
@@ -1598,8 +1839,13 @@ static int pm860x_remove(struct snd_soc_codec *codec)
 	struct pm860x_priv *pm860x = snd_soc_codec_get_drvdata(codec);
 	int i;
 
+<<<<<<< HEAD
 	for (i = IRQ_NUM; i > 0; i--)
 		free_irq(pm860x->irq[i - 1], pm860x);
+=======
+	for (i = 3; i >= 0; i--)
+		free_irq(pm860x->irq[i], pm860x);
+>>>>>>> v3.4.6
 	pm860x_set_bias_level(codec, SND_SOC_BIAS_OFF);
 	return 0;
 }
@@ -1609,12 +1855,24 @@ static struct snd_soc_codec_driver soc_codec_dev_pm860x = {
 	.remove		= pm860x_remove,
 	.read		= pm860x_read_reg_cache,
 	.write		= pm860x_write_reg_cache,
+<<<<<<< HEAD
 	.suspend	= pm860x_audio_suspend,
 	.resume		= pm860x_audio_resume,
+=======
+>>>>>>> v3.4.6
 	.reg_cache_size	= REG_CACHE_SIZE,
 	.reg_word_size	= sizeof(u8),
 	.set_bias_level	= pm860x_set_bias_level,
 
+<<<<<<< HEAD
+=======
+	.controls = pm860x_snd_controls,
+	.num_controls = ARRAY_SIZE(pm860x_snd_controls),
+	.dapm_widgets = pm860x_dapm_widgets,
+	.num_dapm_widgets = ARRAY_SIZE(pm860x_dapm_widgets),
+	.dapm_routes = pm860x_dapm_routes,
+	.num_dapm_routes = ARRAY_SIZE(pm860x_dapm_routes),
+>>>>>>> v3.4.6
 };
 
 static int __devinit pm860x_codec_probe(struct platform_device *pdev)
@@ -1622,7 +1880,11 @@ static int __devinit pm860x_codec_probe(struct platform_device *pdev)
 	struct pm860x_chip *chip = dev_get_drvdata(pdev->dev.parent);
 	struct pm860x_priv *pm860x;
 	struct resource *res;
+<<<<<<< HEAD
 	int ret;
+=======
+	int i, ret;
+>>>>>>> v3.4.6
 
 	pm860x = devm_kzalloc(&pdev->dev, sizeof(struct pm860x_priv),
 			      GFP_KERNEL);
@@ -1632,6 +1894,7 @@ static int __devinit pm860x_codec_probe(struct platform_device *pdev)
 	pm860x->chip = chip;
 	pm860x->i2c = (chip->id == CHIP_PM8607) ? chip->client
 			: chip->companion;
+<<<<<<< HEAD
 
 	pm860x->clk = clk_get(NULL, "VCTCXO");
 	if (IS_ERR(pm860x->clk)) {
@@ -1659,12 +1922,25 @@ static int __devinit pm860x_codec_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Failed to request IRQ: #%d: %d\n",
 			pm860x->irq[0], ret);
 		goto out;
+=======
+	platform_set_drvdata(pdev, pm860x);
+
+	for (i = 0; i < 4; i++) {
+		res = platform_get_resource(pdev, IORESOURCE_IRQ, i);
+		if (!res) {
+			dev_err(&pdev->dev, "Failed to get IRQ resources\n");
+			goto out;
+		}
+		pm860x->irq[i] = res->start + chip->irq_base;
+		strncpy(pm860x->name[i], res->name, MAX_NAME_LEN);
+>>>>>>> v3.4.6
 	}
 
 	ret = snd_soc_register_codec(&pdev->dev, &soc_codec_dev_pm860x,
 				     pm860x_dai, ARRAY_SIZE(pm860x_dai));
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to register codec\n");
+<<<<<<< HEAD
 		goto register_codec_fail;
 	}
 	return ret;
@@ -1674,17 +1950,30 @@ register_codec_fail:
 out:
 	platform_set_drvdata(pdev, NULL);
 	devm_kfree(&pdev->dev, pm860x);
+=======
+		goto out;
+	}
+	return ret;
+
+out:
+	platform_set_drvdata(pdev, NULL);
+>>>>>>> v3.4.6
 	return -EINVAL;
 }
 
 static int __devexit pm860x_codec_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct pm860x_priv *pm860x = platform_get_drvdata(pdev);
 
 	free_irq(pm860x->irq[0], pm860x);
 	snd_soc_unregister_codec(&pdev->dev);
 	platform_set_drvdata(pdev, NULL);
 	devm_kfree(&pdev->dev, pm860x);
+=======
+	snd_soc_unregister_codec(&pdev->dev);
+	platform_set_drvdata(pdev, NULL);
+>>>>>>> v3.4.6
 	return 0;
 }
 
@@ -1703,3 +1992,7 @@ MODULE_DESCRIPTION("ASoC 88PM860x driver");
 MODULE_AUTHOR("Haojian Zhuang <haojian.zhuang@marvell.com>");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:88pm860x-codec");
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6

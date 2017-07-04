@@ -24,6 +24,7 @@
 #include "smscoreapi.h"
 #include "smsir.h"
 
+<<<<<<< HEAD
 #define SMS_BOARD_UNKNOWN						0
 #define SMS1XXX_BOARD_SIANO_STELLAR				1
 #define SMS1XXX_BOARD_SIANO_NOVA_A				2
@@ -45,6 +46,21 @@
 #define SMS1XXX_BOARD_SIANO_RIO					18
 #define SMS1XXX_BOARD_SIANO_DENVER_1530			19
 #define SMS1XXX_BOARD_SIANO_DENVER_2160			20
+=======
+#define SMS_BOARD_UNKNOWN 0
+#define SMS1XXX_BOARD_SIANO_STELLAR 1
+#define SMS1XXX_BOARD_SIANO_NOVA_A  2
+#define SMS1XXX_BOARD_SIANO_NOVA_B  3
+#define SMS1XXX_BOARD_SIANO_VEGA    4
+#define SMS1XXX_BOARD_HAUPPAUGE_CATAMOUNT 5
+#define SMS1XXX_BOARD_HAUPPAUGE_OKEMO_A 6
+#define SMS1XXX_BOARD_HAUPPAUGE_OKEMO_B 7
+#define SMS1XXX_BOARD_HAUPPAUGE_WINDHAM 8
+#define SMS1XXX_BOARD_HAUPPAUGE_TIGER_MINICARD 9
+#define SMS1XXX_BOARD_HAUPPAUGE_TIGER_MINICARD_R2 10
+#define SMS1XXX_BOARD_SIANO_NICE	11
+#define SMS1XXX_BOARD_SIANO_VENICE	12
+>>>>>>> v3.4.6
 
 struct sms_board_gpio_cfg {
 	int lna_vhf_exist;
@@ -71,7 +87,11 @@ struct sms_board_gpio_cfg {
 	int eeprom_wp;
 	int mrc_sense;
 	int mrc_pdn_resetn;
+<<<<<<< HEAD
 	int mrc_gp0;		/* mrcs spi int */
+=======
+	int mrc_gp0; /* mrcs spi int */
+>>>>>>> v3.4.6
 	int mrc_gp1;
 	int mrc_gp2;
 	int mrc_gp3;
@@ -83,6 +103,7 @@ struct sms_board {
 	enum sms_device_type_st type;
 	char *name, *fw[DEVICE_MODE_MAX];
 	struct sms_board_gpio_cfg board_cfg;
+<<<<<<< HEAD
 	/* enum ir_kb_type ir_kb_type; */
 	char *rc_codes;
 	char intf_num;
@@ -90,13 +111,22 @@ struct sms_board {
 	unsigned int mtu;
 	unsigned int crystal;
 	struct sms_antenna_config_ST *antenna_config;
+=======
+	char *rc_codes;				/* Name of IR codes table */
+
+>>>>>>> v3.4.6
 	/* gpios */
 	int led_power, led_hi, led_lo, lna_ctrl, rf_switch;
 };
 
+<<<<<<< HEAD
 struct sms_board *sms_get_board(int id);
 
 extern struct usb_device_id smsusb_id_table[];
+=======
+struct sms_board *sms_get_board(unsigned id);
+
+>>>>>>> v3.4.6
 extern struct smscore_device_t *coredev;
 
 enum SMS_BOARD_EVENTS {
@@ -121,7 +151,11 @@ enum SMS_BOARD_EVENTS {
 };
 
 int sms_board_event(struct smscore_device_t *coredev,
+<<<<<<< HEAD
 		    enum SMS_BOARD_EVENTS gevent);
+=======
+		enum SMS_BOARD_EVENTS gevent);
+>>>>>>> v3.4.6
 
 int sms_board_setup(struct smscore_device_t *coredev);
 
@@ -133,4 +167,8 @@ int sms_board_power(struct smscore_device_t *coredev, int onoff);
 int sms_board_lna_control(struct smscore_device_t *coredev, int onoff);
 
 extern int sms_board_load_modules(int id);
+<<<<<<< HEAD
+=======
+
+>>>>>>> v3.4.6
 #endif /* __SMS_CARDS_H__ */

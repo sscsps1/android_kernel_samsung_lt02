@@ -31,13 +31,20 @@ struct pxa3xx_nand_cmdset {
 
 struct pxa3xx_nand_flash {
 	char		*name;
+<<<<<<< HEAD
 	uint16_t	chip_id;
 	uint16_t	ext_id;
+=======
+	uint32_t	chip_id;
+>>>>>>> v3.4.6
 	unsigned int	page_per_block; /* Pages per block (PG_PER_BLK) */
 	unsigned int	page_size;	/* Page size in bytes (PAGE_SZ) */
 	unsigned int	flash_width;	/* Width of Flash memory (DWIDTH_M) */
 	unsigned int	dfc_width;	/* Width of flash controller(DWIDTH_C) */
+<<<<<<< HEAD
 	unsigned int	ecc_strength;   /* How strong ecc should be applied */
+=======
+>>>>>>> v3.4.6
 	unsigned int	num_blocks;	/* Number of physical blocks in Flash */
 
 	struct pxa3xx_nand_timing *timing;	/* NAND Flash timing */
@@ -62,6 +69,7 @@ struct pxa3xx_nand_platform_data {
 	 * Controller and the Data Flash Controller,  the arbiter
 	 * controls the ownership of the bus
 	 */
+<<<<<<< HEAD
 #define ARBI_EN		(1 << 0)
 	/* allow platform code to keep OBM/bootloader defined NFC config */
 #define CONFIG_KEEP	(1 << 1)
@@ -77,6 +85,12 @@ struct pxa3xx_nand_platform_data {
 	/* whether use polling mode */
 #define POLLING		(1 << 5)
 	int	attr;
+=======
+	int	enable_arbiter;
+
+	/* allow platform code to keep OBM/bootloader defined NFC config */
+	int	keep_config;
+>>>>>>> v3.4.6
 
 	/* indicate how many chip selects will be used */
 	int	num_cs;

@@ -76,6 +76,7 @@ config ARM_EXYNOS5250_CPUFREQ
 	help
 	  This adds the CPUFreq driver for Samsung EXYNOS5250
 	  SoC.
+<<<<<<< HEAD
 
 config ARM_PXA988_CPUFREQ
 	bool "MARVELL PXA988 SoCs"
@@ -84,3 +85,5 @@ config ARM_PXA988_CPUFREQ
 	  This adds the CPUFreq driver for PXA988
 
 	  If in doubt, say N.
+=======
+>>>>>>> v3.4.6

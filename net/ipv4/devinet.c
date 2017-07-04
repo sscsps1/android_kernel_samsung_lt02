@@ -58,7 +58,10 @@
 
 #include <net/arp.h>
 #include <net/ip.h>
+<<<<<<< HEAD
 #include <net/tcp.h>
+=======
+>>>>>>> v3.4.6
 #include <net/route.h>
 #include <net/ip_fib.h>
 #include <net/rtnetlink.h>
@@ -735,7 +738,10 @@ int devinet_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 	case SIOCSIFBRDADDR:	/* Set the broadcast address */
 	case SIOCSIFDSTADDR:	/* Set the destination address */
 	case SIOCSIFNETMASK: 	/* Set the netmask for the interface */
+<<<<<<< HEAD
 	case SIOCKILLADDR:	/* Nuke all sockets on this address */
+=======
+>>>>>>> v3.4.6
 		ret = -EACCES;
 		if (!capable(CAP_NET_ADMIN))
 			goto out;
@@ -787,8 +793,12 @@ int devinet_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 	}
 
 	ret = -EADDRNOTAVAIL;
+<<<<<<< HEAD
 	if (!ifa && cmd != SIOCSIFADDR && cmd != SIOCSIFFLAGS
 	    && cmd != SIOCKILLADDR)
+=======
+	if (!ifa && cmd != SIOCSIFADDR && cmd != SIOCSIFFLAGS)
+>>>>>>> v3.4.6
 		goto done;
 
 	switch (cmd) {
@@ -914,9 +924,12 @@ int devinet_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 			inet_insert_ifa(ifa);
 		}
 		break;
+<<<<<<< HEAD
 	case SIOCKILLADDR:	/* Nuke all connections on this address */
 		ret = tcp_nuke_addr(net, (struct sockaddr *) sin);
 		break;
+=======
+>>>>>>> v3.4.6
 	}
 done:
 	rtnl_unlock();

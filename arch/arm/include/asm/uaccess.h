@@ -101,6 +101,7 @@ extern int __get_user_1(void *);
 extern int __get_user_2(void *);
 extern int __get_user_4(void *);
 
+<<<<<<< HEAD
 #define __GUP_CLOBBER_1	"lr", "cc"
 #ifdef CONFIG_CPU_USE_DOMAINS
 #define __GUP_CLOBBER_2	"ip", "lr", "cc"
@@ -134,6 +135,30 @@ extern int __get_user_4(void *);
 			break;						\
 		case 4:							\
 			__get_user_x(__r2, __p, __e, __l, 4);		\
+=======
+#define __get_user_x(__r2,__p,__e,__s,__i...)				\
+	   __asm__ __volatile__ (					\
+		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
+		"bl	__get_user_" #__s				\
+		: "=&r" (__e), "=r" (__r2)				\
+		: "0" (__p)						\
+		: __i, "cc")
+
+#define get_user(x,p)							\
+	({								\
+		register const typeof(*(p)) __user *__p asm("r0") = (p);\
+		register unsigned long __r2 asm("r2");			\
+		register int __e asm("r0");				\
+		switch (sizeof(*(__p))) {				\
+		case 1:							\
+			__get_user_x(__r2, __p, __e, 1, "lr");		\
+	       		break;						\
+		case 2:							\
+			__get_user_x(__r2, __p, __e, 2, "r3", "lr");	\
+			break;						\
+		case 4:							\
+	       		__get_user_x(__r2, __p, __e, 4, "lr");		\
+>>>>>>> v3.4.6
 			break;						\
 		default: __e = __get_user_bad(); break;			\
 		}							\
@@ -146,6 +171,7 @@ extern int __put_user_2(void *, unsigned int);
 extern int __put_user_4(void *, unsigned int);
 extern int __put_user_8(void *, unsigned long long);
 
+<<<<<<< HEAD
 #define __put_user_x(__r2,__p,__e,__l,__s)				\
 	   __asm__ __volatile__ (					\
 		__asmeq("%0", "r0") __asmeq("%2", "r2")			\
@@ -153,10 +179,19 @@ extern int __put_user_8(void *, unsigned long long);
 		"bl	__put_user_" #__s				\
 		: "=&r" (__e)						\
 		: "0" (__p), "r" (__r2), "r" (__l)			\
+=======
+#define __put_user_x(__r2,__p,__e,__s)					\
+	   __asm__ __volatile__ (					\
+		__asmeq("%0", "r0") __asmeq("%2", "r2")			\
+		"bl	__put_user_" #__s				\
+		: "=&r" (__e)						\
+		: "0" (__p), "r" (__r2)					\
+>>>>>>> v3.4.6
 		: "ip", "lr", "cc")
 
 #define put_user(x,p)							\
 	({								\
+<<<<<<< HEAD
 		unsigned long __limit = current_thread_info()->addr_limit - 1; \
 		register const typeof(*(p)) __r2 asm("r2") = (x);	\
 		register const typeof(*(p)) __user *__p asm("r0") = (p);\
@@ -174,6 +209,23 @@ extern int __put_user_8(void *, unsigned long long);
 			break;						\
 		case 8:							\
 			__put_user_x(__r2, __p, __e, __l, 8);		\
+=======
+		register const typeof(*(p)) __r2 asm("r2") = (x);	\
+		register const typeof(*(p)) __user *__p asm("r0") = (p);\
+		register int __e asm("r0");				\
+		switch (sizeof(*(__p))) {				\
+		case 1:							\
+			__put_user_x(__r2, __p, __e, 1);		\
+			break;						\
+		case 2:							\
+			__put_user_x(__r2, __p, __e, 2);		\
+			break;						\
+		case 4:							\
+			__put_user_x(__r2, __p, __e, 4);		\
+			break;						\
+		case 8:							\
+			__put_user_x(__r2, __p, __e, 8);		\
+>>>>>>> v3.4.6
 			break;						\
 		default: __e = __put_user_bad(); break;			\
 		}							\

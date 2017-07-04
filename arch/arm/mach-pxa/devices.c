@@ -19,7 +19,10 @@
 #include <mach/audio.h>
 #include <mach/hardware.h>
 #include <plat/pxa3xx_nand.h>
+<<<<<<< HEAD
 #include <plat/pxa3xx_onenand.h>
+=======
+>>>>>>> v3.4.6
 
 #include "devices.h"
 #include "generic.h"
@@ -339,6 +342,7 @@ struct platform_device pxa27x_device_i2c_power = {
 };
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PXA95x
 static u64 pxa95x_i2c_dma_mask = DMA_BIT_MASK(32);
 static struct resource pxa95x_resources_i2c0[] = {
@@ -441,6 +445,8 @@ struct platform_device pxa95x_device_i2c2 = {
 };
 #endif
 
+=======
+>>>>>>> v3.4.6
 static struct resource pxai2s_resources[] = {
 	{
 		.start	= 0x40400000,
@@ -519,11 +525,14 @@ static struct resource pxa_rtc_resources[] = {
 		.name	= "rtc alarm",
 		.flags  = IORESOURCE_IRQ,
 	},
+<<<<<<< HEAD
 	[3] = {
 		.start  = 0x40F500A0,
 		.end    = 0x40F500A0 + 0x04,
 		.flags  = IORESOURCE_MEM,
 	},
+=======
+>>>>>>> v3.4.6
 };
 
 struct platform_device pxa_device_rtc = {
@@ -1138,6 +1147,7 @@ void __init pxa3xx_set_nand_info(struct pxa3xx_nand_platform_data *info)
 	pxa_register_device(&pxa3xx_device_nand, info);
 }
 
+<<<<<<< HEAD
 /* pxa3xx onenand resource */
 static u64 pxa3xx_onenand_dma_mask = DMA_BIT_MASK(32);
 
@@ -1165,6 +1175,8 @@ void __init pxa3xx_set_onenand_info(struct pxa3xx_onenand_platform_data *info)
 	pxa_register_device(&pxa3xx_device_onenand, info);
 }
 
+=======
+>>>>>>> v3.4.6
 static u64 pxa3xx_ssp4_dma_mask = DMA_BIT_MASK(32);
 
 static struct resource pxa3xx_resource_ssp4[] = {

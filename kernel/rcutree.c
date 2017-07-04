@@ -724,7 +724,11 @@ static void print_other_cpu_stall(struct rcu_state *rsp)
 	int cpu;
 	long delta;
 	unsigned long flags;
+<<<<<<< HEAD
 	int ndetected = 0;
+=======
+	int ndetected;
+>>>>>>> v3.4.6
 	struct rcu_node *rnp = rcu_get_root(rsp);
 
 	/* Only let one CPU complain about others per time interval. */
@@ -765,7 +769,11 @@ static void print_other_cpu_stall(struct rcu_state *rsp)
 	 */
 	rnp = rcu_get_root(rsp);
 	raw_spin_lock_irqsave(&rnp->lock, flags);
+<<<<<<< HEAD
 	ndetected += rcu_print_task_stall(rnp);
+=======
+	ndetected = rcu_print_task_stall(rnp);
+>>>>>>> v3.4.6
 	raw_spin_unlock_irqrestore(&rnp->lock, flags);
 
 	print_cpu_stall_info_end();

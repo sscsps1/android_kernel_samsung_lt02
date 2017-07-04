@@ -449,11 +449,16 @@ void i2c_lock_adapter(struct i2c_adapter *adapter)
 
 	if (parent)
 		i2c_lock_adapter(parent);
+<<<<<<< HEAD
 	else {
 		rt_mutex_lock(&adapter->bus_lock);
 		if (adapter->hardware_lock)
 			adapter->hardware_lock();
 	}
+=======
+	else
+		rt_mutex_lock(&adapter->bus_lock);
+>>>>>>> v3.4.6
 }
 EXPORT_SYMBOL_GPL(i2c_lock_adapter);
 
@@ -464,6 +469,7 @@ EXPORT_SYMBOL_GPL(i2c_lock_adapter);
 static int i2c_trylock_adapter(struct i2c_adapter *adapter)
 {
 	struct i2c_adapter *parent = i2c_parent_is_i2c_adapter(adapter);
+<<<<<<< HEAD
 	int ret = 0;
 
 	if (parent)
@@ -477,6 +483,13 @@ static int i2c_trylock_adapter(struct i2c_adapter *adapter)
 		}
 		return ret;
 	}
+=======
+
+	if (parent)
+		return i2c_trylock_adapter(parent);
+	else
+		return rt_mutex_trylock(&adapter->bus_lock);
+>>>>>>> v3.4.6
 }
 
 /**
@@ -489,11 +502,16 @@ void i2c_unlock_adapter(struct i2c_adapter *adapter)
 
 	if (parent)
 		i2c_unlock_adapter(parent);
+<<<<<<< HEAD
 	else {
 		if (adapter->hardware_unlock)
 			adapter->hardware_unlock();
 		rt_mutex_unlock(&adapter->bus_lock);
 	}
+=======
+	else
+		rt_mutex_unlock(&adapter->bus_lock);
+>>>>>>> v3.4.6
 }
 EXPORT_SYMBOL_GPL(i2c_unlock_adapter);
 

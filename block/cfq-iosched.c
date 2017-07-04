@@ -3377,10 +3377,13 @@ static inline int __cfq_may_queue(struct cfq_queue *cfqq)
 		return ELV_MQUEUE_MUST;
 	}
 
+<<<<<<< HEAD
 	/* if realtime class, return 'must queue' to improve I/O */
 	if (cfq_class_rt(cfqq))
 		return ELV_MQUEUE_MUST;
 
+=======
+>>>>>>> v3.4.6
 	return ELV_MQUEUE_MAY;
 }
 

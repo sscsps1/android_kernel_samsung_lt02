@@ -31,13 +31,20 @@
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
+=======
+#include <linux/export.h>
+>>>>>>> v3.4.6
 #include <linux/slab.h>
 #include <linux/uaccess.h>
 #include <linux/poll.h>
 
 #include <linux/hid.h>
 #include <linux/hid-debug.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> v3.4.6
 
 static struct dentry *hid_debug_root;
 
@@ -114,6 +121,17 @@ static const struct hid_usage_entry hid_usage_table[] = {
       {0, 0xbd, "FlareRelease"},
       {0, 0xbe, "LandingGear"},
       {0, 0xbf, "ToeBrake"},
+<<<<<<< HEAD
+=======
+  {  6, 0, "GenericDeviceControls" },
+      {0, 0x20, "BatteryStrength" },
+      {0, 0x21, "WirelessChannel" },
+      {0, 0x22, "WirelessID" },
+      {0, 0x23, "DiscoverWirelessControl" },
+      {0, 0x24, "SecurityCodeCharacterEntered" },
+      {0, 0x25, "SecurityCodeCharactedErased" },
+      {0, 0x26, "SecurityCodeCleared" },
+>>>>>>> v3.4.6
   {  7, 0, "Keyboard" },
   {  8, 0, "LED" },
       {0, 0x01, "NumLock"},

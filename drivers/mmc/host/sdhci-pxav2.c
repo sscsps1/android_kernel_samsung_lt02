@@ -28,9 +28,12 @@
 #include <linux/mmc/host.h>
 #include <linux/platform_data/pxa_sdhci.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/of_device.h>
 
+=======
+>>>>>>> v3.4.6
 #include "sdhci.h"
 #include "sdhci-pltfm.h"
 
@@ -45,7 +48,11 @@
 #define SDCLK_SEL_SHIFT		8
 #define SDCLK_SEL_MASK		0x3
 #define SDCLK_DELAY_SHIFT	10
+<<<<<<< HEAD
 #define SDCLK_DELAY_MASK	0xf
+=======
+#define SDCLK_DELAY_MASK	0x3c
+>>>>>>> v3.4.6
 
 #define SD_CE_ATA_2		0xea
 #define MMC_CARD		0x1000
@@ -124,6 +131,7 @@ static struct sdhci_ops pxav2_sdhci_ops = {
 	.platform_8bit_width = pxav2_mmc_set_width,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 static const struct of_device_id sdhci_pxav2_of_match[] = {
 	{
@@ -166,6 +174,8 @@ static inline struct sdhci_pxa_platdata *pxav2_get_mmc_pdata(struct device *dev)
 }
 #endif
 
+=======
+>>>>>>> v3.4.6
 static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 {
 	struct sdhci_pltfm_host *pltfm_host;
@@ -173,8 +183,11 @@ static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct sdhci_host *host = NULL;
 	struct sdhci_pxa *pxa = NULL;
+<<<<<<< HEAD
 	const struct of_device_id *match;
 
+=======
+>>>>>>> v3.4.6
 	int ret;
 	struct clk *clk;
 
@@ -197,16 +210,23 @@ static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 		goto err_clk_get;
 	}
 	pltfm_host->clk = clk;
+<<<<<<< HEAD
 	clk_prepare_enable(clk);
+=======
+	clk_enable(clk);
+>>>>>>> v3.4.6
 
 	host->quirks = SDHCI_QUIRK_BROKEN_ADMA
 		| SDHCI_QUIRK_BROKEN_TIMEOUT_VAL
 		| SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN;
 
+<<<<<<< HEAD
 	match = of_match_device(of_match_ptr(sdhci_pxav2_of_match), &pdev->dev);
 	if (match) {
 		pdata = pxav2_get_mmc_pdata(dev);
 	}
+=======
+>>>>>>> v3.4.6
 	if (pdata) {
 		if (pdata->flags & PXA_FLAG_CARD_PERMANENT) {
 			/* on-chip device */
@@ -222,8 +242,11 @@ static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 			host->quirks |= pdata->quirks;
 		if (pdata->host_caps)
 			host->mmc->caps |= pdata->host_caps;
+<<<<<<< HEAD
 		if (pdata->host_caps2)
 			host->mmc->caps2 |= pdata->host_caps2;
+=======
+>>>>>>> v3.4.6
 		if (pdata->pm_caps)
 			host->mmc->pm_caps |= pdata->pm_caps;
 	}
@@ -238,6 +261,7 @@ static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, host);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SD8XXX_RFKILL
 	if (pdata->pmmc)
 		*pdata->pmmc = host->mmc;
@@ -247,6 +271,12 @@ static int __devinit sdhci_pxav2_probe(struct platform_device *pdev)
 
 err_add_host:
 	clk_disable_unprepare(clk);
+=======
+	return 0;
+
+err_add_host:
+	clk_disable(clk);
+>>>>>>> v3.4.6
 	clk_put(clk);
 err_clk_get:
 	sdhci_pltfm_free(pdev);
@@ -262,7 +292,11 @@ static int __devexit sdhci_pxav2_remove(struct platform_device *pdev)
 
 	sdhci_remove_host(host, 1);
 
+<<<<<<< HEAD
 	clk_disable_unprepare(pltfm_host->clk);
+=======
+	clk_disable(pltfm_host->clk);
+>>>>>>> v3.4.6
 	clk_put(pltfm_host->clk);
 	sdhci_pltfm_free(pdev);
 	kfree(pxa);
@@ -276,9 +310,12 @@ static struct platform_driver sdhci_pxav2_driver = {
 	.driver		= {
 		.name	= "sdhci-pxav2",
 		.owner	= THIS_MODULE,
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 		.of_match_table = sdhci_pxav2_of_match,
 #endif
+=======
+>>>>>>> v3.4.6
 		.pm	= SDHCI_PLTFM_PMOPS,
 	},
 	.probe		= sdhci_pxav2_probe,

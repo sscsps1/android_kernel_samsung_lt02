@@ -66,7 +66,10 @@ static int twd_set_next_event(unsigned long evt,
 {
 	unsigned long ctrl = __raw_readl(twd_base + TWD_TIMER_CONTROL);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> v3.4.6
 	ctrl |= TWD_TIMER_CONTROL_ENABLE;
 
 	__raw_writel(evt, twd_base + TWD_TIMER_COUNTER);

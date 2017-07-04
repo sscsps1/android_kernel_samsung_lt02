@@ -103,6 +103,7 @@ int cpuidle_play_dead(void)
 }
 
 /**
+<<<<<<< HEAD
  * cpuidle_enter_state - enter the state and update stats
  * @dev: cpuidle device for this cpu
  * @drv: cpuidle driver for this cpu
@@ -131,6 +132,8 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 }
 
 /**
+=======
+>>>>>>> v3.4.6
  * cpuidle_idle_call - the main idle loop
  *
  * NOTE: no locks or semaphores should be used here
@@ -171,15 +174,34 @@ int cpuidle_idle_call(void)
 	trace_power_start_rcuidle(POWER_CSTATE, next_state, dev->cpu);
 	trace_cpu_idle_rcuidle(next_state, dev->cpu);
 
+<<<<<<< HEAD
 	if (cpuidle_state_is_coupled(dev, drv, next_state))
 		entered_state = cpuidle_enter_state_coupled(dev, drv,
 							    next_state);
 	else
 		entered_state = cpuidle_enter_state(dev, drv, next_state);
+=======
+	entered_state = cpuidle_enter_ops(dev, drv, next_state);
+>>>>>>> v3.4.6
 
 	trace_power_end_rcuidle(dev->cpu);
 	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, dev->cpu);
 
+<<<<<<< HEAD
+=======
+	if (entered_state >= 0) {
+		/* Update cpuidle counters */
+		/* This can be moved to within driver enter routine
+		 * but that results in multiple copies of same code.
+		 */
+		dev->states_usage[entered_state].time +=
+				(unsigned long long)dev->last_residency;
+		dev->states_usage[entered_state].usage++;
+	} else {
+		dev->last_residency = 0;
+	}
+
+>>>>>>> v3.4.6
 	/* give the governor an opportunity to reflect on the outcome */
 	if (cpuidle_curr_governor->reflect)
 		cpuidle_curr_governor->reflect(dev, entered_state);
@@ -407,6 +429,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
 
 	per_cpu(cpuidle_devices, dev->cpu) = dev;
 	list_add(&dev->device_list, &cpuidle_detected_devices);
+<<<<<<< HEAD
 	ret = cpuidle_add_sysfs(cpu_dev);
 	if (ret)
 		goto err_sysfs;
@@ -426,6 +449,15 @@ err_sysfs:
 	per_cpu(cpuidle_devices, dev->cpu) = NULL;
 	module_put(cpuidle_driver->owner);
 	return ret;
+=======
+	if ((ret = cpuidle_add_sysfs(cpu_dev))) {
+		module_put(cpuidle_driver->owner);
+		return ret;
+	}
+
+	dev->registered = 1;
+	return 0;
+>>>>>>> v3.4.6
 }
 
 /**
@@ -475,8 +507,11 @@ void cpuidle_unregister_device(struct cpuidle_device *dev)
 	wait_for_completion(&dev->kobj_unregister);
 	per_cpu(cpuidle_devices, dev->cpu) = NULL;
 
+<<<<<<< HEAD
 	cpuidle_coupled_unregister_device(dev);
 
+=======
+>>>>>>> v3.4.6
 	cpuidle_resume_and_unlock();
 
 	module_put(cpuidle_driver->owner);

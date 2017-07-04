@@ -10,7 +10,10 @@
  */
 
 #include <linux/devfreq.h>
+<<<<<<< HEAD
 #include "governor.h"
+=======
+>>>>>>> v3.4.6
 
 static int devfreq_performance_func(struct devfreq *df,
 				    unsigned long *freq)
@@ -26,6 +29,7 @@ static int devfreq_performance_func(struct devfreq *df,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int performance_init(struct devfreq *devfreq)
 {
 	return update_devfreq(devfreq);
@@ -34,6 +38,10 @@ static int performance_init(struct devfreq *devfreq)
 const struct devfreq_governor devfreq_performance = {
 	.name = "performance",
 	.init = performance_init,
+=======
+const struct devfreq_governor devfreq_performance = {
+	.name = "performance",
+>>>>>>> v3.4.6
 	.get_target_freq = devfreq_performance_func,
 	.no_central_polling = true,
 };

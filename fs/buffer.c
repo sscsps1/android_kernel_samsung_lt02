@@ -603,6 +603,7 @@ void mark_buffer_dirty_inode(struct buffer_head *bh, struct inode *inode)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_inode);
 
+<<<<<<< HEAD
 void mark_buffer_dirty_inode_sync(struct buffer_head *bh, struct inode *inode)
 {
 	set_buffer_sync_flush(bh);
@@ -610,6 +611,8 @@ void mark_buffer_dirty_inode_sync(struct buffer_head *bh, struct inode *inode)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_inode_sync);
 
+=======
+>>>>>>> v3.4.6
 /*
  * Mark the page dirty, and set it dirty in the radix tree, and mark the inode
  * dirty.
@@ -921,7 +924,11 @@ link_dev_buffers(struct page *page, struct buffer_head *head)
 /*
  * Initialise the state of a blockdev page's buffers.
  */ 
+<<<<<<< HEAD
 static sector_t
+=======
+static void
+>>>>>>> v3.4.6
 init_page_buffers(struct page *page, struct block_device *bdev,
 			sector_t block, int size)
 {
@@ -943,41 +950,64 @@ init_page_buffers(struct page *page, struct block_device *bdev,
 		block++;
 		bh = bh->b_this_page;
 	} while (bh != head);
+<<<<<<< HEAD
 
 	/*
 	 * Caller needs to validate requested block against end of device.
 	 */
 	return end_block;
+=======
+>>>>>>> v3.4.6
 }
 
 /*
  * Create the page-cache page that contains the requested block.
  *
+<<<<<<< HEAD
  * This is used purely for blockdev mappings.
  */
 static int
 grow_dev_page(struct block_device *bdev, sector_t block,
 		pgoff_t index, int size, int sizebits)
+=======
+ * This is user purely for blockdev mappings.
+ */
+static struct page *
+grow_dev_page(struct block_device *bdev, sector_t block,
+		pgoff_t index, int size)
+>>>>>>> v3.4.6
 {
 	struct inode *inode = bdev->bd_inode;
 	struct page *page;
 	struct buffer_head *bh;
+<<<<<<< HEAD
 	sector_t end_block;
 	int ret = 0;		/* Will call free_more_memory() */
+=======
+>>>>>>> v3.4.6
 
 	page = find_or_create_page(inode->i_mapping, index,
 		(mapping_gfp_mask(inode->i_mapping) & ~__GFP_FS)|__GFP_MOVABLE);
 	if (!page)
+<<<<<<< HEAD
 		return ret;
+=======
+		return NULL;
+>>>>>>> v3.4.6
 
 	BUG_ON(!PageLocked(page));
 
 	if (page_has_buffers(page)) {
 		bh = page_buffers(page);
 		if (bh->b_size == size) {
+<<<<<<< HEAD
 			end_block = init_page_buffers(page, bdev,
 						index << sizebits, size);
 			goto done;
+=======
+			init_page_buffers(page, bdev, block, size);
+			return page;
+>>>>>>> v3.4.6
 		}
 		if (!try_to_free_buffers(page))
 			goto failed;
@@ -997,15 +1027,25 @@ grow_dev_page(struct block_device *bdev, sector_t block,
 	 */
 	spin_lock(&inode->i_mapping->private_lock);
 	link_dev_buffers(page, bh);
+<<<<<<< HEAD
 	end_block = init_page_buffers(page, bdev, index << sizebits, size);
 	spin_unlock(&inode->i_mapping->private_lock);
 done:
 	ret = (block < end_block) ? 1 : -ENXIO;
+=======
+	init_page_buffers(page, bdev, block, size);
+	spin_unlock(&inode->i_mapping->private_lock);
+	return page;
+>>>>>>> v3.4.6
 
 failed:
 	unlock_page(page);
 	page_cache_release(page);
+<<<<<<< HEAD
 	return ret;
+=======
+	return NULL;
+>>>>>>> v3.4.6
 }
 
 /*
@@ -1015,6 +1055,10 @@ failed:
 static int
 grow_buffers(struct block_device *bdev, sector_t block, int size)
 {
+<<<<<<< HEAD
+=======
+	struct page *page;
+>>>>>>> v3.4.6
 	pgoff_t index;
 	int sizebits;
 
@@ -1038,14 +1082,31 @@ grow_buffers(struct block_device *bdev, sector_t block, int size)
 			bdevname(bdev, b));
 		return -EIO;
 	}
+<<<<<<< HEAD
 
 	/* Create a page with the proper size buffers.. */
 	return grow_dev_page(bdev, block, index, size, sizebits);
+=======
+	block = index << sizebits;
+	/* Create a page with the proper size buffers.. */
+	page = grow_dev_page(bdev, block, index, size);
+	if (!page)
+		return 0;
+	unlock_page(page);
+	page_cache_release(page);
+	return 1;
+>>>>>>> v3.4.6
 }
 
 static struct buffer_head *
 __getblk_slow(struct block_device *bdev, sector_t block, int size)
 {
+<<<<<<< HEAD
+=======
+	int ret;
+	struct buffer_head *bh;
+
+>>>>>>> v3.4.6
 	/* Size must be multiple of hard sectorsize */
 	if (unlikely(size & (bdev_logical_block_size(bdev)-1) ||
 			(size < 512 || size > PAGE_SIZE))) {
@@ -1058,6 +1119,7 @@ __getblk_slow(struct block_device *bdev, sector_t block, int size)
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	for (;;) {
 		struct buffer_head * bh;
 		int ret;
@@ -1072,6 +1134,23 @@ __getblk_slow(struct block_device *bdev, sector_t block, int size)
 		if (ret == 0)
 			free_more_memory();
 	}
+=======
+retry:
+	bh = __find_get_block(bdev, block, size);
+	if (bh)
+		return bh;
+
+	ret = grow_buffers(bdev, block, size);
+	if (ret == 0) {
+		free_more_memory();
+		goto retry;
+	} else if (ret > 0) {
+		bh = __find_get_block(bdev, block, size);
+		if (bh)
+			return bh;
+	}
+	return NULL;
+>>>>>>> v3.4.6
 }
 
 /*
@@ -1136,6 +1215,7 @@ void mark_buffer_dirty(struct buffer_head *bh)
 }
 EXPORT_SYMBOL(mark_buffer_dirty);
 
+<<<<<<< HEAD
 void mark_buffer_dirty_sync(struct buffer_head *bh)
 {
 	WARN_ON_ONCE(!buffer_uptodate(bh));
@@ -1164,6 +1244,8 @@ void mark_buffer_dirty_sync(struct buffer_head *bh)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_sync);
 
+=======
+>>>>>>> v3.4.6
 /*
  * Decrement a buffer_head's reference count.  If all buffers against a page
  * have zero reference count, are clean and unlocked, and if the page is clean
@@ -1355,6 +1437,13 @@ EXPORT_SYMBOL(__find_get_block);
  * which corresponds to the passed block_device, block and size. The
  * returned buffer has its reference count incremented.
  *
+<<<<<<< HEAD
+=======
+ * __getblk() cannot fail - it just keeps trying.  If you pass it an
+ * illegal block number, __getblk() will happily return a buffer_head
+ * which represents the non-existent block.  Very weird.
+ *
+>>>>>>> v3.4.6
  * __getblk() will lock up the machine if grow_dev_page's try_to_free_buffers()
  * attempt is failing.  FIXME, perhaps?
  */
@@ -2943,11 +3032,14 @@ int submit_bh(int rw, struct buffer_head * bh)
 	bio->bi_end_io = end_bio_bh_io_sync;
 	bio->bi_private = bh;
 
+<<<<<<< HEAD
 	if(buffer_sync_flush(bh)) {
 		rw |= REQ_SYNC;
 		clear_buffer_sync_flush(bh);
 	}
 
+=======
+>>>>>>> v3.4.6
 	bio_get(bio);
 	submit_bio(rw, bio);
 

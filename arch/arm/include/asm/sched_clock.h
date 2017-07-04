@@ -10,7 +10,10 @@
 
 extern void sched_clock_postinit(void);
 extern void setup_sched_clock(u32 (*read)(void), int bits, unsigned long rate);
+<<<<<<< HEAD
 extern void setup_sched_clock_needs_suspend(u32 (*read)(void), int bits,
 		unsigned long rate);
+=======
+>>>>>>> v3.4.6
 
 #endif

@@ -770,7 +770,10 @@ void rfkill_pause_polling(struct rfkill *rfkill)
 }
 EXPORT_SYMBOL(rfkill_pause_polling);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RFKILL_PM
+=======
+>>>>>>> v3.4.6
 void rfkill_resume_polling(struct rfkill *rfkill)
 {
 	BUG_ON(!rfkill);
@@ -805,17 +808,25 @@ static int rfkill_resume(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> v3.4.6
 
 static struct class rfkill_class = {
 	.name		= "rfkill",
 	.dev_release	= rfkill_release,
 	.dev_attrs	= rfkill_dev_attrs,
 	.dev_uevent	= rfkill_dev_uevent,
+<<<<<<< HEAD
 #ifdef CONFIG_RFKILL_PM
 	.suspend	= rfkill_suspend,
 	.resume		= rfkill_resume,
 #endif
+=======
+	.suspend	= rfkill_suspend,
+	.resume		= rfkill_resume,
+>>>>>>> v3.4.6
 };
 
 bool rfkill_blocked(struct rfkill *rfkill)

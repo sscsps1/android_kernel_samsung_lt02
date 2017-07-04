@@ -399,9 +399,12 @@ int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	/*add 2ms for change mode. This is inand bug*/ 
 	mdelay(2);
 
+=======
+>>>>>>> v3.4.6
 	/* Must check status to be sure of no errors */
 	do {
 		err = mmc_send_status(card, &status);
@@ -572,6 +575,10 @@ int mmc_send_hpi_cmd(struct mmc_card *card, u32 *status)
 
 	cmd.opcode = opcode;
 	cmd.arg = card->rca << 16 | 1;
+<<<<<<< HEAD
+=======
+	cmd.cmd_timeout_ms = card->ext_csd.out_of_int_time;
+>>>>>>> v3.4.6
 
 	err = mmc_wait_for_cmd(card->host, &cmd, 0);
 	if (err) {

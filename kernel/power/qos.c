@@ -29,10 +29,15 @@
 
 /*#define DEBUG*/
 
+<<<<<<< HEAD
 #include <linux/debugfs.h>
 #include <linux/pm_qos.h>
 #include <linux/sched.h>
 #include <linux/seq_file.h>
+=======
+#include <linux/pm_qos.h>
+#include <linux/sched.h>
+>>>>>>> v3.4.6
 #include <linux/spinlock.h>
 #include <linux/slab.h>
 #include <linux/time.h>
@@ -47,8 +52,23 @@
 #include <linux/uaccess.h>
 #include <linux/export.h>
 
+<<<<<<< HEAD
 
 DEFINE_SPINLOCK(pm_qos_lock);
+=======
+/*
+ * locking rule: all changes to constraints or notifiers lists
+ * or pm_qos_object list and pm_qos_objects need to happen with pm_qos_lock
+ * held, taken with _irqsave.  One lock to rule them all
+ */
+struct pm_qos_object {
+	struct pm_qos_constraints *constraints;
+	struct miscdevice pm_qos_power_miscdev;
+	char *name;
+};
+
+static DEFINE_SPINLOCK(pm_qos_lock);
+>>>>>>> v3.4.6
 
 static struct pm_qos_object null_pm_qos;
 
@@ -92,6 +112,7 @@ static struct pm_qos_object network_throughput_pm_qos = {
 	.name = "network_throughput",
 };
 
+<<<<<<< HEAD
 static BLOCKING_NOTIFIER_HEAD(cpuidle_block_notifier);
 static struct pm_qos_constraints cpuidle_block_constraints = {
 	.list = PLIST_HEAD_INIT(cpuidle_block_constraints.list),
@@ -228,6 +249,14 @@ struct pm_qos_object *pm_qos_array[] = {
 	&gpu_freq_3d_max_pm_qos,
 	&gpu_freq_2d_max_pm_qos,
 	&gpu_freq_sh_max_pm_qos,
+=======
+
+static struct pm_qos_object *pm_qos_array[] = {
+	&null_pm_qos,
+	&cpu_dma_pm_qos,
+	&network_lat_pm_qos,
+	&network_throughput_pm_qos
+>>>>>>> v3.4.6
 };
 
 static ssize_t pm_qos_power_write(struct file *filp, const char __user *buf,
@@ -637,6 +666,7 @@ static ssize_t pm_qos_power_write(struct file *filp, const char __user *buf,
 	return count;
 }
 
+<<<<<<< HEAD
 static struct dentry *cpuidle_block_dentry;
 
 /**
@@ -702,6 +732,8 @@ static int __init cpuidle_block_debugfs_init(void)
 }
 
 postcore_initcall(cpuidle_block_debugfs_init);
+=======
+>>>>>>> v3.4.6
 
 static int __init pm_qos_power_init(void)
 {
@@ -723,6 +755,7 @@ static int __init pm_qos_power_init(void)
 }
 
 late_initcall(pm_qos_power_init);
+<<<<<<< HEAD
 
 
 /**
@@ -853,3 +886,5 @@ static int __init gpufreq_qos_debugfs_init(void)
 	return 0;
 }
 postcore_initcall(gpufreq_qos_debugfs_init);
+=======
+>>>>>>> v3.4.6

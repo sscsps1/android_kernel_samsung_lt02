@@ -17,6 +17,7 @@
 #define APMU_REG(x)	(APMU_VIRT_BASE + (x))
 
 /* Clock Reset Control */
+<<<<<<< HEAD
 #define APMU_CC_SP	APMU_REG(0x000)
 #define APMU_CC_PJ	APMU_REG(0x004)
 #define APMU_CC2_PJ	APMU_REG(0x150)
@@ -35,6 +36,11 @@
 #define APMU_LCD	APMU_REG(0x04c)
 #define APMU_CCIC_RST	APMU_REG(0x050)
 #define APMU_CCIC2_RST	APMU_REG(0x0f4)
+=======
+#define APMU_IRE	APMU_REG(0x048)
+#define APMU_LCD	APMU_REG(0x04c)
+#define APMU_CCIC	APMU_REG(0x050)
+>>>>>>> v3.4.6
 #define APMU_SDH0	APMU_REG(0x054)
 #define APMU_SDH1	APMU_REG(0x058)
 #define APMU_USB	APMU_REG(0x05c)
@@ -42,6 +48,7 @@
 #define APMU_DMA	APMU_REG(0x064)
 #define APMU_GEU	APMU_REG(0x068)
 #define APMU_BUS	APMU_REG(0x06c)
+<<<<<<< HEAD
 #define APMU_PWR_STBL_TIMER        APMU_REG(0x084)
 #define APMU_CORE_STATUS APMU_REG(0x090)
 #define APMU_CC2_AP	APMU_REG(0x100)
@@ -123,6 +130,11 @@
 /* Debug register */
 #define APMU_DEBUG		APMU_REG(0x0088)
 #define APMU_DEBUG2		APMU_REG(0x0190)
+=======
+#define APMU_SDH2	APMU_REG(0x0e8)
+#define APMU_SDH3	APMU_REG(0x0ec)
+#define APMU_ETH	APMU_REG(0x0fc)
+>>>>>>> v3.4.6
 
 #define APMU_FNCLK_EN	(1 << 4)
 #define APMU_AXICLK_EN	(1 << 3)
@@ -141,6 +153,7 @@
 #define APMU_PXA168_SD2_WAKE_CLR	(1 << 1)
 #define APMU_PXA168_SD1_WAKE_CLR	(1 << 0)
 
+<<<<<<< HEAD
 #define APMU_PXA910_KP_WAKE_CLR		(1 << 3)
 #define APMU_PXA988_KP_WAKE_CLR		(1 << 3)
 #define APMU_PXA988_SD3_WAKE_CLR	(1 << 6)
@@ -249,4 +262,6 @@
 #define APMU_AUDIO_CLK_ENA		(1 << 4)
 #define APMU_AUDIO_RST_DIS		(1 << 1)
 
+=======
+>>>>>>> v3.4.6
 #endif /* __ASM_MACH_REGS_APMU_H */

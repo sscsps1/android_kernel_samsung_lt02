@@ -7,9 +7,15 @@
  * the Free Software Foundation.
  */
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/mutex.h>
 #include <linux/module.h>
+=======
+#include <linux/export.h>
+#include <linux/slab.h>
+#include <linux/mutex.h>
+>>>>>>> v3.4.6
 
 #include "iio.h"
 #include "iio_core.h"

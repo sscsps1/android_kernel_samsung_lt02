@@ -137,6 +137,7 @@ config REGULATOR_ISL6271A
 
 config REGULATOR_88PM8607
 	bool "Marvell 88PM8607 Power regulators"
+<<<<<<< HEAD
 	depends on MFD_88PM860X
 	help
 	  This driver supports 88PM8607 voltage regulator chips.
@@ -147,6 +148,12 @@ config REGULATOR_88PM800
 	help
 	  This driver supports 88PM800 voltage regulator chips.
 
+=======
+	depends on MFD_88PM860X=y
+	help
+	  This driver supports 88PM8607 voltage regulator chips.
+
+>>>>>>> v3.4.6
 config REGULATOR_MAX1586
 	tristate "Maxim 1586/1587 voltage regulator"
 	depends on I2C
@@ -372,6 +379,7 @@ config REGULATOR_WM8994
 	  This driver provides support for the voltage regulators on the
 	  WM8994 CODEC.
 
+<<<<<<< HEAD
 config REGULATOR_FAN53555
 	tristate "Fairchild FAN5355 Regulator"
 	depends on I2C
@@ -382,5 +390,7 @@ config REGULATOR_FAN53555
 	  input voltage supply of 2.5V to 5.5V. The output voltage is
 	  programmed through an I2C interface.
 
+=======
+>>>>>>> v3.4.6
 endif
 

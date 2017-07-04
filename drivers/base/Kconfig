@@ -192,6 +192,7 @@ config DMA_SHARED_BUFFER
 	  APIs extension; the file's descriptor can then be passed on to other
 	  driver.
 
+<<<<<<< HEAD
 config SYNC
 	bool "Synchronization framework"
 	default n
@@ -218,4 +219,6 @@ config SW_SYNC_USER
          Provides a user space API to the sw sync object.
          *WARNING* improper use of this can result in deadlocking kernel
 	 drivers from userspace.
+=======
+>>>>>>> v3.4.6
 endmenu

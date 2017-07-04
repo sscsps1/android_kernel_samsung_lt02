@@ -111,6 +111,7 @@ config UIO_PRUSS
 	  To compile this driver as a module, choose M here: the module
 	  will be called uio_pruss.
 
+<<<<<<< HEAD
 config UIO_HDMI
 	tristate "Userspace HDMI driver"
 	depends on UIO && CPU_MMP3
@@ -136,4 +137,6 @@ config UIO_MVISP
 	  Userspace IO interface to mmap the Marvell ISP IPC mem
 
 	  If you compile this as a module, it will be called uio_mvisp.
+=======
+>>>>>>> v3.4.6
 endif

@@ -424,6 +424,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	if (max_load < (dbs_tuners_ins.down_threshold - 10)) {
 		freq_target = (dbs_tuners_ins.freq_step * policy->max) / 100;
 
+<<<<<<< HEAD
 		/*
 		  * Only use freq_step to adjust requested_freq when it is
 		  * larger than freq_target, or requested_freq will be a
@@ -436,6 +437,9 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 			this_dbs_info->requested_freq -= freq_target;
 		else
 			this_dbs_info->requested_freq = policy->min;
+=======
+		this_dbs_info->requested_freq -= freq_target;
+>>>>>>> v3.4.6
 		if (this_dbs_info->requested_freq < policy->min)
 			this_dbs_info->requested_freq = policy->min;
 

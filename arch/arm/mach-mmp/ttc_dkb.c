@@ -9,16 +9,20 @@
  */
 
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/io.h>
 #include <linux/delay.h>
 #include <linux/err.h>
+=======
+>>>>>>> v3.4.6
 #include <linux/kernel.h>
 #include <linux/platform_device.h>
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/onenand.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/io.h>
 #include <linux/input.h>
 #include <linux/i2c/pca953x.h>
@@ -28,15 +32,23 @@
 #include <linux/platform_data/mv_usb.h>
 #include <linux/regulator/machine.h>
 #include <linux/regulator/consumer.h>
+=======
+#include <linux/i2c/pca953x.h>
+#include <linux/gpio.h>
+>>>>>>> v3.4.6
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
 #include <asm/mach/flash.h>
+<<<<<<< HEAD
 #include <mach/mmp_device.h>
+=======
+>>>>>>> v3.4.6
 #include <mach/addr-map.h>
 #include <mach/mfp-pxa910.h>
 #include <mach/pxa910.h>
 #include <mach/irqs.h>
+<<<<<<< HEAD
 #include <mach/regs-usb.h>
 #include <mach/regs-mpmu.h>
 #include <mach/regs-apmu.h>
@@ -45,6 +57,10 @@
 
 #include "common.h"
 #include "onboard.h"
+=======
+
+#include "common.h"
+>>>>>>> v3.4.6
 
 #define TTCDKB_GPIO_EXT0(x)	(MMP_NR_BUILTIN_GPIO + ((x < 0) ? 0 :	\
 				((x < 16) ? x : 15)))
@@ -58,6 +74,7 @@
  */
 #define TTCDKB_NR_IRQS		(MMP_NR_IRQS + 16 + 16 + 24)
 
+<<<<<<< HEAD
 int emmc_boot;
 EXPORT_SYMBOL(emmc_boot);
 static int __init emmc_setup(char *__unused)
@@ -69,13 +86,18 @@ static int __init emmc_setup(char *__unused)
 }
 __setup("emmc_boot", emmc_setup);
 
+=======
+>>>>>>> v3.4.6
 static unsigned long ttc_dkb_pin_config[] __initdata = {
 	/* UART2 */
 	GPIO47_UART2_RXD,
 	GPIO48_UART2_TXD,
+<<<<<<< HEAD
 	/* I2C */
 	GPIO53_CI2C_SCL,
 	GPIO54_CI2C_SDA,
+=======
+>>>>>>> v3.4.6
 
 	/* DFI */
 	DF_IO0_ND_IO0,
@@ -100,6 +122,7 @@ static unsigned long ttc_dkb_pin_config[] __initdata = {
 	DF_WEn_DF_WEn,
 	DF_REn_DF_REn,
 	DF_RDY0_DF_RDY0,
+<<<<<<< HEAD
 
 	/* mmc */
 	MMC1_DAT7_MMC1_DAT7,
@@ -183,6 +206,8 @@ static unsigned long emmc_pin_config[] __initdata = {
 	MMC3_DAT0_MMC3_DAT0,
 	MMC3_CMD_MMC3_CMD,
 	MMC3_CLK_MMC3_CLK,
+=======
+>>>>>>> v3.4.6
 };
 
 static struct mtd_partition ttc_dkb_onenand_partitions[] = {
@@ -237,6 +262,7 @@ static struct platform_device ttc_dkb_device_onenand = {
 	},
 };
 
+<<<<<<< HEAD
 #if defined(CONFIG_SOC_CAMERA_OV5642) || defined(CONFIG_SOC_CAMERA_OV5640)
 static int cam_ldo12_1p2v_enable(int on)
 {
@@ -373,15 +399,20 @@ static struct platform_device dkb_ov5640_mipi = {
 };
 #endif
 
+=======
+>>>>>>> v3.4.6
 static struct platform_device *ttc_dkb_devices[] = {
 	&pxa910_device_gpio,
 	&pxa910_device_rtc,
 	&ttc_dkb_device_onenand,
+<<<<<<< HEAD
 #if defined(CONFIG_SOC_CAMERA_OV5642)
 	&dkb_ov5642_dvp,
 #elif defined(CONFIG_SOC_CAMERA_OV5640)
 	&dkb_ov5640_mipi,
 #endif
+=======
+>>>>>>> v3.4.6
 };
 
 static struct pca953x_platform_data max7312_data[] = {
@@ -391,6 +422,7 @@ static struct pca953x_platform_data max7312_data[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int ttc_dkb_pm860x_fixup(struct pm860x_chip *chip,
 			struct pm860x_platform_data *pdata)
 {
@@ -634,11 +666,16 @@ static struct i2c_board_info ttc_dkb_i2c_info[] = {
 		.irq            = IRQ_PXA910_PMIC_INT,
 	},
 	{
+=======
+static struct i2c_board_info ttc_dkb_i2c_info[] = {
+	{
+>>>>>>> v3.4.6
 		.type		= "max7312",
 		.addr		= 0x23,
 		.irq		= MMP_GPIO_TO_IRQ(80),
 		.platform_data	= &max7312_data,
 	},
+<<<<<<< HEAD
 #if defined(CONFIG_GPIO_PCA953X)
 	{
 		.type           = "pca9575",
@@ -878,19 +915,25 @@ struct mmp_cam_pdata mv_cam_data;
 MMP_HW_DESC(fb, "pxa168-fb", 0, 0, "LCDCLK");
 struct mmp_hw_desc *ttc_dkb_hw_desc[] __initdata = {
 	&mmp_device_hw_fb,
+=======
+>>>>>>> v3.4.6
 };
 
 static void __init ttc_dkb_init(void)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(ttc_dkb_hw_desc); i ++)
 		mmp_device_hw_register(ttc_dkb_hw_desc[i]);
 
+=======
+>>>>>>> v3.4.6
 	mfp_config(ARRAY_AND_SIZE(ttc_dkb_pin_config));
 
 	/* on-chip devices */
 	pxa910_add_uart(1);
+<<<<<<< HEAD
 	pxa910_add_1wire();
 #ifdef CONFIG_MTD_NAND_PXA3xx
 	pxa910_add_nand(&dkb_nand_info);
@@ -902,10 +945,13 @@ static void __init ttc_dkb_init(void)
 
 	if (!emmc_boot)
 		pxa910_add_nand(&dkb_nand_info);
+=======
+>>>>>>> v3.4.6
 
 	/* off-chip devices */
 	pxa910_add_twsi(0, NULL, ARRAY_AND_SIZE(ttc_dkb_i2c_info));
 	platform_add_devices(ARRAY_AND_SIZE(ttc_dkb_devices));
+<<<<<<< HEAD
 
 	/* add audio device: sram, ssp2, gssp, squ(tdma), pxa-ssp, mmp-pcm */
 	pxa910_add_asram(&pxa910_asram_info);
@@ -964,6 +1010,11 @@ static void __init ttc_dkb_init(void)
 }
 
 MACHINE_START(TTC_DKB, "PXA910-based")
+=======
+}
+
+MACHINE_START(TTC_DKB, "PXA910-based TTC_DKB Development Platform")
+>>>>>>> v3.4.6
 	.map_io		= mmp_map_io,
 	.nr_irqs	= TTCDKB_NR_IRQS,
 	.init_irq       = pxa910_init_irq,

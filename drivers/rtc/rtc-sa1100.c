@@ -34,7 +34,10 @@
 #include <linux/pm.h>
 #include <linux/bitops.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> v3.4.6
 
 #include <mach/hardware.h>
 #include <mach/irqs.h>
@@ -43,6 +46,7 @@
 #include <mach/regs-rtc.h>
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_FAKE_SYSTEMOFF
 #include <linux/power/fake-sysoff.h>
 #endif
@@ -52,6 +56,8 @@
 static void (*spa_external_event)(int, int) = NULL;
 #endif
 
+=======
+>>>>>>> v3.4.6
 #define RTC_DEF_DIVIDER		(32768 - 1)
 #define RTC_DEF_TRIM		0
 #define RTC_FREQ		1024
@@ -71,11 +77,14 @@ static irqreturn_t sa1100_rtc_interrupt(int irq, void *dev_id)
 	unsigned int rtsr;
 	unsigned long events = 0;
 
+<<<<<<< HEAD
 #if defined(CONFIG_SPA)
 	if(spa_external_event)
 		spa_external_event(SPA_CATEGORY_BATTERY, SPA_BATTERY_EVENT_SLEEP_MONITOR);
 #endif
 
+=======
+>>>>>>> v3.4.6
 	spin_lock(&info->lock);
 
 	rtsr = RTSR;
@@ -117,6 +126,54 @@ static irqreturn_t sa1100_rtc_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static int sa1100_rtc_open(struct device *dev)
+{
+	struct sa1100_rtc *info = dev_get_drvdata(dev);
+	struct rtc_device *rtc = info->rtc;
+	int ret;
+
+	ret = clk_prepare_enable(info->clk);
+	if (ret)
+		goto fail_clk;
+	ret = request_irq(info->irq_1hz, sa1100_rtc_interrupt, 0, "rtc 1Hz", dev);
+	if (ret) {
+		dev_err(dev, "IRQ %d already in use.\n", info->irq_1hz);
+		goto fail_ui;
+	}
+	ret = request_irq(info->irq_alarm, sa1100_rtc_interrupt, 0, "rtc Alrm", dev);
+	if (ret) {
+		dev_err(dev, "IRQ %d already in use.\n", info->irq_alarm);
+		goto fail_ai;
+	}
+	rtc->max_user_freq = RTC_FREQ;
+	rtc_irq_set_freq(rtc, NULL, RTC_FREQ);
+
+	return 0;
+
+ fail_ai:
+	free_irq(info->irq_1hz, dev);
+ fail_ui:
+	clk_disable_unprepare(info->clk);
+ fail_clk:
+	return ret;
+}
+
+static void sa1100_rtc_release(struct device *dev)
+{
+	struct sa1100_rtc *info = dev_get_drvdata(dev);
+
+	spin_lock_irq(&info->lock);
+	RTSR = 0;
+	spin_unlock_irq(&info->lock);
+
+	free_irq(info->irq_alarm, dev);
+	free_irq(info->irq_1hz, dev);
+	clk_disable_unprepare(info->clk);
+}
+
+>>>>>>> v3.4.6
 static int sa1100_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
 {
 	struct sa1100_rtc *info = dev_get_drvdata(dev);
@@ -141,6 +198,7 @@ static int sa1100_rtc_set_time(struct device *dev, struct rtc_time *tm)
 	unsigned long time;
 	int ret;
 
+<<<<<<< HEAD
 	if (tm->tm_year > 138)
 		return -EINVAL;
 
@@ -149,6 +207,11 @@ static int sa1100_rtc_set_time(struct device *dev, struct rtc_time *tm)
 		RCNR = time;
 
 	udelay(200);
+=======
+	ret = rtc_tm_to_time(tm, &time);
+	if (ret == 0)
+		RCNR = time;
+>>>>>>> v3.4.6
 	return ret;
 }
 
@@ -193,6 +256,11 @@ static int sa1100_rtc_proc(struct device *dev, struct seq_file *seq)
 }
 
 static const struct rtc_class_ops sa1100_rtc_ops = {
+<<<<<<< HEAD
+=======
+	.open = sa1100_rtc_open,
+	.release = sa1100_rtc_release,
+>>>>>>> v3.4.6
 	.read_time = sa1100_rtc_read_time,
 	.set_time = sa1100_rtc_set_time,
 	.read_alarm = sa1100_rtc_read_alarm,
@@ -276,6 +344,7 @@ static int sa1100_rtc_probe(struct platform_device *pdev)
 	 * the corresponding bits in RTSR. */
 	RTSR = RTSR_AL | RTSR_HZ;
 
+<<<<<<< HEAD
 	ret = clk_prepare_enable(info->clk);
 	if (ret)
 		goto err_nortc;
@@ -304,6 +373,9 @@ err_ui:
 	clk_disable_unprepare(info->clk);
 err_nortc:
 	rtc_device_unregister(info->rtc);
+=======
+	return 0;
+>>>>>>> v3.4.6
 err_dev:
 	platform_set_drvdata(pdev, NULL);
 	clk_put(info->clk);
@@ -317,6 +389,7 @@ static int sa1100_rtc_remove(struct platform_device *pdev)
 	struct sa1100_rtc *info = platform_get_drvdata(pdev);
 
 	if (info) {
+<<<<<<< HEAD
 		spin_lock_irq(&info->lock);
 		RTSR = 0;
 		spin_unlock_irq(&info->lock);
@@ -325,6 +398,8 @@ static int sa1100_rtc_remove(struct platform_device *pdev)
 		free_irq(info->irq_1hz, &pdev->dev);
 		clk_disable_unprepare(info->clk);
 
+=======
+>>>>>>> v3.4.6
 		rtc_device_unregister(info->rtc);
 		clk_put(info->clk);
 		platform_set_drvdata(pdev, NULL);
@@ -335,6 +410,7 @@ static int sa1100_rtc_remove(struct platform_device *pdev)
 }
 
 #ifdef CONFIG_PM
+<<<<<<< HEAD
 #ifdef CONFIG_FAKE_SYSTEMOFF
 static bool dev_wakeup;
 #endif
@@ -347,6 +423,11 @@ static int sa1100_rtc_suspend(struct device *dev)
 		device_set_wakeup_capable(dev, false);
 	}
 #endif
+=======
+static int sa1100_rtc_suspend(struct device *dev)
+{
+	struct sa1100_rtc *info = dev_get_drvdata(dev);
+>>>>>>> v3.4.6
 	if (device_may_wakeup(dev))
 		enable_irq_wake(info->irq_alarm);
 	return 0;
@@ -357,10 +438,13 @@ static int sa1100_rtc_resume(struct device *dev)
 	struct sa1100_rtc *info = dev_get_drvdata(dev);
 	if (device_may_wakeup(dev))
 		disable_irq_wake(info->irq_alarm);
+<<<<<<< HEAD
 #ifdef CONFIG_FAKE_SYSTEMOFF
 	if (fake_sysoff_status_query())
 		device_set_wakeup_capable(dev, dev_wakeup);
 #endif
+=======
+>>>>>>> v3.4.6
 	return 0;
 }
 

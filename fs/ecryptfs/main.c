@@ -39,12 +39,15 @@
 #include <linux/magic.h>
 #include "ecryptfs_kernel.h"
 
+<<<<<<< HEAD
 
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 #include <linux/ctype.h>
 #endif
 
 
+=======
+>>>>>>> v3.4.6
 /**
  * Module parameter that defines the ecryptfs_verbosity level.
  */
@@ -182,9 +185,12 @@ enum { ecryptfs_opt_sig, ecryptfs_opt_ecryptfs_sig,
        ecryptfs_opt_fn_cipher, ecryptfs_opt_fn_cipher_key_bytes,
        ecryptfs_opt_unlink_sigs, ecryptfs_opt_mount_auth_tok_only,
        ecryptfs_opt_check_dev_ruid,
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 	ecryptfs_opt_enable_filtering,
 #endif
+=======
+>>>>>>> v3.4.6
        ecryptfs_opt_err };
 
 static const match_table_t tokens = {
@@ -202,9 +208,12 @@ static const match_table_t tokens = {
 	{ecryptfs_opt_unlink_sigs, "ecryptfs_unlink_sigs"},
 	{ecryptfs_opt_mount_auth_tok_only, "ecryptfs_mount_auth_tok_only"},
 	{ecryptfs_opt_check_dev_ruid, "ecryptfs_check_dev_ruid"},
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 	{ecryptfs_opt_enable_filtering, "ecryptfs_enable_filtering=%s"},
 #endif
+=======
+>>>>>>> v3.4.6
 	{ecryptfs_opt_err, NULL}
 };
 
@@ -245,6 +254,7 @@ static void ecryptfs_init_mount_crypt_stat(
 	mutex_init(&mount_crypt_stat->global_auth_tok_list_mutex);
 	mount_crypt_stat->flags |= ECRYPTFS_MOUNT_CRYPT_STAT_INITIALIZED;
 }
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 
 static int parse_enc_file_filter_parms(
@@ -296,6 +306,9 @@ static int parse_enc_filter_parms(
 	return 0;
 }
 #endif
+=======
+
+>>>>>>> v3.4.6
 /**
  * ecryptfs_parse_options
  * @sb: The ecryptfs super block
@@ -451,6 +464,7 @@ static int ecryptfs_parse_options(struct ecryptfs_sb_info *sbi, char *options,
 		case ecryptfs_opt_check_dev_ruid:
 			*check_ruid = 1;
 			break;
+<<<<<<< HEAD
 #ifdef CONFIG_WTL_ENCRYPTION_FILTER
 		case ecryptfs_opt_enable_filtering:
 			rc = parse_enc_filter_parms(mount_crypt_stat,
@@ -464,6 +478,8 @@ static int ecryptfs_parse_options(struct ecryptfs_sb_info *sbi, char *options,
 			mount_crypt_stat->flags |= ECRYPTFS_ENABLE_FILTERING;
 			break;
 #endif
+=======
+>>>>>>> v3.4.6
 		case ecryptfs_opt_err:
 		default:
 			printk(KERN_WARNING

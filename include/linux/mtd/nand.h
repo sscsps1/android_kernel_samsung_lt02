@@ -202,10 +202,14 @@ typedef enum {
 /* Device behaves just like nand, but is readonly */
 #define NAND_ROM		0x00000800
 
+<<<<<<< HEAD
 /* If use marvell bbm scheme, mtd should report no error to the up level */
 #define BBT_RELOCATION_IFBAD    0x00001000
 
  /* Options valid for Samsung large page devices */
+=======
+/* Options valid for Samsung large page devices */
+>>>>>>> v3.4.6
 #define NAND_SAMSUNG_LP_OPTIONS \
 	(NAND_NO_PADDING | NAND_CACHEPRG | NAND_COPYBACK)
 

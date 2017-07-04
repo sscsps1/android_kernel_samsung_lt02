@@ -11,7 +11,10 @@ config SND_SOC_I2C_AND_SPI
 config SND_SOC_ALL_CODECS
 	tristate "Build all ASoC CODEC drivers"
 	select SND_SOC_88PM860X if MFD_88PM860X
+<<<<<<< HEAD
 	select SND_SOC_88PM805 if MFD_88PM805
+=======
+>>>>>>> v3.4.6
 	select SND_SOC_L3
 	select SND_SOC_AC97_CODEC if SND_SOC_AC97_BUS
 	select SND_SOC_AD1836 if SPI_MASTER
@@ -122,9 +125,12 @@ config SND_SOC_ALL_CODECS
 config SND_SOC_88PM860X
 	tristate
 
+<<<<<<< HEAD
 config SND_SOC_88PM805
 	tristate
 
+=======
+>>>>>>> v3.4.6
 config SND_SOC_WM_HUBS
 	tristate
 	default y if SND_SOC_WM8993=y || SND_SOC_WM8994=y

@@ -17,8 +17,11 @@
  * MMP2	     Z0	   0x560f5811   0x00F00410
  * MMP2      Z1    0x560f5811   0x00E00410
  * MMP2      A0    0x560f5811   0x00A0A610
+<<<<<<< HEAD
  * MMP3	     A0    0x562f5840   0x00A0A620
  * MMP3	     B0    0x562f5840   0x00B0A620
+=======
+>>>>>>> v3.4.6
  */
 
 extern unsigned int mmp_chip_id;
@@ -45,6 +48,7 @@ static inline int cpu_is_pxa910(void)
 #define cpu_is_pxa910()	(0)
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_PXA988
 static inline int cpu_is_pxa988(void)
 {
@@ -137,6 +141,8 @@ static inline int cpu_pxa98x_stepping(void)
 #define cpu_pxa98x_stepping()	(0)
 #endif
 
+=======
+>>>>>>> v3.4.6
 #ifdef CONFIG_CPU_MMP2
 static inline int cpu_is_mmp2(void)
 {
@@ -146,6 +152,7 @@ static inline int cpu_is_mmp2(void)
 #define cpu_is_mmp2()	(0)
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_MMP3
 static inline int cpu_is_mmp3(void)
 {
@@ -180,4 +187,6 @@ static inline int cpu_is_mmp3fpgasoc(void)
 #define cpu_is_mmp3fpgasoc()	(0)
 #endif
 
+=======
+>>>>>>> v3.4.6
 #endif /* __ASM_MACH_CPUTYPE_H */

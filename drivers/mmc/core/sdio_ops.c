@@ -86,7 +86,11 @@ static int mmc_io_rw_direct_host(struct mmc_host *host, int write, unsigned fn,
 	cmd.arg |= in;
 	cmd.flags = MMC_RSP_SPI_R5 | MMC_RSP_R5 | MMC_CMD_AC;
 
+<<<<<<< HEAD
 	err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+=======
+	err = mmc_wait_for_cmd(host, &cmd, 0);
+>>>>>>> v3.4.6
 	if (err)
 		return err;
 
@@ -147,7 +151,10 @@ int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
 	else
 		cmd.arg |= 0x08000000 | blocks;		/* block mode */
 	cmd.flags = MMC_RSP_SPI_R5 | MMC_RSP_R5 | MMC_CMD_ADTC;
+<<<<<<< HEAD
 	cmd.retries = MMC_CMD_RETRIES;
+=======
+>>>>>>> v3.4.6
 
 	data.blksz = blksz;
 	/* Code in host drivers/fwk assumes that "blocks" always is >=1 */
